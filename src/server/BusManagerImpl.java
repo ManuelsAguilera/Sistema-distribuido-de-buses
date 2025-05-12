@@ -9,9 +9,6 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	protected BusManagerImpl() throws RemoteException {
