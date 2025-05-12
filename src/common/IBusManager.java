@@ -1,6 +1,7 @@
 package common;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 
 public interface IBusManager extends  Remote  {
@@ -10,4 +11,5 @@ public interface IBusManager extends  Remote  {
 	
 
 	void testConnection(String message) throws RemoteException;
+	ArrayList<String> dumpTerminal() throws RemoteException;
 }

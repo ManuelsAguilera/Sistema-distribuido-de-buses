@@ -21,13 +21,17 @@ public class ClientRun {
 				String buffer= "";
 				
 				System.out.println("Escribe algo para enviar al servidor\nEscribe quit para salir.");
-				while(buffer.compareTo("quit") != 1) {
+				while(buffer.compareTo("quit") != 0) {
 					
 					
 					buffer = scan.nextLine();
 					
 					client.testConnection(buffer);
 					
+					if (buffer.compareTo("names") == 0)
+					{
+						client.getNamesTerminal();
+					}
 					
 					
 				} 

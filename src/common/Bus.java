@@ -1,8 +1,10 @@
 package common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Bus {
+
+public class Bus implements Serializable {
 
 	private String patente;
 	private int asientosTotales;
