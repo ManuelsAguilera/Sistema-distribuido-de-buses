@@ -3,10 +3,10 @@ import java.time.LocalDateTime;
 
 
 public class Pasajero {
-	LocalDateTime origen;
-	LocalDateTime destino;
-	String nombre;
-	String ciudad;
-	String direccion;
+	private LocalDateTime origen;
+	private LocalDateTime destino;
+	private String nombre;
+	private String ciudad;
+	private String direccion;
 	
 }

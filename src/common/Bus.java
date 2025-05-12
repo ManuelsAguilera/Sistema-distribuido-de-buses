@@ -6,11 +6,11 @@ public class Bus {
 
 	private String patente;
 	private int asientosTotales;
-	private ArrayList asientosLista;
-	private ArrayList terminalLista;
+	private ArrayList<Boolean> asientosLista;
+	private ArrayList<Terminal> terminalLista;
 	
 	
-	public Bus(String patente, int asientosTotales, ArrayList asientosLista, ArrayList terminalLista) {
+	public Bus(String patente, int asientosTotales, ArrayList<Boolean> asientosLista, ArrayList<Terminal> terminalLista) {
 		super();
 		this.patente = patente;
 		this.asientosTotales = asientosTotales;
