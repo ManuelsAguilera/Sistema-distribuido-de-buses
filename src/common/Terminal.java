@@ -1,12 +1,12 @@
 package common;
+
 import java.time.LocalDateTime;
 
+public class Terminal {
 
-public class Pasajero {
-	LocalDateTime origen;
-	LocalDateTime destino;
+	LocalDateTime llegadaBus;
+	LocalDateTime salidaBus;
 	String nombre;
 	String ciudad;
 	String direccion;
-	
 }
