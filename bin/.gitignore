@@ -1,3 +1,4 @@
-/server/
-/common/
 /client/
+/common/
+/module-info.class
+/server/
