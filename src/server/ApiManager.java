@@ -8,38 +8,47 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ApiManager {
-	public static void getRoute(String latStart, String longStart, String latDestiny, String longDestiny) {
-		// Solicitamos la petición
-		// Get: "/{service}/{version}/{profile}/{coordinates}[.{format}]?option=value&option=value"
-		try {
-			// Solicitamos la petición
-			URL url = new URL("https://router.project-osrm.org/route/v1/driving/-70.7519483,-34.1698248;-70.6903149,-33.4543722?overview=full&geometries=geojson");
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			con.connect();
-			
-			// Comprobamos el estado de la peticion
-			int responseCode = con.getResponseCode();
-			if (responseCode != 200) {
-				throw new RuntimeException("Ocurrio un error durante la lectura de la API: #" + responseCode);
-			} else {
-				// Lectura de la información
-				StringBuilder informationString = new StringBuilder();
-				Scanner scanner = new Scanner(url.openStream());
-				
-				while (scanner.hasNext())  {
-					informationString.append(scanner.nextLine());
-				}
-				
-				scanner.close();
-				
-				// Imprimimos la solicitud
-				System.out.println(informationString);
-			}
-			
-			
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-	} 
+    public static void getRoute(String latStart, String longStart, String latDestiny, String longDestiny) {
+        try {
+        	String baseUrl = "http://router.project-osrm.org/route/v1/driving/";
+        	String coordinates = longStart + "," + latStart + ";" + longDestiny + "," + latDestiny;
+        	String options = "?overview=false";
+
+        	URL url = new URL(baseUrl + coordinates + options);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.connect();
+
+            int responseCode = con.getResponseCode();
+            if (responseCode != 200) {
+            	System.out.println("aaaa");
+                throw new RuntimeException("Error en la API OSRM: #" + responseCode);
+            } else {
+                StringBuilder infoString = new StringBuilder();
+                Scanner scanner = new Scanner(con.getInputStream());
+
+                while (scanner.hasNext()) {
+                    infoString.append(scanner.nextLine());
+                }
+
+                scanner.close();
+                con.disconnect();
+
+                // Parseo JSON
+                JSONObject jsonResponse = new JSONObject(infoString.toString());
+                JSONArray routes = jsonResponse.getJSONArray("routes");
+                JSONObject route = routes.getJSONObject(0);
+
+                double distance = route.getDouble("distance"); // en metros
+                double duration = route.getDouble("duration"); // en segundos
+
+                // Muestra en consola
+                System.out.println("Distancia total: " + (distance / 1000) + " km");
+                System.out.println("Duración estimada: " + (duration / 60) + " minutos");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
