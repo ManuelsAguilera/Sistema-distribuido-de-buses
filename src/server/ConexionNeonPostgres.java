@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConexionNeonPostgres {
     public static void main(String[] args) {
-    	ApiManager.getRoute("-71.17655940380706","-31.6383312699298","-71.54750509569874","-33.02555966608981");
+    	ApiManager.getRoute("-34.16967","-70.75124","-33.45033","-70.68856");
     	/*
         var sql = "CREATE TABLE VichoDameAcceso (" +
                 "    id SERIAL PRIMARY KEY," +

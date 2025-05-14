@@ -38,10 +38,11 @@ public class ApiManager {
                 JSONObject jsonResponse = new JSONObject(infoString.toString());
                 JSONArray routes = jsonResponse.getJSONArray("routes");
                 JSONObject route = routes.getJSONObject(0);
-
+                
                 double distance = route.getDouble("distance"); // en metros
                 double duration = route.getDouble("duration"); // en segundos
-
+                System.out.println(jsonResponse);
+            
                 // Muestra en consola
                 System.out.println("Distancia total: " + (distance / 1000) + " km");
                 System.out.println("Duración estimada: " + (duration / 60) + " minutos");
