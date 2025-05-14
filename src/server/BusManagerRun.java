@@ -15,8 +15,6 @@ public class BusManagerRun {
 			Registry registry = LocateRegistry.createRegistry(2002);
 			registry.bind("CentralBusManager", server);
 			System.out.println("Server up!");
-			
-			
 		}
 		catch (RemoteException RemoteE)
 		{

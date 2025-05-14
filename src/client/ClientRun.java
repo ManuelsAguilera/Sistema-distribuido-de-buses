@@ -4,6 +4,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
+import server.ApiManager;
+
 public class ClientRun {
 	
 	public static void main(String args[])
