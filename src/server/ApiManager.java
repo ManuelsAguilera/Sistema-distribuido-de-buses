@@ -41,7 +41,6 @@ public class ApiManager {
                 
                 double distance = route.getDouble("distance"); // en metros
                 double duration = route.getDouble("duration"); // en segundos
-                System.out.println(jsonResponse);
             
                 // Muestra en consola
                 System.out.println("Distancia total: " + (distance / 1000) + " km");

@@ -1,5 +1,6 @@
 package client;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
@@ -8,16 +9,18 @@ import server.ApiManager;
 
 public class ClientRun {
 	
-	public static void main(String args[])
+	public static void main(String args[]) throws IOException
 	{
 		
 		Scanner scan = new Scanner(System.in);		
 		ClientImpl client;
 		
+		
 		try {
 				client = new ClientImpl();
 				System.out.println("Client is up!");
 				
+				client.showMenu();
 				
 				
 				String buffer= "";
@@ -39,7 +42,7 @@ public class ClientRun {
 				} 
 				
 				System.out.println("Quitting..");
-			
+				
 						
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
