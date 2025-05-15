@@ -25,8 +25,8 @@ public class ClientImpl {
 	
 	ClientImpl() throws RemoteException, NotBoundException
 	{
-		Registry registry = LocateRegistry.getRegistry(2002);
-		server=(IBusManager) registry.lookup("CentralBusManager");
+		//Registry registry = LocateRegistry.getRegistry(2002);
+		//server=(IBusManager) registry.lookup("CentralBusManager");
 	}
 	
 	void testConnection(String message) throws RemoteException { this.server.testConnection(message);}
@@ -38,33 +38,5 @@ public class ClientImpl {
 		{
 			System.out.println(name);
 		}
-	}
-	
-	public void showMenu() throws IOException {
-		// Setup terminal and screen layers
-        Terminal terminal = new DefaultTerminalFactory().createTerminal();
-        Screen screen = new TerminalScreen(terminal);
-        screen.startScreen();
-
-        // Create panel to hold components
-        Panel panel = new Panel();
-        panel.setLayoutManager(new GridLayout(2));
-
-        panel.addComponent(new Label("Forename"));
-        panel.addComponent(new TextBox());
-
-        panel.addComponent(new Label("Surname"));
-        panel.addComponent(new TextBox());
-
-        panel.addComponent(new EmptySpace(new TerminalSize(0,0))); // Empty space underneath labels
-        panel.addComponent(new Button("Submit"));
-
-        // Create window to hold the panel
-        BasicWindow window = new BasicWindow();
-        window.setComponent(panel);
-
-        // Create gui and start gui
-        MultiWindowTextGUI gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
-        gui.addWindowAndWait(window);
 	}
 }

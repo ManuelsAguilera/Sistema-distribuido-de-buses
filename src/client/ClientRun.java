@@ -14,13 +14,14 @@ public class ClientRun {
 		
 		Scanner scan = new Scanner(System.in);		
 		ClientImpl client;
-		
+		ClientView view;
 		
 		try {
 				client = new ClientImpl();
+				view = new ClientView();
 				System.out.println("Client is up!");
 				
-				client.showMenu();
+				view.showMenu();
 				
 				
 				String buffer= "";

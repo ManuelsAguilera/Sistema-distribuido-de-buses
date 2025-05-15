@@ -6,7 +6,8 @@ import java.sql.SQLException;
 
 public class ConexionNeonPostgres {
     public static void main(String[] args) {
-    	/*
+    	
+    	
         var sql = "CREATE TABLE VichoDameAcceso (" +
                 "    id SERIAL PRIMARY KEY," +
                 "    name VARCHAR(255) NOT NULL," +
@@ -19,6 +20,6 @@ public class ConexionNeonPostgres {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-        }*/
+        }
     }
 }
