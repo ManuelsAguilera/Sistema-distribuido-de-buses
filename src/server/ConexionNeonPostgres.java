@@ -1,25 +1,41 @@
 package server;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import common.Bus;
+import common.Terminal;
+import server.dao.DaoBus;
 
 public class ConexionNeonPostgres {
     public static void main(String[] args) {
     	
+    	try {
+			Connection conn = DB.connect();
+			DaoBus dao = new DaoBus((Connection) conn);
+			
+			Bus bus = new Bus("BB2","Bus largo",15,new ArrayList<Terminal>());
+			
+			dao.insert(bus);
+			System.out.println("Escribe cualquier numero para eliminar");
+			Scanner scan = new Scanner(System.in);
+			
+			scan.nextInt();
+			
+			
+			dao.delete(bus.getPatente());
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
-        var sql = "CREATE TABLE VichoDameAcceso (" +
-                "    id SERIAL PRIMARY KEY," +
-                "    name VARCHAR(255) NOT NULL," +
-                "    price DECIMAL(10, 2) NOT NULL" +
-                ");";
-        
-        
-        try (var conn =  DB.connect();
-             var stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
+    	
+    	
+    	
+    	
+    	
     }
 }
