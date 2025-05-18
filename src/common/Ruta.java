@@ -1,6 +1,7 @@
 package common;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 
 
 public class Ruta implements Serializable{
@@ -8,11 +9,11 @@ public class Ruta implements Serializable{
 	private String nombreOrigen;
 	private String nombreDestino;
 	private int idRuta;
-	private int duracionEstimada; //minutos
+	private LocalTime duracionEstimada; //minutos
 	
 	
 	
-	public Ruta(String nombreOrigen, String nombreDestino, int idRuta, int duracionEstimada) {
+	public Ruta(String nombreOrigen, String nombreDestino, int idRuta, LocalTime duracionEstimada) {
 		super();
 		this.nombreOrigen = nombreOrigen;
 		this.nombreDestino = nombreDestino;
@@ -37,10 +38,10 @@ public class Ruta implements Serializable{
 	public void setIdRuta(int idRuta) {
 		this.idRuta = idRuta;
 	}
-	public int getDuracionEstimada() {
+	public LocalTime getDuracionEstimada() {
 		return duracionEstimada;
 	}
-	public void setDuracionEstimada(int duracionEstimada) {
+	public void setDuracionEstimada(LocalTime duracionEstimada) {
 		this.duracionEstimada = duracionEstimada;
 	}
 	

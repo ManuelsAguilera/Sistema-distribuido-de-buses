@@ -37,7 +37,7 @@ public class PuntoIntermedioDAO {
         		int orden = rs.getInt("orden");
 	            return new PuntoIntermedio(salida, llegada,idPunto,idRuta,lat,lon,orden,nombre);
 	        } else {
-	            return null; // No se encontró ningún bus con esa matrícula
+	            return null; // No se encontro ningun bus con esa matricula
 	        }
 		}
 	}
@@ -45,7 +45,7 @@ public class PuntoIntermedioDAO {
 	
 	
 	public Boolean insert(PuntoIntermedio punto) throws SQLException {
-	    String sql = "INSERT INTO puntosintermedios (punto_id, ruta_id, nombre_punto, lat, `long`, orden, hora_salida, hora_llegada) " +
+	    String sql = "INSERT INTO puntosintermedios (punto_id, ruta_id, nombre_punto, lat, long, orden, hora_salida, hora_llegada) " +
 	                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -53,7 +53,7 @@ public class PuntoIntermedioDAO {
 	        stmt.setInt(2, punto.getIdRuta());
 	        stmt.setString(3, punto.getNombre());
 	        stmt.setInt(4, punto.getLat());
-	        stmt.setInt(5, punto.getLon());  // `long` es palabra reservada en Java, así que probablemente usaste "lon"
+	        stmt.setInt(5, punto.getLon());  
 	        stmt.setInt(6, punto.getOrden());
 	        stmt.setTimestamp(7, Timestamp.valueOf(punto.getHoraSalida()));
 	        stmt.setTimestamp(8, Timestamp.valueOf(punto.getHoraLlegada()));
