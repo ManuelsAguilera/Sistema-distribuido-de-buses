@@ -3,14 +3,19 @@ package client;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import bit.datacron.linkedIn.tms.map.Location;
 import server.ApiManager;
 
 public class ClientRun {
 	
 	public static void main(String args[]) throws IOException
 	{
+		
+		System.out.println("AAAAAAAAAA");
 		
 		Scanner scan = new Scanner(System.in);		
 		ClientImpl client;
@@ -21,7 +26,7 @@ public class ClientRun {
 				view = new ClientView();
 				System.out.println("Client is up!");
 				
-				view.showMenu();
+				view.displayData();
 				
 				
 				String buffer= "";
