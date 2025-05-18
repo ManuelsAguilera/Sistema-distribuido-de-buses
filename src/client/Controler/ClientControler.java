@@ -1,7 +1,8 @@
-package client;
+package client.Controler;
 
-import client.ClientModel;
-import client.ClientView;
+import client.MenuOptionListener;
+import client.Model.ClientModel;
+import client.View.ClientView;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package common;
+package domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Bus implements Serializable {
 
+	
 	private String patente;
 	private String modelo;
 	private int asientosTotales;

@@ -1,6 +1,6 @@
-package common;
-import java.time.LocalDateTime;
+package domain;
 
+import java.time.LocalDateTime;
 
 public class Pasajero {
 	private LocalDateTime origen;
@@ -8,5 +8,4 @@ public class Pasajero {
 	private String nombre;
 	private String ciudad;
 	private String direccion;
-	
 }

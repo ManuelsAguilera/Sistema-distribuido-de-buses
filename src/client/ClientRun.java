@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import bit.datacron.linkedIn.tms.map.Location;
+import client.View.ClientView;
 import server.ApiManager;
 
 public class ClientRun {

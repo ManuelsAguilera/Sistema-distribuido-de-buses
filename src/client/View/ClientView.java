@@ -1,6 +1,6 @@
-package client;
+package client.View;
 
-import common.Bus;
+import domain.Bus;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +43,8 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+
+import client.MenuOptionListener;
 
 public class ClientView {
 
@@ -242,85 +244,3 @@ public class ClientView {
     }
 }
 
-/*
- @SuppressWarnings("deprecation")
-	private void displayData() throws IOException {
-		TerminalSize terminalSize = screen.getTerminalSize();
-
-	    // Crear el GUI sobre la screen
-	    WindowBasedTextGUI textGUI = new MultiWindowTextGUI(screen);
-
-	    // Ventana base
-	    BasicWindow window = new BasicWindow("BusApp TERMINAL v1.0");
-	    window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
-	    
-	    // Layout de 3 columnas para los paneles
-	    Panel mainPanel = new Panel(new LinearLayout(Direction.VERTICAL));
-        
-	    // Header
-        Label header = new Label("----------- Cliente: " + clientName + " -------------")
-            .setForegroundColor(TextColor.ANSI.BLACK)
-            .setBackgroundColor(TextColor.ANSI.YELLOW);
-        mainPanel.addComponent(header);
-	    
-        // Crear paneles para cada fila
-        Panel contentPanel = new Panel(new GridLayout(3));
-
-	    // Etiquetas para cada columna
-	    contentPanel.addComponent(new Label("#").setForegroundColor(TextColor.ANSI.YELLOW));
-	    contentPanel.addComponent(new Label("Métodos").setForegroundColor(TextColor.ANSI.YELLOW));
-	    contentPanel.addComponent(new Label("Vista").setForegroundColor(TextColor.ANSI.YELLOW));
-
-	    // Opciones de menú (aquí como botones de ejemplo)
-	    String[] opciones = {
-	        "Ver listado de buses",
-	        "Buscar bus por ID",
-	        "Reservar asiento",
-	        "Liberar asiento",
-	        "Ver asientos disponibles",
-	        "Reiniciar sistema",
-	        "Salir"
-	    };
-
-	    int index = 1;
-	    for (String opcion : opciones) {
-	    	if (opcion == "Salir") {
-	    		contentPanel.addComponent(new Label(String.valueOf(index)));
-		    	contentPanel.addComponent(new Button(opcion, () -> {
-		            try {
-						turnOff();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		        }));
-		    	contentPanel.addComponent(new Label("...")); 
-		        break;
-	    	}
-	    	
-	    	contentPanel.addComponent(new Label(String.valueOf(index)));
-	    	contentPanel.addComponent(new Button(opcion, () -> {
-	            MessageDialog.showMessageDialog(textGUI, "Acción", "Seleccionaste: " + opcion);
-	        }));
-	    	contentPanel.addComponent(new Label("...")); // Puedes colocar aquí un estado o ícono
-	        index++;
-	    }
-
-	    // Añadir paneles al panel principal
-	    mainPanel.addComponent(contentPanel);
-	    
-	    
-	    
-	    // Footer
-        Label footer = new Label("--------------------------------------------------")
-            .setForegroundColor(TextColor.ANSI.BLACK)
-            .setBackgroundColor(TextColor.ANSI.YELLOW);
-        mainPanel.addComponent(footer);
-        
-	    // Añadir panel principal a la ventana
-	    window.setComponent(mainPanel);
-	    window.setSize(terminalSize);
-
-	    // Mostrar la ventana (bloqueante)
-	    textGUI.addWindowAndWait(window);
-	}
- */

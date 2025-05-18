@@ -1,15 +1,14 @@
-package server.dao;
-
+package persistance.dao;
 
 import java.sql.*;
-import common.Bus;
+import domain.Bus;
 
-public class DaoBus {
+public class BusDAO {
 
 	private final Connection conn;
 	
 	
-	public DaoBus(Connection conn)
+	public BusDAO(Connection conn)
 	{
 		this.conn = conn;
 	}

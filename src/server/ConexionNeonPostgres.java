@@ -5,16 +5,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import common.Bus;
-import common.Terminal;
-import server.dao.DaoBus;
+import domain.Bus;
+import domain.Terminal;
+import persistance.dao.BusDAO;
 
 public class ConexionNeonPostgres {
     public static void main(String[] args) {
     	
     	try {
 			Connection conn = DB.connect();
-			DaoBus dao = new DaoBus((Connection) conn);
+			BusDAO dao = new BusDAO((Connection) conn);
 			
 			Bus bus = new Bus("BB2","Bus largo",15,new ArrayList<Terminal>());
 			
@@ -30,12 +30,6 @@ public class ConexionNeonPostgres {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-    	
-    	
-    	
-    	
-    	
-    	
+		}	
     }
 }
