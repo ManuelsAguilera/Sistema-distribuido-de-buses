@@ -1,4 +1,4 @@
-package Persistance.impl;
+package persistance.impl;
 
 public class PostgresDAO {
 

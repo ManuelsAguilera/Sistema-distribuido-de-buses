@@ -16,4 +16,6 @@ public class DB {
         String password = "npg_4L1UhyYFoItR";
         return DriverManager.getConnection(url, user, password);
     }
+    
+
 }
