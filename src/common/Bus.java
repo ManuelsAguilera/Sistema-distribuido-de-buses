@@ -7,29 +7,27 @@ import java.util.ArrayList;
 public class Bus implements Serializable {
 
 	
-	private String patente;
+	private String matricula;
 	private String modelo;
 	private int asientosTotales;
-	private ArrayList<Boolean> asientosLista;
-	private ArrayList<Terminal> terminalLista;
+
+
 	
 	
-	public Bus(String patente,String modelo, int asientosTotales, ArrayList<Terminal> terminalLista) {
+	public Bus(String matricula,String modelo, int asientosTotales) {
 		super();
-		this.patente = patente;
+		this.matricula = matricula;
 		this.modelo = modelo;
 		this.asientosTotales = asientosTotales;
-		this.asientosLista = new ArrayList<Boolean>(asientosTotales);
-		this.terminalLista = terminalLista;
 	}
 	
-	public String getPatente() {
-		return patente;
+	public String getMatricula() {
+		return matricula;
 	}
 
 
-	public void setPatente(String patente) {
-		this.patente = patente;
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
 	}
 
 
