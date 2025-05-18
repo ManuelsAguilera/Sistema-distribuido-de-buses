@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import domain.Bus;
-import domain.Terminal;
+import common.Bus;
+import common.Terminal;
 import persistance.dao.BusDAO;
 
 public class ConexionNeonPostgres {

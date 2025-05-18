@@ -1,7 +1,8 @@
 package persistance.dao;
 
 import java.sql.*;
-import domain.Bus;
+
+import common.Bus;
 
 public class BusDAO {
 

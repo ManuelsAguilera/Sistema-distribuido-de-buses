@@ -1,7 +1,5 @@
 package client.View;
 
-import domain.Bus;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,6 +43,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import client.MenuOptionListener;
+import common.Bus;
 
 public class ClientView {
 
