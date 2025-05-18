@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import common.Bus;
-import common.Terminal;
+import common.PuntoIntermedio;
 import persistance.dao.BusDAO;
 
 public class ConexionNeonPostgres {
@@ -16,7 +16,7 @@ public class ConexionNeonPostgres {
 			Connection conn = DB.connect();
 			BusDAO dao = new BusDAO((Connection) conn);
 			
-			Bus bus = new Bus("BB2","Bus largo",15,new ArrayList<Terminal>());
+			Bus bus = new Bus("BB2","Bus largo",15,new ArrayList<PuntoIntermedio>());
 			
 			dao.insert(bus);
 			System.out.println("Escribe cualquier numero para eliminar");
