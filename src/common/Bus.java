@@ -14,19 +14,19 @@ public class Bus implements Serializable {
 
 	
 	
-	public Bus(String matricula,String modelo, int asientosTotales, ArrayList<PuntoIntermedio> terminalLista) {
+	public Bus(String matricula,String modelo, int asientosTotales) {
 		super();
 		this.matricula = matricula;
 		this.modelo = modelo;
 		this.asientosTotales = asientosTotales;
 	}
 	
-	public String getPatente() {
+	public String getMatricula() {
 		return matricula;
 	}
 
 
-	public void setPatente(String matricula) {
+	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
 
