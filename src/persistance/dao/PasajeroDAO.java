@@ -1,5 +1,5 @@
 package persistance.dao;
 
-public interface PasajeroDAO {
+public class PasajeroDAO {
 
 }
