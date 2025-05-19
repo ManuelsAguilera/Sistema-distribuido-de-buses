@@ -20,36 +20,36 @@ public interface IBusManager extends  Remote  {
 	
 	// Cliente - viajes
 	boolean crearNuevoViaje(int  idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada);
-	boolean obtenerViaje(String idViaje);
-	boolean eliminarViaje(String idViaje);
+	boolean obtenerViaje(int idViaje);
+	boolean eliminarViaje(int idViaje);
 	
 	// Cliente - rutas
 	boolean crearNuevaRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion); // la hora se calcula mediante la API
 	boolean consultarRutas(String origen, String destino); // Conjunto de rutas de ese origen y destino
-	boolean consultarRuta(String idRuta);
-	boolean modificarRuta(String idRuta);
-	boolean eliminarRuta(String idRuta);
+	boolean consultarRuta(int idRuta);
+	boolean modificarRuta(int idRuta);
+	boolean eliminarRuta(int idRuta);
 	
 	// Punto intermedio
 	boolean crearPuntoIntermedio(int idPunto, int idRuta, float longitud, float latitud, String nombrePunto,int orden, LocalDateTime horaLlegada, LocalDateTime horaSalida);
-	boolean consultarPuntoIntermedio(String idPunto);
-	boolean eliminarPuntoIntermedio(String idPunto);
+	boolean consultarPuntoIntermedio(int idPunto);
+	boolean eliminarPuntoIntermedio(int idPunto);
 	
 	// Cliente - pasajes
 	boolean crearPasaje(int idPasaje, int idViaje, int idPasajero, int idPuntoOrigen, int idPuntoDestino, LocalDateTime fechaCompra, float precio, int asiento);
-	boolean eliminarPasaje(String idPasaje);
-	boolean consultarPasaje(String idPasaje);
+	boolean eliminarPasaje(int idPasaje);
+	boolean consultarPasaje(int idPasaje);
 	boolean consultarPasajes(String puntoOrigen, String puntoDestino);
 	
 	// Cliente - buses
 	boolean crearBus(String matricula, String modelo, int capacidad);
-	boolean eliminarBus(String idBus);
-	boolean modificarBus(String idBus);
+	boolean eliminarBus(int idBus);
+	boolean modificarBus(int idBus);
 	boolean notificarSalidaDeBus(String matricula);
 	boolean notificarLlegadaDeBus(String matricula);
 	
 	// Cliente - pasajero
 	boolean crearPasajero(int idPasajero, String nombre, String correo);
-	boolean eliminarPasajero(String idPasajero);
-	boolean modificarPasajero(String idPasajero);
+	boolean eliminarPasajero(int idPasajero);
+	boolean modificarPasajero(int idPasajero);
 }
