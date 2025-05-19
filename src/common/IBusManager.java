@@ -38,7 +38,7 @@ public interface IBusManager extends  Remote  {
 
 	
 	// Cliente - pasajes
-	boolean crearPasaje(int idViaje, int idPasajero, String origen, String destino, LocalDateTime fechaCompra, float precio, int asiento);
+	boolean crearPasaje(int idViaje, int idPasajero, int idOrigen, String destino, LocalDateTime fechaCompra, float precio, int asiento);
 	boolean eliminarPasaje(int idPasaje) throws SQLException;
 	Pasaje consultarPasaje(int idPasaje) throws SQLException;
 	

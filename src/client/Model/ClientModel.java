@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import bit.datacron.linkedIn.tms.map.Location;
+import common.Bus;
 import common.IBusManager;
 import server.ApiManager;
 
@@ -18,12 +19,16 @@ public class ClientModel {
     private IBusManager server;
     
     public ClientModel() throws Exception {
-    	//Registry registry = LocateRegistry.getRegistry(2002);
-		//server =(IBusManager) registry.lookup("CentralBusManager");
+    	Registry registry = LocateRegistry.getRegistry(2002);
+		server =(IBusManager) registry.lookup("CentralBusManager");
     }
 
     public String crearPasaje(String origen, String destino, String nombrePasajero, String correo) throws Exception {
         return "a"; //servidor.crearPasaje(origen, destino, nombrePasajero);
+    }
+    
+    public ArrayList<Bus> obtenerListabuses() {
+    	return null;
     }
 
     public boolean cancelarPasaje(String idPasaje) throws Exception {

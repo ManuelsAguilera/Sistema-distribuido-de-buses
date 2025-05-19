@@ -14,6 +14,21 @@ public class BusDAO {
 		this.conn = conn;
 	}
 	
+	public boolean inTable(String matricula) throws SQLException
+	{
+		String sql = "SELECT * FROM buses WHERE buses.matricula = ?";
+	
+		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, matricula);
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            return true; // Constructor de tu clase Bus
+	        } else {
+	            return false; // No se encontró ningún bus con esa matrícula
+	        }
+		}
+	}
 	
 	public Bus getBus(String matricula) throws SQLException
 	{
