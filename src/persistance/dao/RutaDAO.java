@@ -48,11 +48,26 @@ public class RutaDAO {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, ruta.getNombreDestino());
 	        stmt.setString(2, ruta.getNombreOrigen());
-	        stmt.setTime(3, Time.valueOf(ruta.getDuracionEstimada())); // LocalTime → java.sql.Time
+	        stmt.setTime(3, Time.valueOf(ruta.getDuracionEstimada())); 
 	        stmt.executeUpdate();
 	    }
 	}
 
+	
+	public void update(int idRuta, Ruta ruta) throws SQLException {
+	    String sql = "UPDATE rutas SET origen = ?, destino = ?, duracion_estimada = ? WHERE ruta_id = ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, ruta.getNombreOrigen());
+	        stmt.setString(2, ruta.getNombreDestino());
+	        stmt.setTime(3, Time.valueOf(ruta.getDuracionEstimada()));
+	        stmt.setInt(4, idRuta);
+
+	        stmt.executeUpdate();
+	    }
+	}
+
+	
 	
 	public boolean delete(int idRuta) throws SQLException {
 	    String sql = "DELETE FROM rutas WHERE ruta_id = ?";

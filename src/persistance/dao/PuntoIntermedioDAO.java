@@ -63,6 +63,27 @@ public class PuntoIntermedioDAO {
 	    }
 	}	
 	
+	
+	public boolean update(int idPunto, PuntoIntermedio punto) throws SQLException {
+	    String sql = "UPDATE puntosintermedios SET ruta_id = ?, nombre_punto = ?, lat = ?, long = ?, orden = ?, hora_salida = ?, hora_llegada = ? " +
+	                 "WHERE punto_id = ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, punto.getIdRuta());
+	        stmt.setString(2, punto.getNombre());
+	        stmt.setFloat(3, punto.getLat());
+	        stmt.setFloat(4, punto.getLon());
+	        stmt.setInt(5, punto.getOrden());
+	        stmt.setTimestamp(6, Timestamp.valueOf(punto.getHoraSalida()));
+	        stmt.setTimestamp(7, Timestamp.valueOf(punto.getHoraLlegada()));
+	        stmt.setInt(8, idPunto);
+
+	        int filasAfectadas = stmt.executeUpdate();
+	        return filasAfectadas > 0;
+	    }
+	}
+
+	
 	public boolean delete(int idPunto) throws SQLException {
 	    String sql = "DELETE FROM puntosintermedios WHERE punto_id = ?";
 

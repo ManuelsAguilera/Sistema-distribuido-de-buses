@@ -54,9 +54,11 @@ public class ViajeDAO {
 	        stmt.executeUpdate();
 	    }
 	}
+	
+	
 
 	
-	public boolean delete(int idViaje) throws SQLException {
+	public Boolean delete(int idViaje) throws SQLException {
 	    String sql = "DELETE FROM viajes WHERE viaje_id = ?";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -65,6 +67,25 @@ public class ViajeDAO {
 	        return filas > 0;
 	    }
 	}
+	
+	
+	public void update(int idViaje, Viaje viaje) throws SQLException {
+	    String sql = "UPDATE viajes SET ruta_id = ?, matricula = ?, fecha = ?, hora_salida = ?, hora_salida_estimada = ? " +
+	                 "WHERE viaje_id = ?";
 
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, viaje.getIdRuta());
+	        stmt.setString(2, viaje.getMatricula());
+	        stmt.setDate(3, Date.valueOf(viaje.getFecha()));
+	        stmt.setTime(4, Time.valueOf(viaje.getSalida()));
+	        stmt.setTime(5, Time.valueOf(viaje.getSalidaEstimada()));
+	        stmt.setInt(6, idViaje);
+
+	        stmt.executeUpdate();
+	    }
+	}
+
+
+	
 	
 }

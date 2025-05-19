@@ -18,17 +18,28 @@ public class PasajeroDAO {
 	}
 	
 	
-	public void insert(Pasajero pasajero) throws SQLException
-	{
-		String sql = "INSERT INTO pasajeros (nombre,correo)\nVALUES (?,?,?)";
-				
-		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	public void insert(Pasajero pasajero) throws SQLException {
+	    String sql = "INSERT INTO pasajeros (nombre, correo) VALUES (?, ?)";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, pasajero.getNombre());
 	        stmt.setString(2, pasajero.getCorreo());
 	        stmt.executeUpdate();
-	               
-		}
+	    }
 	}
+
+	
+	public boolean update(int idPasajero, Pasajero pasajero) throws SQLException {
+	    String sql = "UPDATE pasajeros SET nombre = ?, correo = ? WHERE pasajero_id = ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, pasajero.getNombre());
+	        stmt.setString(2, pasajero.getCorreo());
+	        stmt.setInt(3, idPasajero);
+	        return stmt.executeUpdate() > 0;
+	    }
+	}
+
 	
 	public Pasajero getPasajero(int idPasajero) throws SQLException
 	{
@@ -59,6 +70,8 @@ public class PasajeroDAO {
 	    }
 	}
 
+	
+	
 	
 
 }

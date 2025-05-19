@@ -64,13 +64,15 @@ public class BusDAO {
 		
 	}
 	
-	public Boolean update(String matricula, int capacidad) throws SQLException {
-	    String sql = "UPDATE buses SET capacidad = ? WHERE matricula = ?";
+	public Boolean update(String matricula, Bus bus) throws SQLException {
+	    String sql = "UPDATE buses SET capacidad = ?, modelo = ? WHERE matricula = ?";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql))
 	    {
-	    	stmt.setInt(1, capacidad);
-	        stmt.setString(2, matricula);
+	    	stmt.setInt(1, bus.getAsientosTotales());
+	        stmt.setString(2, bus.getModelo());
+	        stmt.setString(3, matricula);
+	        
 			var rs = stmt.executeUpdate(); 
 	        
 	        //Filas actualizadas lol
@@ -80,21 +82,6 @@ public class BusDAO {
 	    
 	}
 	
-	
-	public Boolean update(String matricula,String modelo) throws SQLException {
-	    String sql = "UPDATE buses SET capacidad = ? WHERE matricula = ?";
-	    
-	    try (PreparedStatement stmt = conn.prepareStatement(sql))
-	    {
-		    stmt.setString(1, modelo);
-	        stmt.setString(2, matricula);
-	        var rs = stmt.executeUpdate(); 
-	        
-	        //Filas actualizadas lol
-	        return rs > 0;
-	                
-	    }
-	    	    
-	}
+
 	
 }

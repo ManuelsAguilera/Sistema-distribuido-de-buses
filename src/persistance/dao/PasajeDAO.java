@@ -39,6 +39,26 @@ public class PasajeDAO {
 	    }
 	}
 
+	public void update(int idPasaje, Pasaje pasaje ) throws SQLException {
+	    String sql = "UPDATE pasajes SET viaje_id = ?, pasajero_id = ?, punto_origen_id = ?, " +
+	                 "punto_destino_id = ?, precio = ?, fecha_compra = ?, asiento = ? " +
+	                 "WHERE pasaje_id = ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, pasaje.getIdViaje());
+	        stmt.setInt(2, pasaje.getIdPasajero());
+	        stmt.setInt(3, pasaje.getIdOrigen());
+	        stmt.setInt(4, pasaje.getIdDestino());
+	        stmt.setFloat(5, pasaje.getPrecio());
+	        stmt.setTimestamp(6, Timestamp.valueOf(pasaje.getFechaCompra()));
+	        stmt.setInt(7, pasaje.getAsiento());
+	        stmt.setInt(8, idPasaje);
+
+	        stmt.executeUpdate();
+	    }
+	}
+
+	
 	public Boolean delete(int idPasaje) throws SQLException {
 	    String sql = "DELETE FROM pasajes WHERE pasaje_id = ?";
 
