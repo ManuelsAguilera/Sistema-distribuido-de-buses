@@ -64,7 +64,6 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 	@Override
 	public float consultarVentas() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -85,9 +84,12 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean obtenerViaje(int idViaje) {
-		// TODO Auto-generated method stub
-		return false;
+	public Viaje obtenerViaje(int idViaje) {
+		try {
+			return viajeDAO.getViaje(idViaje);
+		} catch (SQLException e) {
+			return null;
+		}
 	}
 
 
@@ -137,8 +139,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	@Override
 	public Ruta consultarRuta(int idRuta) {
 		try {
-			Ruta rutaObjetivo = rutaDAO.getRuta(idRuta);
-			return rutaObjetivo;
+			return rutaDAO.getRuta(idRuta);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -149,9 +150,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean modificarRuta(int idRuta) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modificarRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion) {
+		try {
+			Ruta ruta = new Ruta(nombreOrigen, nombreDestino, idRuta, duracion);
+			rutaDAO.update(idRuta, ruta);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
@@ -189,8 +196,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	@Override
 	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
 		try {
-			PuntoIntermedio puntoIntermedioObjetivo = puntoIntermedioDAO.getPuntoIntermedio(idPunto);
-			return puntoIntermedioObjetivo;
+			return puntoIntermedioDAO.getPuntoIntermedio(idPunto);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -246,8 +252,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	@Override
 	public Pasaje consultarPasaje(int idPasaje) {
 		try {
-			Pasaje pasajeObjetivo = pasajeDAO.getPasaje(idPasaje);
-			return pasajeObjetivo;
+			return pasajeDAO.getPasaje(idPasaje);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -294,9 +299,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean modificarBus(String idBus) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modificarBus(String matricula, String modelo, int capacidad) {
+		try {
+			Bus bus = new Bus(matricula, modelo, capacidad);
+			busDAO.update(matricula, bus);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
@@ -347,9 +358,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean modificarPasajero(int idPasajero) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modificarPasajero(int idPasajero, String nombre, String correo) {
+		try {
+			Pasajero bus = new Pasajero(idPasajero, nombre, correo);
+			pasajeroDAO.update(idPasajero, bus);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 

@@ -20,14 +20,14 @@ public interface IBusManager extends  Remote  {
 	
 	// Cliente - viajes
 	boolean crearNuevoViaje(int  idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada);
-	boolean obtenerViaje(int idViaje);
+	Viaje obtenerViaje(int idViaje);
 	boolean eliminarViaje(int idViaje);
 	
 	// Cliente - rutas
 	boolean crearNuevaRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion); // la hora se calcula mediante la API
 	ArrayList<Ruta> consultarRutas(String origen, String destino); // Conjunto de rutas de ese origen y destino
 	Ruta consultarRuta(int idRuta);
-	boolean modificarRuta(int idRuta);
+	boolean modificarRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion);
 	boolean eliminarRuta(int idRuta);
 	
 	// Punto intermedio
@@ -44,12 +44,12 @@ public interface IBusManager extends  Remote  {
 	// Cliente - buses
 	boolean crearBus(String matricula, String modelo, int capacidad);
 	boolean eliminarBus(String matricula);
-	boolean modificarBus(String matricula);
+	boolean modificarBus(String matricula, String modelo, int capacidad);
 	boolean notificarSalidaDeBus(String matricula);
 	boolean notificarLlegadaDeBus(String matricula);
 	
 	// Cliente - pasajero
 	boolean crearPasajero(int idPasajero, String nombre, String correo);
 	boolean eliminarPasajero(int idPasajero);
-	boolean modificarPasajero(int idPasajero);
+	boolean modificarPasajero(int idPasajero, String nombre, String correo);
 }
