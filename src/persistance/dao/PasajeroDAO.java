@@ -18,14 +18,16 @@ public class PasajeroDAO {
 	}
 	
 	
-	public void insert(Pasajero pasajero) throws SQLException {
+	public boolean  insert(Pasajero pasajero) throws SQLException {
 	    String sql = "INSERT INTO pasajeros (nombre, correo) VALUES (?, ?)";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, pasajero.getNombre());
 	        stmt.setString(2, pasajero.getCorreo());
-	        stmt.executeUpdate();
+	        int filasAfectadas = stmt.executeUpdate();
+	        return filasAfectadas > 0;
 	    }
+		
 	}
 
 	

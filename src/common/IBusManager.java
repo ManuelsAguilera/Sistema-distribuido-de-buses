@@ -39,16 +39,16 @@ public interface IBusManager extends  Remote  {
 	
 	// Cliente - pasajes
 	boolean crearPasaje(int idViaje, int idPasajero, String origen, String destino, LocalDateTime fechaCompra, float precio, int asiento);
-	boolean eliminarPasaje(int idPasaje);
-	Pasaje consultarPasaje(int idPasaje);
+	boolean eliminarPasaje(int idPasaje) throws SQLException;
+	Pasaje consultarPasaje(int idPasaje) throws SQLException;
 	
 	// Cliente - buses
-	boolean crearBus(String matricula, String modelo, int capacidad);
-	boolean eliminarBus(String matricula);
-	boolean modificarBus(Bus bus);
+	boolean crearBus(String matricula, String modelo, int capacidad) throws SQLException;
+	boolean eliminarBus(String matricula) throws SQLException;
+	boolean modificarBus(Bus bus) throws SQLException;
 	
 	// Cliente - pasajero
-	boolean crearPasajero(int idPasajero, String nombre, String correo);
-	boolean eliminarPasajero(int idPasajero);
-	boolean modificarPasajero(Pasajero pasajero);
+	boolean crearPasajero(int idPasajero, String nombre, String correo) throws SQLException;
+	boolean eliminarPasajero(int idPasajero) throws SQLException;
+	boolean modificarPasajero(Pasajero pasajero) throws SQLException;
 }

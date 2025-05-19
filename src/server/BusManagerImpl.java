@@ -59,7 +59,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	@Override
 	public boolean crearNuevoViaje(Viaje viaje, int idRuta) {
 		// TODO Auto-generated method stub
-		return ;
+		return false;
 	}
 
 
@@ -92,9 +92,9 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public ArrayList<Ruta> obtenerRutasDisp() {
+	public ArrayList<Ruta> obtenerRutasDisp() throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return rutaDAO.getAllRutas();
 	}
 
 
@@ -114,58 +114,58 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarPasaje(int idPasaje) {
+	public boolean eliminarPasaje(int idPasaje) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return pasajeDAO.delete(idPasaje);
 	}
 
 
 	@Override
-	public Pasaje consultarPasaje(int idPasaje) {
+	public Pasaje consultarPasaje(int idPasaje) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return pasajeDAO.getPasaje(idPasaje);
 	}
 
 
 	@Override
-	public boolean crearBus(String matricula, String modelo, int capacidad) {
+	public boolean crearBus(String matricula, String modelo, int capacidad) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return busDAO.insert(new Bus(matricula,modelo,capacidad));
 	}
 
 
 	@Override
-	public boolean eliminarBus(String matricula) {
+	public boolean eliminarBus(String matricula) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return busDAO.delete(matricula);
 	}
 
 
 	@Override
-	public boolean modificarBus(Bus bus) {
+	public boolean modificarBus(Bus bus) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return busDAO.update(bus.getMatricula(), bus);
 	}
 
 
 	@Override
-	public boolean crearPasajero(int idPasajero, String nombre, String correo) {
+	public boolean crearPasajero(int idPasajero, String nombre, String correo) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return pasajeroDAO.insert(new Pasajero(idPasajero,nombre,correo));
 	}
 
 
 	@Override
-	public boolean eliminarPasajero(int idPasajero) {
+	public boolean eliminarPasajero(int idPasajero) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return pasajeroDAO.delete(idPasajero);
 	}
 
 
 	@Override
-	public boolean modificarPasajero(Pasajero pasajero) {
+	public boolean modificarPasajero(Pasajero pasajero) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return pasajeroDAO.update(pasajero.getIdPasajero(),pasajero);
 	}
 
 

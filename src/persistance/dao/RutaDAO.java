@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import common.Ruta;
 
@@ -40,6 +41,29 @@ public class RutaDAO {
 		}
 	}
 	
+	
+	public ArrayList<Ruta> getAllRutas() throws SQLException
+	{
+		String sql = "SELECT * from rutas ";
+				
+		try (PreparedStatement stmt = conn.prepareStatement(sql))
+		{
+			var rs = stmt.executeQuery();
+			
+			ArrayList<Ruta> lista = new ArrayList<Ruta>();
+			
+			while (rs.next())
+			{
+				int idRuta = rs.getInt("ruta_id");
+				String origen = rs.getString("origen");
+				String destino = rs.getString("destino");
+				LocalTime duracionEstimada = rs.getTime("duracion_estimada").toLocalTime();
+				lista.add(new Ruta(origen, destino,idRuta, duracionEstimada));
+			}
+			
+			return lista;
+		}
+	}
 	
 	
 	public void insert(Ruta ruta) throws SQLException {

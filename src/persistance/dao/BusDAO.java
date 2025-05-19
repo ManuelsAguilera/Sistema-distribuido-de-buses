@@ -33,7 +33,7 @@ public class BusDAO {
 		}
 	}
 	
-	public void insert(Bus bus) throws SQLException
+	public boolean insert(Bus bus) throws SQLException
 	{
 		String sql = "INSERT INTO buses (matricula,modelo,capacidad)\n"
 					+"VALUES (?,?,?)";
@@ -43,7 +43,8 @@ public class BusDAO {
 			stmt.setString(1, bus.getMatricula());
 			stmt.setString(2, bus.getModelo());
 			stmt.setInt(3, bus.getAsientosTotales());
-			stmt.execute(sql);
+			int filasAfectadas = stmt.executeUpdate();
+	        return filasAfectadas > 0;
 		}
 		
 	}
