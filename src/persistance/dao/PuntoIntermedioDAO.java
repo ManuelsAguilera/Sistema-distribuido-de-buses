@@ -52,8 +52,8 @@ public class PuntoIntermedioDAO {
 	        stmt.setInt(1, punto.getIdPunto());
 	        stmt.setInt(2, punto.getIdRuta());
 	        stmt.setString(3, punto.getNombre());
-	        stmt.setInt(4, punto.getLat());
-	        stmt.setInt(5, punto.getLon());  
+	        stmt.setFloat(4, punto.getLat());
+	        stmt.setFloat(5, punto.getLon());  
 	        stmt.setInt(6, punto.getOrden());
 	        stmt.setTimestamp(7, Timestamp.valueOf(punto.getHoraSalida()));
 	        stmt.setTimestamp(8, Timestamp.valueOf(punto.getHoraLlegada()));
