@@ -25,7 +25,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	private PasajeroDAO pasajeroDAO;
 	private PasajeDAO pasajeDAO;
 	private PuntoIntermedioDAO puntoIntermedioDAO;
-	
+	private PuntoViajeDao puntoViajeDAO;
 	
 	public BusManagerImpl(Connection conn) throws RemoteException {
 	    super();
@@ -35,6 +35,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	    this.pasajeroDAO = new PasajeroDAO(conn);
 	    this.pasajeDAO = new PasajeDAO(conn);
 	    this.puntoIntermedioDAO = new PuntoIntermedioDAO(conn);
+	    this.puntoViajeDAO = new PuntoViajeDao(conn);
 	}
 
 	@Override
@@ -50,7 +51,11 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean crearNuevoViaje(Viaje viaje, int idRuta) {
+	public boolean crearNuevoViaje(Viaje viaje, int idRuta) throws SQLException {
+		Viaje viajeNuevo = viajeDAO.getViaje(viaje.getidViaje());
+		puntoViajeDAO.fillPointsFromViaje(idRuta);
+		viajeDAO.insert(viajeNuevo);
+		
 		return false;
 	}
 
