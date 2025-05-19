@@ -43,8 +43,8 @@ public interface IBusManager extends  Remote  {
 	
 	// Cliente - buses
 	boolean crearBus(String matricula, String modelo, int capacidad);
-	boolean eliminarBus(int idBus);
-	boolean modificarBus(int idBus);
+	boolean eliminarBus(String matricula);
+	boolean modificarBus(String matricula);
 	boolean notificarSalidaDeBus(String matricula);
 	boolean notificarLlegadaDeBus(String matricula);
 	

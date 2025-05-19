@@ -85,7 +85,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean obtenerViaje(String idViaje) {
+	public boolean obtenerViaje(int idViaje) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -93,9 +93,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarViaje(String idViaje) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarViaje(int idViaje) {
+		try {
+            viajeDAO.delete(idViaje);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
@@ -124,7 +130,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean consultarRuta(String idRuta) {
+	public boolean consultarRuta(int idRuta) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -132,7 +138,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean modificarRuta(String idRuta) {
+	public boolean modificarRuta(int idRuta) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -140,9 +146,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarRuta(String idRuta) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarRuta(int idRuta) {
+		try {
+            rutaDAO.delete(idRuta);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
@@ -164,7 +176,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean consultarPuntoIntermedio(String idPunto) {
+	public boolean consultarPuntoIntermedio(int idPunto) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -172,9 +184,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarPuntoIntermedio(String idPunto) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarPuntoIntermedio(int idPunto) {
+		try {
+            puntoIntermedioDAO.delete(idPunto);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
@@ -196,15 +214,21 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarPasaje(String idPasaje) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarPasaje(int idPasaje) {
+		try {
+            pasajeDAO.delete(idPasaje);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
 
 	@Override
-	public boolean consultarPasaje(String idPasaje) {
+	public boolean consultarPasaje(int idPasaje) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -235,9 +259,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarBus(String idBus) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarBus(String matricula) {
+		try {
+            busDAO.delete(matricula);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
@@ -282,15 +312,21 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean eliminarPasajero(String idPasajero) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminarPasajero(int idPasajero) {
+		try {
+            pasajeroDAO.delete(idPasajero);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
 	}
 
 
 
 	@Override
-	public boolean modificarPasajero(String idPasajero) {
+	public boolean modificarPasajero(int idPasajero) {
 		// TODO Auto-generated method stub
 		return false;
 	}
