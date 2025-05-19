@@ -69,304 +69,115 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean crearNuevoViaje(int idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada) {
-		try {
-            Viaje nuevoViaje = new Viaje(idViaje, idRuta, matricula, fecha, horaSalida, horaSalidaEstimada);
-            viajeDAO.insert(nuevoViaje);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
+	public boolean crearNuevoViaje(Viaje viaje, int idRuta) {
+		// TODO Auto-generated method stub
+		return false;
 	}
-
 
 
 	@Override
 	public Viaje obtenerViaje(int idViaje) {
-		try {
-			return viajeDAO.getViaje(idViaje);
-		} catch (SQLException e) {
-			return null;
-		}
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 
 
 	@Override
 	public boolean eliminarViaje(int idViaje) {
-		try {
-            viajeDAO.delete(idViaje);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
-
 	@Override
-	public boolean crearNuevaRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracionEstimada) {
-		try {
-            Ruta nuevaRuta = new Ruta(nombreOrigen, nombreDestino, idRuta, duracionEstimada);
-            rutaDAO.insert(nuevaRuta);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
-
-
-	@Override
-	public ArrayList<Ruta> consultarRutas(String origen, String destino) {
+	public ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino) {
+		// TODO Auto-generated method stub
 		return null;
-		//try {
-					
-		//} catch (SQLException e) {
-		//	e.printStackTrace();
-		//	return null;
-		//}
 	}
-
 
 
 	@Override
-	public Ruta consultarRuta(int idRuta) {
-		try {
-			return rutaDAO.getRuta(idRuta);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
+	public ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino, LocalDate fecha) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 
 
 	@Override
-	public boolean modificarRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion) {
-		try {
-			Ruta ruta = new Ruta(nombreOrigen, nombreDestino, idRuta, duracion);
-			rutaDAO.update(idRuta, ruta);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public ArrayList<Ruta> obtenerRutasDisp() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
-
-
-	@Override
-	public boolean eliminarRuta(int idRuta) {
-		try {
-            rutaDAO.delete(idRuta);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
-
-
-	@Override
-	public boolean crearPuntoIntermedio(int idPunto, int idRuta, float longitud, float latitud, String nombrePunto,
-			int orden, LocalDateTime horaLlegada, LocalDateTime horaSalida) {
-		try {
-            PuntoIntermedio nuevoPuntoIntermedio = new PuntoIntermedio(horaSalida, horaLlegada, idPunto, idRuta, longitud, latitud, orden, nombrePunto);
-            puntoIntermedioDAO.insert(nuevoPuntoIntermedio);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
 
 
 	@Override
 	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
-		try {
-			return puntoIntermedioDAO.getPuntoIntermedio(idPunto);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-
-
-	@Override
-	public boolean eliminarPuntoIntermedio(int idPunto) {
-		try {
-            puntoIntermedioDAO.delete(idPunto);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
-
-
-	@Override
-	public boolean crearPasaje(int idPasaje, int idViaje, int idPasajero, int idPuntoOrigen, int idPuntoDestino,
-			LocalDateTime fechaCompra, float precio, int asiento) {
-		try {
-            Pasaje nuevoPasaje = new Pasaje(idPasajero, idPuntoOrigen, idPuntoDestino, fechaCompra, precio, asiento, idViaje);
-            pasajeDAO.insert(nuevoPasaje);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
-
-
-	@Override
-	public boolean eliminarPasaje(int idPasaje) {
-		try {
-            pasajeDAO.delete(idPasaje);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
-
-
-	@Override
-	public Pasaje consultarPasaje(int idPasaje) {
-		try {
-			return pasajeDAO.getPasaje(idPasaje);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-
-
-	@Override
-	public ArrayList<Pasaje> consultarPasajes(String puntoOrigen, String puntoDestino) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
+	@Override
+	public boolean crearPasaje(int idViaje, int idPasajero, String origen, String destino, LocalDateTime fechaCompra,
+			float precio, int asiento) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean eliminarPasaje(int idPasaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public Pasaje consultarPasaje(int idPasaje) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	@Override
 	public boolean crearBus(String matricula, String modelo, int capacidad) {
-		try {
-            Bus nuevoBus = new Bus(matricula, modelo, capacidad);
-            busDAO.insert(nuevoBus);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
+		// TODO Auto-generated method stub
+		return false;
 	}
-
 
 
 	@Override
 	public boolean eliminarBus(String matricula) {
-		try {
-            busDAO.delete(matricula);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
-	}
-
-
-
-	@Override
-	public boolean modificarBus(String matricula, String modelo, int capacidad) {
-		try {
-			Bus bus = new Bus(matricula, modelo, capacidad);
-			busDAO.update(matricula, bus);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-
-
-	@Override
-	public boolean notificarSalidaDeBus(String matricula) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 
-
 	@Override
-	public boolean notificarLlegadaDeBus(String matricula) {
+	public boolean modificarBus(Bus bus) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 
 
 	@Override
 	public boolean crearPasajero(int idPasajero, String nombre, String correo) {
-		try {
-            Pasajero nuevoPasajero = new Pasajero(idPasajero, nombre, correo);
-            pasajeroDAO.insert(nuevoPasajero);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
+		// TODO Auto-generated method stub
+		return false;
 	}
-
 
 
 	@Override
 	public boolean eliminarPasajero(int idPasajero) {
-		try {
-            pasajeroDAO.delete(idPasajero);
-            return true;
-        } catch (SQLException e) {
-        	
-            e.printStackTrace();
-            return false;
-        }
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
-
 	@Override
-	public boolean modificarPasajero(int idPasajero, String nombre, String correo) {
-		try {
-			Pasajero bus = new Pasajero(idPasajero, nombre, correo);
-			pasajeroDAO.update(idPasajero, bus);
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public boolean modificarPasajero(Pasajero pasajero) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

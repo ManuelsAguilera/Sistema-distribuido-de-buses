@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 
 public class PuntoIntermedio implements Serializable{
 
-	private LocalDateTime horaLlegada;
-	private LocalDateTime horaSalida;
 	private String nombre;
 	private int idRuta;
 	private int idPunto;
@@ -16,10 +14,9 @@ public class PuntoIntermedio implements Serializable{
 	private int orden;
 	
 	
-	public PuntoIntermedio(LocalDateTime horaSalida, LocalDateTime horaLlegada, int idPunto, int idRuta, float lon, float lat, int orden, String nombre) {
+	public PuntoIntermedio(int idPunto, int idRuta, float lon, float lat, int orden, String nombre) {
 		super();
-		this.horaSalida = horaSalida;
-		this.horaLlegada = horaLlegada;
+		this.idPunto = idPunto;
 		this.nombre = nombre;
 		this.lat=lat;
 		this.lon=lon;
@@ -27,23 +24,16 @@ public class PuntoIntermedio implements Serializable{
 		
 	}
 	
-	public LocalDateTime getHoraSalida() {
-		return horaSalida;
-	}
-	public void setHoraSalida(LocalDateTime horaSalida) {
-		this.horaSalida = horaSalida;
-	}
-	
-	
-	
-	
-	public LocalDateTime getHoraLlegada() {
-		return horaLlegada;
-	}
+	public PuntoIntermedio(int idRuta, float lon, float lat, int orden, String nombre) {
+		super();
 
-	public void setHoraLlegada(LocalDateTime horaLlegada) {
-		this.horaLlegada = horaLlegada;
+		this.nombre = nombre;
+		this.lat=lat;
+		this.lon=lon;
+		this.orden=orden;
+		
 	}
+	
 
 	public String getNombre() {
 		return nombre;

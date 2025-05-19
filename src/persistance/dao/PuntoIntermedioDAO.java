@@ -28,14 +28,12 @@ public class PuntoIntermedioDAO {
 	        ResultSet rs = stmt.executeQuery();
 	        
 	        if (rs.next()) {
-	        	LocalDateTime llegada= rs.getTimestamp("hora_llegada").toLocalDateTime();
-	        	LocalDateTime salida= rs.getTimestamp("hora_salida").toLocalDateTime();
 	            int idRuta = rs.getInt("ruta_id");
 	            String nombre = rs.getString("nombre_punto");
 	            float lat = rs.getFloat("lat");
         		float lon = rs.getFloat("long");
         		int orden = rs.getInt("orden");
-	            return new PuntoIntermedio(salida, llegada,idPunto,idRuta,lat,lon,orden,nombre);
+	            return new PuntoIntermedio(idPunto,idRuta,lat,lon,orden,nombre);
 	        } else {
 	            return null; // No se encontro ningun bus con esa matricula
 	        }
@@ -45,8 +43,8 @@ public class PuntoIntermedioDAO {
 	
 	
 	public Boolean insert(PuntoIntermedio punto) throws SQLException {
-	    String sql = "INSERT INTO puntosintermedios (punto_id, ruta_id, nombre_punto, lat, long, orden, hora_salida, hora_llegada) " +
-	                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO puntosintermedios (punto_id, ruta_id, nombre_punto, lat, long, orden, hora_salida, hora_llegada) \n" +
+	                 "VALUES (?, ?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, punto.getIdPunto());
@@ -55,8 +53,7 @@ public class PuntoIntermedioDAO {
 	        stmt.setFloat(4, punto.getLat());
 	        stmt.setFloat(5, punto.getLon());  
 	        stmt.setInt(6, punto.getOrden());
-	        stmt.setTimestamp(7, Timestamp.valueOf(punto.getHoraSalida()));
-	        stmt.setTimestamp(8, Timestamp.valueOf(punto.getHoraLlegada()));
+
 
 	        int filasAfectadas = stmt.executeUpdate();
 	        return filasAfectadas > 0;
@@ -65,7 +62,7 @@ public class PuntoIntermedioDAO {
 	
 	
 	public boolean update(int idPunto, PuntoIntermedio punto) throws SQLException {
-	    String sql = "UPDATE puntosintermedios SET ruta_id = ?, nombre_punto = ?, lat = ?, long = ?, orden = ?, hora_salida = ?, hora_llegada = ? " +
+	    String sql = "UPDATE puntosintermedios SET ruta_id = ?, nombre_punto = ?, lat = ?, long = ?, orden = ?\n" +
 	                 "WHERE punto_id = ?";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -74,8 +71,6 @@ public class PuntoIntermedioDAO {
 	        stmt.setFloat(3, punto.getLat());
 	        stmt.setFloat(4, punto.getLon());
 	        stmt.setInt(5, punto.getOrden());
-	        stmt.setTimestamp(6, Timestamp.valueOf(punto.getHoraSalida()));
-	        stmt.setTimestamp(7, Timestamp.valueOf(punto.getHoraLlegada()));
 	        stmt.setInt(8, idPunto);
 
 	        int filasAfectadas = stmt.executeUpdate();
