@@ -52,19 +52,19 @@ public class PuntoIntermedio implements Serializable{
 		this.nombre = nombre;
 	}
 
-	public int getLon() {
+	public float getLon() {
 		return lon;
 	}
 
-	public void setLon(int lon) {
+	public void setLon(float lon) {
 		this.lon = lon;
 	}
 
-	public int getLat() {
+	public float getLat() {
 		return lat;
 	}
 
-	public void setLat(int lat) {
+	public void setLat(float lat) {
 		this.lat = lat;
 	}
 

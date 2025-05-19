@@ -31,7 +31,7 @@ public class PasajeDAO {
 	        stmt.setInt(2, pasaje.getIdPasajero());
 	        stmt.setInt(3, pasaje.getIdOrigen());
 	        stmt.setInt(4, pasaje.getIdDestino());
-	        stmt.setInt(5, pasaje.getPrecio()); 
+	        stmt.setFloat(5, pasaje.getPrecio()); 
 	        stmt.setTimestamp(6, Timestamp.valueOf(pasaje.getFechaCompra())); 
 	        stmt.setInt(7, pasaje.getAsiento());
 
