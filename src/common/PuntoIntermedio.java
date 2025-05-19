@@ -56,7 +56,7 @@ public class PuntoIntermedio implements Serializable{
 		return lon;
 	}
 
-	public void setLon(int lon) {
+	public void setLon(float lon) {
 		this.lon = lon;
 	}
 
@@ -64,7 +64,7 @@ public class PuntoIntermedio implements Serializable{
 		return lat;
 	}
 
-	public void setLat(int lat) {
+	public void setLat(float lat) {
 		this.lat = lat;
 	}
 
