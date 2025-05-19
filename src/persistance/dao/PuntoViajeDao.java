@@ -33,6 +33,25 @@ public class PuntoViajeDao {
 	        stmt.executeUpdate();
 	    }
 	}
+	
+	public void fillPointsFromViaje(int idViaje) throws SQLException {
+		String sql = "INSERT INTO puntosintermedios_viaje (viaje_id, punto_id, hora_llegada, hora_salida, hora_llegada_estimada)\n"
+				+ "SELECT\n"
+				+ "    v.viaje_id,\n"
+				+ "    pi.punto_id,\n"
+				+ "    NULL::timestamp,\n"
+				+ "    NULL::timestamp,\n"
+				+ "    NULL::time\n"
+				+ "FROM viajes v\n"
+				+ "JOIN puntosintermedios pi ON pi.ruta_id = v.ruta_id\n"
+				+ "WHERE v.viaje_id = ?";
+			
+		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+				stmt.setInt(1, idViaje);
+				stmt.executeUpdate();
+			} 
+	}
+	
 	public void update(PuntoViaje puntoViaje) throws SQLException {
 	    String sql = "UPDATE puntosintermedios_viaje SET hora_llegada = ?, hora_salida = ?, hora_llegada_estimada = ? \n" +
 	                 "WHERE viaje_id = ? AND punto_id = ?";
