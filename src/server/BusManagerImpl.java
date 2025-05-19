@@ -5,20 +5,30 @@ import common.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-
+import persistance.dao.*;
 
 
 public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager {
-
-	private static final long serialVersionUID = 1L;
 
 	protected BusManagerImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
+
+
+	private static final long serialVersionUID = 1L;
+	private ViajeDAO viajeDAO;
+	private BusDAO busDAO;
+	private RutaDAO rutaDAO;
+	private PasajeroDAO pasajeroDAO;
+	private PasajeDAO pasajeDAO;
+	private PuntoIntermedioDAO puntoIntermedioDAO;
+
 
 	@Override
 	public void testConnection(String message)  throws RemoteException{
@@ -49,4 +59,243 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 		
 		return names;
 	}
+
+
+
+	@Override
+	public boolean consultarVentas() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean crearNuevoViaje(int idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada) {
+		try {
+            Viaje nuevoViaje = new Viaje(idViaje, idRuta, matricula, fecha, horaSalida, horaSalidaEstimada);
+            viajeDAO.insert(nuevoViaje);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
+	}
+
+
+
+	@Override
+	public boolean obtenerViaje(String idViaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean eliminarViaje(String idViaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean crearNuevaRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracionEstimada) {
+		try {
+            Ruta nuevaRuta = new Ruta(nombreOrigen, nombreDestino, idRuta, duracionEstimada);
+            rutaDAO.insert(nuevaRuta);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
+	}
+
+
+
+	@Override
+	public boolean consultarRutas(String origen, String destino) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean consultarRuta(String idRuta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean modificarRuta(String idRuta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean eliminarRuta(String idRuta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean crearPuntoIntermedio(int idPunto, int idRuta, float longitud, float latitud, String nombrePunto,
+			int orden, LocalDateTime horaLlegada, LocalDateTime horaSalida) {
+		try {
+            PuntoIntermedio nuevoPuntoIntermedio = new PuntoIntermedio(horaSalida, horaLlegada, idPunto, idRuta, longitud, latitud, orden, nombrePunto);
+            puntoIntermedioDAO.insert(nuevoPuntoIntermedio);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
+	}
+
+
+
+	@Override
+	public boolean consultarPuntoIntermedio(String idPunto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean eliminarPuntoIntermedio(String idPunto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean crearPasaje(int idPasaje, int idViaje, int idPasajero, int idPuntoOrigen, int idPuntoDestino,
+			LocalDateTime fechaCompra, float precio, int asiento) {
+		try {
+            Pasaje nuevoPasaje = new Pasaje(idPasajero, idPuntoOrigen, idPuntoDestino, fechaCompra, precio, asiento, idViaje);
+            pasajeDAO.insert(nuevoPasaje);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
+	}
+
+
+
+	@Override
+	public boolean eliminarPasaje(String idPasaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean consultarPasaje(String idPasaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean consultarPasajes(String puntoOrigen, String puntoDestino) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean crearBus(String matricula, String modelo, int capacidad) {
+		try {
+            Bus nuevoBus = new Bus(matricula, modelo, capacidad);
+            busDAO.insert(nuevoBus);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
+	}
+
+
+
+	@Override
+	public boolean eliminarBus(String idBus) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean modificarBus(String idBus) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean notificarSalidaDeBus(String matricula) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean notificarLlegadaDeBus(String matricula) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean crearPasajero(int idPasajero, String nombre, String correo) {
+		try {
+            Pasajero nuevoPasajero = new Pasajero(idPasajero, nombre, correo);
+            pasajeroDAO.insert(nuevoPasajero);
+            return true;
+        } catch (SQLException e) {
+        	
+            e.printStackTrace();
+            return false;
+        }
+	}
+
+
+
+	@Override
+	public boolean eliminarPasajero(String idPasajero) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	@Override
+	public boolean modificarPasajero(String idPasajero) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+	
 }

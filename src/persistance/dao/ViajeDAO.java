@@ -28,13 +28,13 @@ public class ViajeDAO {
 	        var rs = stmt.executeQuery();
 
 	        if (rs.next()) {
+	        	int viajeId = rs.getInt("viaje_id");
 	            int rutaId = rs.getInt("ruta_id");
 	            String matricula = rs.getString("matricula");
 	            LocalDate fecha = rs.getDate("fecha").toLocalDate();
 	            LocalTime salida = rs.getTime("hora_salida").toLocalTime();
 	            LocalTime salidaEstimada = rs.getTime("hora_salida_estimada").toLocalTime();
-
-	            return new Viaje(rutaId, matricula, fecha, salida, salidaEstimada);
+	            return new Viaje(viajeId, rutaId, matricula, fecha, salida, salidaEstimada);
 	        } else {
 	            return null;
 	        }

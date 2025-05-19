@@ -19,24 +19,24 @@ public interface IBusManager extends  Remote  {
 	boolean consultarVentas();
 	
 	// Cliente - viajes
-	boolean crearNuevoViaje(String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada);
+	boolean crearNuevoViaje(int  idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada);
 	boolean obtenerViaje(String idViaje);
 	boolean eliminarViaje(String idViaje);
 	
 	// Cliente - rutas
-	boolean crearNuevaRuta(String nombreOrigen, String nombreDestino); // la hora se calcula mediante la API
+	boolean crearNuevaRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion); // la hora se calcula mediante la API
 	boolean consultarRutas(String origen, String destino); // Conjunto de rutas de ese origen y destino
 	boolean consultarRuta(String idRuta);
 	boolean modificarRuta(String idRuta);
 	boolean eliminarRuta(String idRuta);
 	
 	// Punto intermedio
-	boolean crearPuntoIntermedio(String longitud, String latitud, String nombrePunto, String orden, LocalTime horaLlegada, LocalTime horaSalida);
+	boolean crearPuntoIntermedio(int idPunto, int idRuta, float longitud, float latitud, String nombrePunto,int orden, LocalDateTime horaLlegada, LocalDateTime horaSalida);
 	boolean consultarPuntoIntermedio(String idPunto);
 	boolean eliminarPuntoIntermedio(String idPunto);
 	
 	// Cliente - pasajes
-	boolean crearPasaje(String idViaje, String idPasajero, String idPuntoOrigen, String idPuntoDestino,LocalDateTime fechaCompra, float precio, String asiento);
+	boolean crearPasaje(int idPasaje, int idViaje, int idPasajero, int idPuntoOrigen, int idPuntoDestino, LocalDateTime fechaCompra, float precio, int asiento);
 	boolean eliminarPasaje(String idPasaje);
 	boolean consultarPasaje(String idPasaje);
 	boolean consultarPasajes(String puntoOrigen, String puntoDestino);
@@ -49,7 +49,7 @@ public interface IBusManager extends  Remote  {
 	boolean notificarLlegadaDeBus(String matricula);
 	
 	// Cliente - pasajero
-	boolean crearPasajero();
-	boolean eliminarBus();
-	boolean 
+	boolean crearPasajero(int idPasajero, String nombre, String correo);
+	boolean eliminarPasajero(String idPasajero);
+	boolean modificarPasajero(String idPasajero);
 }

@@ -32,8 +32,8 @@ public class PuntoIntermedioDAO {
 	        	LocalDateTime salida= rs.getTimestamp("hora_salida").toLocalDateTime();
 	            int idRuta = rs.getInt("ruta_id");
 	            String nombre = rs.getString("nombre_punto");
-	            int lat = rs.getInt("lat");
-        		int lon = rs.getInt("long");
+	            float lat = rs.getFloat("lat");
+        		float lon = rs.getFloat("long");
         		int orden = rs.getInt("orden");
 	            return new PuntoIntermedio(salida, llegada,idPunto,idRuta,lat,lon,orden,nombre);
 	        } else {

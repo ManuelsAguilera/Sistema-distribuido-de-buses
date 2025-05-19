@@ -11,12 +11,12 @@ public class PuntoIntermedio implements Serializable{
 	private String nombre;
 	private int idRuta;
 	private int idPunto;
-	private int lon;
-	private int lat;
+	private float lon;
+	private float lat;
 	private int orden;
 	
 	
-	public PuntoIntermedio(LocalDateTime horaSalida,LocalDateTime horaLlegada,int idPunto, int idRuta, int lon,int lat, int orden, String nombre) {
+	public PuntoIntermedio(LocalDateTime horaSalida, LocalDateTime horaLlegada, int idPunto, int idRuta, float lon, float lat, int orden, String nombre) {
 		super();
 		this.horaSalida = horaSalida;
 		this.horaLlegada = horaLlegada;

@@ -16,7 +16,7 @@ public class ConexionNeonPostgres {
 			Connection conn = DB.connect();
 			BusDAO dao = new BusDAO((Connection) conn);
 			
-			Bus bus = new Bus("BB2","Bus largo",15,new ArrayList<PuntoIntermedio>());
+			Bus bus = new Bus("BB2","Bus largo",15);
 			
 			dao.insert(bus);
 			System.out.println("Escribe cualquier numero para eliminar");
@@ -25,7 +25,7 @@ public class ConexionNeonPostgres {
 			scan.nextInt();
 			
 			
-			dao.delete(bus.getPatente());
+			dao.delete(bus.getMatricula());
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

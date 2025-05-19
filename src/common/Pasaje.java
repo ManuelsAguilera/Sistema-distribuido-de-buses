@@ -9,12 +9,12 @@ public class Pasaje implements Serializable{
 	private int idOrigen;
 	private int idDestino;
 	private LocalDateTime fechaCompra;
-	private int precio;
+	private float precio;
 	private int asiento;
 	
 	
 	
-	public Pasaje(int idPasajero, int idOrigen, int idDestino, LocalDateTime fechaCompra, int precio, int asiento,
+	public Pasaje(int idPasajero, int idOrigen, int idDestino, LocalDateTime fechaCompra, float precio, int asiento,
 			int idViaje) {
 		super();
 		this.idPasajero = idPasajero;

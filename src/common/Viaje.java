@@ -5,13 +5,15 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Viaje implements Serializable {
-
+	
+	private int idViaje;
 	private int idRuta;
 	private String matricula;
 	private LocalDate fecha;
 	private LocalTime salida;
 	private LocalTime salidaEstimada;
-	public Viaje(int idRuta, String matricula, LocalDate fecha, LocalTime salida, LocalTime salidaEstimada) {
+	
+	public Viaje(int idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime salida, LocalTime salidaEstimada) {
 		super();
 		this.idRuta = idRuta;
 		this.matricula = matricula;
