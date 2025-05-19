@@ -21,6 +21,43 @@ public class ViajeDAO {
 	}
 	
 	
+	public int getAsientosDispViaje(int idViaje) throws SQLException
+	{
+		String sql = "SELECT\n"
+				+ "    v.viaje_id,\n"
+				+ "    b.matricula,\n"
+				+ "    b.modelo,\n"
+				+ "    b.capacidad,\n"
+				+ "    v.fecha,\n"
+				+ "\n"
+				+ "    b.capacidad - COUNT(pas.pasaje_id) AS asientos_disponibles\n"
+				+ "FROM viajes v\n"
+				+ "JOIN buses b ON v.matricula = b.matricula\n"
+				+ "JOIN puntosintermedios po ON po.ruta_id = v.ruta_id AND po.nombre_punto ILIKE 'Salamanca'\n"
+				+ "JOIN puntosintermedios pd ON pd.ruta_id = v.ruta_id AND pd.nombre_punto ILIKE 'Illapel'\n"
+				+ "LEFT JOIN pasajes pas ON pas.viaje_id = v.viaje_id\n"
+				+ "    AND pas.punto_origen_id IN (\n"
+				+ "        SELECT punto_id FROM puntosintermedios\n"
+				+ "        WHERE ruta_id = v.ruta_id AND orden <= po.orden\n"
+				+ "    )\n"
+				+ "    AND pas.punto_destino_id IN (\n"
+				+ "        SELECT punto_id FROM puntosintermedios\n"
+				+ "        WHERE ruta_id = v.ruta_id AND orden >= pd.orden\n"
+				+ "    )\n"
+				+ "WHERE po.orden < pd.orden AND v.viaje_id = ?\n"
+				+ "GROUP BY v.viaje_id, b.matricula, b.modelo, b.capacidad, v.fecha\n"
+				+ "ORDER BY v.fecha;";
+
+		
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idViaje);
+	        var rs = stmt.executeQuery();
+	        
+	        return rs.getInt("asientos_disponibles");
+	    }
+		
+	}
+	
 	public Viaje getViaje(int idViaje) throws SQLException {
 	    String sql = "SELECT * FROM viajes WHERE viaje_id = ?";
 
