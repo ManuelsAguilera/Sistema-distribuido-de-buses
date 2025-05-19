@@ -1,6 +1,7 @@
 package common;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,29 +13,28 @@ public interface IBusManager extends  Remote  {
 	//Aqui irian las funciones que accede el cliente al servidor
 	
 	// DB
-	ArrayList<String> dumpTerminal() throws RemoteException;
 	void testConnection(String message) throws RemoteException;
 	
 	// Cliente - ventas 
-	float consultarVentas();
+	float consultarVentas() throws SQLException;
 	
 	// Cliente - viajes
-	boolean crearNuevoViaje(Viaje viaje,int idRuta);
-	Viaje obtenerViaje(int idViaje);
-	boolean eliminarViaje(int idViaje);
-	ArrayList<Viaje> obtenerViajePorOrigen(String Origen,String Destino);
-	ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino,LocalDate fecha);
+	boolean crearNuevoViaje(Viaje viaje,int idRuta) throws SQLException;
+	Viaje obtenerViaje(int idViaje) throws SQLException;
+	boolean eliminarViaje(int idViaje) throws SQLException;
+	ArrayList<Viaje> obtenerViajePorOrigen(String Origen,String Destino) throws SQLException;
+	ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino,LocalDate fecha) throws SQLException;
 	//boolean modificarViaje(Viaje viaje,String matricula) la idea seria quizas cambiar el bus.
 	
 	
 	//Cliente rutas
 	
-	ArrayList<Ruta> obtenerRutasDisp();
+	ArrayList<Ruta> obtenerRutasDisp()throws SQLException;
 	
 	
 	
 	// Punto intermedio
-	PuntoIntermedio consultarPuntoIntermedio(int idPunto);
+	PuntoIntermedio consultarPuntoIntermedio(int idPunto) throws SQLException;
 
 	
 	// Cliente - pasajes

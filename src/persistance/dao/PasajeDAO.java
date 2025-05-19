@@ -95,6 +95,21 @@ public class PasajeDAO {
 	        }
 	    }
 	}
+	
+	
+	public float consultaVentas() throws SQLException
+	{
+		String sql = "SELECT SUM(precio) FROM pasajes ";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        
+	        var rs = stmt.executeQuery(); 
+	        if (rs.next())
+	        	return rs.getFloat(1);
+	        else
+	        	return 0;
+	    }
+	}
 
 	
 }

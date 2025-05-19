@@ -19,7 +19,7 @@ public class PuntoViajeDao {
 	
 	
 	public void insert(PuntoViaje puntoViaje) throws SQLException {
-	    String sql = "INSERT INTO puntosintermedios_viaje (viaje_id, punto_id, hora_llegada, hora_salida, hora_llegada_estimada) " +
+	    String sql = "INSERT INTO puntosintermedios_viaje (viaje_id, punto_id, hora_llegada, hora_salida, hora_llegada_estimada) \n" +
 	                 "VALUES (?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -33,7 +33,7 @@ public class PuntoViajeDao {
 	    }
 	}
 	public void update(PuntoViaje puntoViaje) throws SQLException {
-	    String sql = "UPDATE puntosintermedios_viaje SET hora_llegada = ?, hora_salida = ?, hora_llegada_estimada = ? " +
+	    String sql = "UPDATE puntosintermedios_viaje SET hora_llegada = ?, hora_salida = ?, hora_llegada_estimada = ? \n" +
 	                 "WHERE viaje_id = ? AND punto_id = ?";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {

@@ -9,18 +9,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+
+import java.sql.Connection;
+
 import persistance.dao.*;
 
 
 public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager {
 
-	protected BusManagerImpl() throws RemoteException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-
+	
 	private static final long serialVersionUID = 1L;
 	private ViajeDAO viajeDAO;
 	private BusDAO busDAO;
@@ -28,6 +25,22 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	private PasajeroDAO pasajeroDAO;
 	private PasajeDAO pasajeDAO;
 	private PuntoIntermedioDAO puntoIntermedioDAO;
+	
+	
+	public BusManagerImpl(Connection conn) throws RemoteException {
+	    super();
+	    this.viajeDAO = new ViajeDAO(conn);
+	    this.busDAO = new BusDAO(conn);
+	    this.rutaDAO = new RutaDAO(conn);
+	    this.pasajeroDAO = new PasajeroDAO(conn);
+	    this.pasajeDAO = new PasajeDAO(conn);
+	    this.puntoIntermedioDAO = new PuntoIntermedioDAO(conn);
+	}
+
+
+
+
+
 
 
 	@Override
@@ -36,70 +49,45 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 		System.out.println("Client is connected!\n"+message);
 	}
 	
-	
-	public ArrayList<String> dumpTerminal() throws RemoteException {
-		
-		
-		System.out.println("Accediendo base de datos");
-		ArrayList<String> names = new ArrayList<String>();
-		var sql = " SELECT nombre,ciudad FROM terminal ORDER BY nombre";
-		try (var conn =  DB.connect();
-	             var stmt = conn.createStatement()) {
-	            
-	            var rs = stmt.executeQuery(sql);
-	            
-	            while (rs.next())
-	            {
-	            	String name = rs.getString("nombre")+ " "+ rs.getString("ciudad");
-	            	names.add(name);
-	            }
-	        } catch (SQLException e) {
-	            System.err.println(e.getMessage());
-	        }
-		
-		return names;
-	}
-
-
-
 	@Override
-	public float consultarVentas() {
-		return 0;
+	public float consultarVentas() throws SQLException {
+			return pasajeDAO.consultaVentas();
+		
 	}
 
 
 	@Override
 	public boolean crearNuevoViaje(Viaje viaje, int idRuta) {
 		// TODO Auto-generated method stub
-		return false;
+		return ;
 	}
 
 
 	@Override
-	public Viaje obtenerViaje(int idViaje) {
+	public Viaje obtenerViaje(int idViaje) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return viajeDAO.getViaje(idViaje);
 	}
 
 
 	@Override
-	public boolean eliminarViaje(int idViaje) {
+	public boolean eliminarViaje(int idViaje) throws SQLException {
 		// TODO Auto-generated method stub
-		return false;
+		return viajeDAO.delete(idViaje);
 	}
 
 
 	@Override
-	public ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino) {
+	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return viajeDAO.getViajePorOrigen(origen,destino);
 	}
 
 
 	@Override
-	public ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino, LocalDate fecha) {
+	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino, LocalDate fecha) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return viajeDAO.getViajePorOrigen(origen,destino,fecha);
 	}
 
 
