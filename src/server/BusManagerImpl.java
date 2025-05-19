@@ -44,218 +44,165 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	}
 	
 	@Override
-	public float consultarVentas()  {
+	public float consultarVentas() throws RemoteException  {
 			try {
 				return pasajeDAO.consultaVentas();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new RemoteException("Error consulta ventas", e);
 			}
-			return -1;
+
 		
 	}
-
-
 	@Override
-	public boolean crearNuevoViaje(Viaje viaje, int idRuta) {
-		
+	public boolean crearNuevoViaje(Viaje viaje, int idRuta) throws RemoteException {
 		try {
 			Viaje viajeNuevo = viajeDAO.getViaje(viaje.getidViaje());
 			puntoViajeDAO.fillPointsFromViaje(idRuta);
 			viajeDAO.insert(viajeNuevo);
+			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al crear nuevo viaje", e);
 		}
-		
-		
-		return false;
 	}
 
-
 	@Override
-	public Viaje obtenerViaje(int idViaje) {
+	public Viaje obtenerViaje(int idViaje) throws RemoteException {
 		try {
 			return viajeDAO.getViaje(idViaje);
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
-			return null;
+			throw new RemoteException("Error al obtener el viaje", e);
 		}
 	}
 
-
 	@Override
-	public boolean eliminarViaje(int idViaje) {
+	public boolean eliminarViaje(int idViaje) throws RemoteException {
 		try {
 			return viajeDAO.delete(idViaje);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
+			throw new RemoteException("Error al eliminar el viaje", e);
 		}
 	}
 
-
 	@Override
-	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino) {
+	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino) throws RemoteException {
 		try {
-			return viajeDAO.getViajePorOrigen(origen,destino);
+			return viajeDAO.getViajePorOrigen(origen, destino);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new RemoteException("Error al obtener viaje por origen y destino", e);
 		}
 	}
 
-
 	@Override
-	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino, LocalDate fecha) {
+	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino, LocalDate fecha) throws RemoteException {
 		try {
-			return viajeDAO.getViajePorOrigen(origen,destino,fecha);
+			return viajeDAO.getViajePorOrigen(origen, destino, fecha);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new RemoteException("Error al obtener viaje por origen, destino y fecha", e);
 		}
 	}
 
-
 	@Override
-	public ArrayList<Ruta> obtenerRutasDisp() {
+	public ArrayList<Ruta> obtenerRutasDisp() throws RemoteException {
 		try {
 			return rutaDAO.getAllRutas();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new RemoteException("Error al obtener rutas disponibles", e);
 		}
 	}
 
-
 	@Override
-	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
+	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) throws RemoteException {
 		try {
 			return puntoIntermedioDAO.getPuntoIntermedio(idPunto);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			throw new RemoteException("Error al consultar punto intermedio", e);
 		}
 	}
 
-
 	@Override
 	public boolean crearPasaje(int idViaje, int idPasajero, int idOrigen, String destino, LocalDateTime fechaCompra,
-			float precio, int asiento) {
-		
+			float precio, int asiento) throws RemoteException {
 		try {
-			
 			Pasaje pasajeNuevo = new Pasaje(idPasajero, idOrigen, asiento, fechaCompra, precio, asiento, asiento);
 			pasajeDAO.insert(pasajeNuevo);
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
+			throw new RemoteException("Error al crear pasaje", e);
 		}
 	}
 
-
 	@Override
-	public boolean eliminarPasaje(int idPasaje) {
+	public boolean eliminarPasaje(int idPasaje) throws RemoteException {
 		try {
 			return pasajeDAO.delete(idPasaje);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al eliminar pasaje", e);
 		}
-		return false;
 	}
 
-
 	@Override
-	public Pasaje consultarPasaje(int idPasaje) {
+	public Pasaje consultarPasaje(int idPasaje) throws RemoteException {
 		try {
 			return pasajeDAO.getPasaje(idPasaje);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al consultar pasaje", e);
 		}
-		return null;
 	}
 
-
 	@Override
-	public boolean crearBus(String matricula, String modelo, int capacidad) {
+	public boolean crearBus(String matricula, String modelo, int capacidad) throws RemoteException {
 		try {
-			return busDAO.insert(new Bus(matricula,modelo,capacidad));
+			return busDAO.insert(new Bus(matricula, modelo, capacidad));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al crear bus", e);
 		}
-		return false;
 	}
 
-
 	@Override
-	public boolean eliminarBus(String matricula) {
+	public boolean eliminarBus(String matricula) throws RemoteException {
 		try {
 			return busDAO.delete(matricula);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al eliminar bus", e);
 		}
-		return false;
 	}
 
-
 	@Override
-	public boolean modificarBus(Bus bus) {
+	public boolean modificarBus(Bus bus) throws RemoteException {
 		try {
 			return busDAO.update(bus.getMatricula(), bus);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al modificar bus", e);
 		}
-		return false;
 	}
 
-
 	@Override
-	public boolean crearPasajero(int idPasajero, String nombre, String correo) {
+	public boolean crearPasajero(int idPasajero, String nombre, String correo) throws RemoteException {
 		try {
-			return pasajeroDAO.insert(new Pasajero(idPasajero,nombre,correo));
+			return pasajeroDAO.insert(new Pasajero(idPasajero, nombre, correo));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al crear pasajero", e);
 		}
-		return false;
 	}
 
-
 	@Override
-	public boolean eliminarPasajero(int idPasajero) {
+	public boolean eliminarPasajero(int idPasajero) throws RemoteException {
 		try {
 			return pasajeroDAO.delete(idPasajero);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al eliminar pasajero", e);
 		}
-		return false;
 	}
-
 
 	@Override
-	public boolean modificarPasajero(Pasajero pasajero) {
+	public boolean modificarPasajero(Pasajero pasajero) throws RemoteException {
 		try {
-			return pasajeroDAO.update(pasajero.getIdPasajero(),pasajero);
+			return pasajeroDAO.update(pasajero.getIdPasajero(), pasajero);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RemoteException("Error al modificar pasajero", e);
 		}
-		return false;
 	}
-
-
 
 	
 }
