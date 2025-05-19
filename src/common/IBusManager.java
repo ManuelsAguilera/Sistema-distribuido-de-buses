@@ -16,7 +16,7 @@ public interface IBusManager extends  Remote  {
 	void testConnection(String message) throws RemoteException;
 	
 	// Cliente - ventas 
-	boolean consultarVentas();
+	float consultarVentas();
 	
 	// Cliente - viajes
 	boolean crearNuevoViaje(int  idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime horaSalida, LocalTime horaSalidaEstimada);
@@ -25,21 +25,21 @@ public interface IBusManager extends  Remote  {
 	
 	// Cliente - rutas
 	boolean crearNuevaRuta(int idRuta, String nombreOrigen, String nombreDestino, LocalTime duracion); // la hora se calcula mediante la API
-	boolean consultarRutas(String origen, String destino); // Conjunto de rutas de ese origen y destino
-	boolean consultarRuta(int idRuta);
+	ArrayList<Ruta> consultarRutas(String origen, String destino); // Conjunto de rutas de ese origen y destino
+	Ruta consultarRuta(int idRuta);
 	boolean modificarRuta(int idRuta);
 	boolean eliminarRuta(int idRuta);
 	
 	// Punto intermedio
 	boolean crearPuntoIntermedio(int idPunto, int idRuta, float longitud, float latitud, String nombrePunto,int orden, LocalDateTime horaLlegada, LocalDateTime horaSalida);
-	boolean consultarPuntoIntermedio(int idPunto);
+	PuntoIntermedio consultarPuntoIntermedio(int idPunto);
 	boolean eliminarPuntoIntermedio(int idPunto);
 	
 	// Cliente - pasajes
 	boolean crearPasaje(int idPasaje, int idViaje, int idPasajero, int idPuntoOrigen, int idPuntoDestino, LocalDateTime fechaCompra, float precio, int asiento);
 	boolean eliminarPasaje(int idPasaje);
-	boolean consultarPasaje(int idPasaje);
-	boolean consultarPasajes(String puntoOrigen, String puntoDestino);
+	Pasaje consultarPasaje(int idPasaje);
+	ArrayList<Pasaje> consultarPasajes(String puntoOrigen, String puntoDestino);
 	
 	// Cliente - buses
 	boolean crearBus(String matricula, String modelo, int capacidad);

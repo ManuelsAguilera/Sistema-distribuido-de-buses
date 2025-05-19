@@ -63,9 +63,9 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean consultarVentas() {
+	public float consultarVentas() {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 
@@ -122,17 +122,28 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean consultarRutas(String origen, String destino) {
-		// TODO Auto-generated method stub
-		return false;
+	public ArrayList<Ruta> consultarRutas(String origen, String destino) {
+		return null;
+		//try {
+					
+		//} catch (SQLException e) {
+		//	e.printStackTrace();
+		//	return null;
+		//}
 	}
 
 
 
 	@Override
-	public boolean consultarRuta(int idRuta) {
-		// TODO Auto-generated method stub
-		return false;
+	public Ruta consultarRuta(int idRuta) {
+		try {
+			Ruta rutaObjetivo = rutaDAO.getRuta(idRuta);
+			return rutaObjetivo;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 
@@ -176,9 +187,14 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean consultarPuntoIntermedio(int idPunto) {
-		// TODO Auto-generated method stub
-		return false;
+	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
+		try {
+			PuntoIntermedio puntoIntermedioObjetivo = puntoIntermedioDAO.getPuntoIntermedio(idPunto);
+			return puntoIntermedioObjetivo;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
@@ -228,17 +244,22 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 
 	@Override
-	public boolean consultarPasaje(int idPasaje) {
-		// TODO Auto-generated method stub
-		return false;
+	public Pasaje consultarPasaje(int idPasaje) {
+		try {
+			Pasaje pasajeObjetivo = pasajeDAO.getPasaje(idPasaje);
+			return pasajeObjetivo;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
 
 	@Override
-	public boolean consultarPasajes(String puntoOrigen, String puntoDestino) {
+	public ArrayList<Pasaje> consultarPasajes(String puntoOrigen, String puntoDestino) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 
