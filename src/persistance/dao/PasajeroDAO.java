@@ -71,7 +71,22 @@ public class PasajeroDAO {
 	        return filasAfectadas > 0;
 	    }
 	}
+	
+	public boolean inTable(int idPasajero) throws SQLException
+	{
+		String sql = "SELECT * FROM pasajeros WHERE pasajero_id = ?";
 
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idPasajero);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+	}
 	
 	
 	

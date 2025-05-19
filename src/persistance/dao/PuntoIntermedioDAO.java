@@ -40,6 +40,22 @@ public class PuntoIntermedioDAO {
 		}
 	}
 	
+	public boolean inTable(int idPunto) throws SQLException
+	{
+		String sql = "SELECT * FROM puntosintermedios WHERE puntosintermedios.punto_id = ?";
+		
+		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idPunto);
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            return true;
+	        } else {
+	            return false; 
+	        }
+		}
+	}
+	
 	
 	
 	public Boolean insert(PuntoIntermedio punto) throws SQLException {

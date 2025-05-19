@@ -37,12 +37,6 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	    this.puntoIntermedioDAO = new PuntoIntermedioDAO(conn);
 	}
 
-
-
-
-
-
-
 	@Override
 	public void testConnection(String message)  throws RemoteException{
 		System.out.println("Client is connected!\n"+message);

@@ -21,6 +21,21 @@ public class PasajeDAO {
 	{
 		this.conn = conn;
 	}
+	public boolean inTable(int idPasaje) throws SQLException {
+		String sql = "SELECT * FROM pasajes WHERE pasaje_id = ?";
+		
+		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setInt(1, idPasaje);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	}
 	
 	public void insert(Pasaje pasaje) throws SQLException {
 	    String sql = "INSERT INTO pasajes (viaje_id, pasajero_id, punto_origen_id, punto_destino_id, precio, fecha_compra, asiento) " +

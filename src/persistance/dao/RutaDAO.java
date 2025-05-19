@@ -41,6 +41,24 @@ public class RutaDAO {
 		}
 	}
 	
+	public boolean inTable(int idRuta) throws SQLException
+	{
+		String sql = "SELECT * from rutas WHERE ruta.ruta_id = ?";
+		
+		try (PreparedStatement stmt = conn.prepareStatement(sql))
+		{
+			stmt.setInt(1,idRuta);
+			var rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	
 	
 	public ArrayList<Ruta> getAllRutas() throws SQLException
 	{
