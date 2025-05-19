@@ -15,11 +15,15 @@ public class Viaje implements Serializable {
 	
 	public Viaje(int idViaje, int idRuta, String matricula, LocalDate fecha, LocalTime salida, LocalTime salidaEstimada) {
 		super();
+		this.idViaje = idViaje;
 		this.idRuta = idRuta;
 		this.matricula = matricula;
 		this.fecha = fecha;
 		this.salida = salida;
 		this.salidaEstimada = salidaEstimada;
+	}
+	public int getidViaje() {
+		return idViaje;
 	}
 	public int getIdRuta() {
 		return idRuta;
