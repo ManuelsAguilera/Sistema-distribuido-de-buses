@@ -1,63 +1,60 @@
 package client;
 
-import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import bit.datacron.linkedIn.tms.map.Location;
+import client.Controler.ClientControler;
 import client.View.ClientView;
+import common.IBusManager;
 import server.ApiManager;
 
 public class ClientRun {
-	
-	public static void main(String args[]) throws IOException
-	{
-		
-		System.out.println("AAAAAAAAAA");
-		
-		Scanner scan = new Scanner(System.in);		
-		ClientImpl client;
+
+	public static void main(String args[]) throws Exception {
+
+		Scanner scan = new Scanner(System.in);
+		ClientControler controler;
 		ClientView view;
 		
+		Registry registry = LocateRegistry.getRegistry(2002);
+		IBusManager server = (IBusManager) registry.lookup("CentralBusManager");
+
 		try {
-				client = new ClientImpl();
-				view = new ClientView();
-				System.out.println("Client is up!");
-				
-				view.displayData();
-				
-				
-				String buffer= "";
-				
-				System.out.println("Escribe algo para enviar al servidor\nEscribe quit para salir.");
-				while(buffer.compareTo("quit") != 0) {
-					
-					
-					buffer = scan.nextLine();
-					
-					client.testConnection(buffer);
-					
-					if (buffer.compareTo("names") == 0)
-					{
-						client.getNamesTerminal();
-					}
-					
-					
-				} 
-				
-				System.out.println("Quitting..");
-				
-						
+			view = new ClientView();
+			controler = new ClientControler(view,server);
+
+			System.out.println("Client is up!");
+
+			controler.displayView();
+
+			String buffer = "";
+
+			System.out.println("Escribe algo para enviar al servidor\nEscribe quit para salir.");
+			while (buffer.compareTo("quit") != 0) {
+
+				buffer = scan.nextLine();
+
+				controler.testConnection(buffer);
+
+				if (buffer.compareTo("names") == 0) {
+					// client.getNamesTerminal();
+				}
+
+			}
+
+			System.out.println("Quitting..");
+
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
 	}
-	
+
 }

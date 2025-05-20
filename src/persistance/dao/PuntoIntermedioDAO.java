@@ -40,6 +40,10 @@ public class PuntoIntermedioDAO {
 		}
 	}
 	
+	public ArrayList<PuntoIntermedio> getPuntoIntermedio() {
+		
+	}
+	
 	public boolean inTable(int idPunto) throws SQLException
 	{
 		String sql = "SELECT * FROM puntosintermedios WHERE puntosintermedios.punto_id = ?";

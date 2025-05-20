@@ -12,6 +12,7 @@ import common.*;
 public class ClienteSimple {
 
 	
+	@SuppressWarnings("unused")
 	private static void obtenerViajeOpcion(ClientImpl client)
 	{
 		try {
