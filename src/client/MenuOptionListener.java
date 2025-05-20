@@ -10,4 +10,5 @@ public interface MenuOptionListener {
 	void onMenuOptionSelected(int option); 
 	void onCrearPasajero (String nombre, String correo);
 	public ArrayList<Viaje> obtenerViaje(String origen, String destino, LocalDate fecha);
+	public ArrayList<Viaje> obtenerViaje(String origen, String destino);
 }

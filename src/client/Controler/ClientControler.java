@@ -64,5 +64,16 @@ public class ClientControler implements MenuOptionListener {
 		view.displayMenu();
 	}
 
+	@Override
+	public ArrayList<Viaje> obtenerViaje(String origen, String destino) {
+		try {
+			return this.server.obtenerViajePorOrigen(origen, destino);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 }

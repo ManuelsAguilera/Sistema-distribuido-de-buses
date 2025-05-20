@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import common.PuntoIntermedio;
 
@@ -41,6 +42,7 @@ public class PuntoIntermedioDAO {
 	}
 	
 	public ArrayList<PuntoIntermedio> getPuntoIntermedio() {
+		return null;
 		
 	}
 	

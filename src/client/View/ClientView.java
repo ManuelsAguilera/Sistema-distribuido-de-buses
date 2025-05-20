@@ -363,6 +363,9 @@ public class ClientView {
 
 		panel.addComponent(new Button("Obtener viaje por origen SIN fecha", () -> {
 			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayObtenerViajesSinFecha();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -410,12 +413,15 @@ public class ClientView {
 		    String destino = destinoBox.getText();
 		    String inputFecha = fechaBox.getText();
 		    LocalDate fecha;
-
+		    System.out.println("chao:"+inputFecha);
+		    fecha = LocalDate.parse(inputFecha);
+	        System.out.println("ola:"+fecha);
 		    try {
 		        fecha = LocalDate.parse(inputFecha);
+		        System.out.println(fecha);
 		    } catch (DateTimeParseException e) {
-		        showMessage("Formato inválido. Use (yyyy-MM-dd).");
-		        return; // Detener la ejecución del callback aquí
+		        showMessage("Formato inválido. Use (YYYY-MM-DD).");
+		        return;
 		    }
 
 		    // Aquí llamas al controlador:
@@ -438,6 +444,57 @@ public class ClientView {
 
 		    window.close();
 		    showMessage("Pasajero creado.");
+		    try {
+		        displayMenu();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayObtenerViajesSinFecha() {
+		BasicWindow window = new BasicWindow("Obtener viajes sin fecha");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese origen:"));
+		TextBox origenBox = new TextBox();
+		panel.addComponent(origenBox);
+
+		panel.addComponent(new Label("Ingrese destino:"));
+		TextBox destinoBox = new TextBox();
+		panel.addComponent(destinoBox);
+		
+		
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+		    String origen = origenBox.getText();
+		    String destino = destinoBox.getText();
+		    
+
+		    // Aquí llamas al controlador:
+		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino);
+
+		    if (viajes.isEmpty()) {
+		        showMessage("No se encontraron viajes para el origen y destino especificados.");
+		    } else {
+		        for (Viaje v : viajes) {
+		            System.out.println("----- Viaje -----");
+		            System.out.println("ID de viaje       : " + v.getidViaje());
+		            System.out.println("ID de ruta        : " + v.getIdRuta());
+		            System.out.println("Matrícula del bus : " + v.getMatricula());
+		            System.out.println("Fecha             : " + v.getFecha());
+		            System.out.println("Hora de salida    : " + v.getSalida());
+		            System.out.println("Salida estimada   : " + v.getSalidaEstimada());
+		            System.out.println("------------------\n");
+		        }
+		    }
+
+		    window.close();
+		    showMessage("Viajes mostrados por consola exitosamente");
 		    try {
 		        displayMenu();
 		    } catch (IOException e) {
