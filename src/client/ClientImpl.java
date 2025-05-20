@@ -62,10 +62,22 @@ public class ClientImpl {
 			return this.server.crearPasajero(nombre, correo);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
+			System.out.println("Pasajero ya registrado");
+			return -1;
+		}
+		
+
+	}
+
+	public int buscarPasajero(String nombre, String correo) {
+		// TODO Auto-generated method stub
+		try {
+			return server.getPasajero(nombre,correo);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return -1;
-
 	}
 	
 }

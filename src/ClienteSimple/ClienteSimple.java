@@ -58,7 +58,7 @@ public class ClienteSimple {
 	     } 
 		catch (Exception e) {
 	        System.out.println("Error al consultar los viajes: " + e.getMessage());
-	        e.printStackTrace();
+	        
 	    }
 	}
 	
@@ -74,12 +74,18 @@ public class ClienteSimple {
         int id = client.registrarPasajero(nombre, correo);
         		
         if (id ==-1)
-        	System.out.println("No se pudo registrar hubo un error");
+        {
+        	id = client.buscarPasajero(nombre,correo);
+        	if (id>0)
+        	{
+        		System.out.println("Pasajero ya esta registrado con id: "+id);
+        		return;
+        	}
+        	else
+        		System.out.println("No se pudo registrar, ni se encontro en base de datos");
+        }
         else 
-        	System.out.println("Pasajero registrado, entreguele la id: "+id);
-        System.out.println();
-        
-        
+        	System.out.println("Pasajero registrado, entreguele la id: "+id);       
         
 	}
 	

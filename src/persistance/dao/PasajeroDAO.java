@@ -74,6 +74,25 @@ public class PasajeroDAO {
 	}
 	
 	
+	public Pasajero getPasajero(String nombre, String correo) throws SQLException
+	{
+		String sql = "SELECT * FROM pasajeros WHERE nombre = ? AND correo= ?";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        stmt.setString(1, nombre);
+	        stmt.setString(2, correo);
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	            int idPasajero = rs.getInt("pasajero_id");
+	            return new Pasajero(idPasajero, nombre, correo);
+	        } else {
+	            return null;
+	        }
+	    }
+	}
+	
+	
 	public boolean delete(int idPasajero) throws SQLException {
 	    String sql = "DELETE FROM pasajeros WHERE pasajero_id = ?";
 

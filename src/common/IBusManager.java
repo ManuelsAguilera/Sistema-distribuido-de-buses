@@ -49,6 +49,7 @@ public interface IBusManager extends  Remote  {
 	
 	// Cliente - pasajero
 	int crearPasajero(String nombre, String correo) throws RemoteException;
+	int getPasajero(String nombre, String correo) throws RemoteException;
 	boolean eliminarPasajero(int idPasajero) throws RemoteException;
 	boolean modificarPasajero(Pasajero pasajero)  throws RemoteException;
 }
