@@ -18,18 +18,6 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
-/*
- System.out.println("======================================");
-System.out.println(" Sistema distribuido de buses simple");
-System.out.println("======================================");
-System.out.println("Ingrese una opción numérica:");
-System.out.println("1: Buscar buses (origen y destino)");
-System.out.println("2: Registrar pasajero");
-System.out.println("3: Seleccionar un viaje");
-System.out.println("4: Asignar pasaje a pasajero y viaje");
-System.out.println("0: Salir");
-System.out.print("Opción: ");
-*/
 
 public class ClientImpl {
 	

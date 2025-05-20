@@ -28,7 +28,6 @@ public interface IBusManager extends  Remote  {
 	
 	
 	//Cliente rutas
-	
 	ArrayList<Ruta> obtenerRutasDisp() throws RemoteException;
 	
 	
