@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import common.Pasajero;
 
@@ -18,14 +19,25 @@ public class PasajeroDAO {
 	}
 	
 	
-	public boolean  insert(Pasajero pasajero) throws SQLException {
+	public int  insert(Pasajero pasajero) throws SQLException {
 	    String sql = "INSERT INTO pasajeros (nombre, correo) VALUES (?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 	        stmt.setString(1, pasajero.getNombre());
 	        stmt.setString(2, pasajero.getCorreo());
 	        int filasAfectadas = stmt.executeUpdate();
-	        return filasAfectadas > 0;
+	        
+	        if (filasAfectadas == 0) {
+	            throw new SQLException("No se insertó ningún pasajero.");
+	        }
+
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                return generatedKeys.getInt(1);
+	            } else {
+	                throw new SQLException("No se pudo obtener el ID generado.");
+	            }
+	        }
 	    }
 		
 	}

@@ -55,4 +55,17 @@ public class ClientImpl {
 		return null;
 	}
 	
+	public int registrarPasajero(String nombre,String correo)
+	{
+				
+		try {
+			return this.server.crearPasajero(nombre, correo);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+
+	}
+	
 }

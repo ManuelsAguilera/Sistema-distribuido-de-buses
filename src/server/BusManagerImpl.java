@@ -178,9 +178,9 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	}
 
 	@Override
-	public boolean crearPasajero(int idPasajero, String nombre, String correo) throws RemoteException {
+	public int crearPasajero(String nombre, String correo) throws RemoteException {
 		try {
-			return pasajeroDAO.insert(new Pasajero(idPasajero, nombre, correo));
+			return pasajeroDAO.insert(new Pasajero(nombre, correo));
 		} catch (SQLException e) {
 			throw new RemoteException("Error al crear pasajero", e);
 		}

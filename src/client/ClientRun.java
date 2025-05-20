@@ -40,10 +40,7 @@ public class ClientRun {
 					
 					client.testConnection(buffer);
 					
-					if (buffer.compareTo("names") == 0)
-					{
-						client.getNamesTerminal();
-					}
+					
 					
 					
 				} 
