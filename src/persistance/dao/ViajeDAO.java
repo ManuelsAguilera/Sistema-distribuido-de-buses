@@ -142,6 +142,7 @@ public class ViajeDAO {
 	{
 		String sql = "SELECT DISTINCT\n"
 				+"		v.viaje_id,\n"
+				+"		v.ruta_id,\n"
 				+ "    v.matricula,\n"
 				+ "    v.fecha,\n"
 				+ "    v.hora_salida,\n"
@@ -168,7 +169,10 @@ public class ViajeDAO {
 	            String matricula = rs.getString("matricula");
 	            LocalDate fecha = rs.getDate("fecha").toLocalDate();
 	            LocalTime salida = rs.getTime("hora_salida").toLocalTime();
-	            LocalTime salidaEstimada = rs.getTime("hora_salida_estimada").toLocalTime();
+	            
+	            //Este podria ser null :/
+	            Time horaSalidaEstimadaSQL = rs.getTime("hora_salida_estimada");
+	            LocalTime salidaEstimada = (horaSalidaEstimadaSQL != null) ? horaSalidaEstimadaSQL.toLocalTime() : null;
 	            
 	            lista.add(new Viaje(viajeId,rutaId,matricula,fecha,salida,salidaEstimada));
 	        }
@@ -182,6 +186,7 @@ public class ViajeDAO {
 	{
 		String sql = "SELECT DISTINCT\n"
 				+"		v.viaje_id,\n"
+				+"		v.ruta_id,\n"
 				+ "    v.matricula,\n"
 				+ "    v.fecha,\n"
 				+ "    v.hora_salida,\n"
@@ -209,8 +214,10 @@ public class ViajeDAO {
 	            String matricula = rs.getString("matricula");
 	            LocalDate fechaViaje = rs.getDate("fecha").toLocalDate();
 	            LocalTime salida = rs.getTime("hora_salida").toLocalTime();
-	            LocalTime salidaEstimada = rs.getTime("hora_salida_estimada").toLocalTime();
-
+	            //En caso de null comprobar
+	            Time horaSalidaEstimadaSQL = rs.getTime("hora_salida_estimada");
+	            LocalTime salidaEstimada = (horaSalidaEstimadaSQL != null) ? horaSalidaEstimadaSQL.toLocalTime() : null;
+	            
 	            lista.add(new Viaje(viajeId, rutaId, matricula, fechaViaje, salida, salidaEstimada));
 	        }
 	        

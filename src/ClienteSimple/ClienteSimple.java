@@ -2,6 +2,9 @@ package ClienteSimple;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import client.*;
@@ -9,7 +12,58 @@ import common.*;
 public class ClienteSimple {
 
 	
-	public static void main() 
+	private static void obtenerViajeOpcion(ClientImpl client)
+	{
+		try {
+			Scanner scanner = new Scanner(System.in);
+
+			System.out.print("Ingrese origen: ");
+            String origen = scanner.nextLine();
+            System.out.print("Ingrese destino: ");
+            String destino = scanner.nextLine();
+			
+            System.out.print("Ingrese fecha (yyyy-MM-dd): ");
+            LocalDate fecha = null;
+            while (fecha == null) {
+                try {
+                    String inputFecha = scanner.nextLine();
+                    fecha = LocalDate.parse(inputFecha); // Usa el formato ISO por defecto: yyyy-MM-dd
+                } catch (DateTimeParseException e) {
+                    System.out.print("Formato inválido. Ingrese fecha nuevamente (yyyy-MM-dd): ");
+                }
+            }
+
+            ArrayList<Viaje> viajes = client.obtenerViaje(origen, destino, fecha);
+
+	        if (viajes.isEmpty()) {
+	            System.out.println("No se encontraron viajes para el origen y destino especificados.");
+	        } else if (viajes == null)
+	        {
+	        	System.out.println("No se encontraon viajes por algun error");
+	        	return;
+	        } else {
+	        
+	        	for (Viaje v : viajes) {
+	        	    System.out.println("----- Viaje -----");
+	        	    System.out.println("ID de viaje       : " + v.getidViaje());
+	        	    System.out.println("ID de ruta        : " + v.getIdRuta());
+	        	    System.out.println("Matrícula del bus : " + v.getMatricula());
+	        	    System.out.println("Fecha             : " + v.getFecha());
+	        	    System.out.println("Hora de salida    : " + v.getSalida());
+	        	    System.out.println("Salida estimada   : " + v.getSalidaEstimada());
+	        	    System.out.println("------------------\n");
+	        	}
+	        }
+	            
+	     } 
+		catch (Exception e) {
+	        System.out.println("Error al consultar los viajes: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	}
+	
+	
+	public static void main(String Args[]) 
 	{
 		try {
 			ClientImpl client = new ClientImpl();
@@ -39,7 +93,8 @@ public class ClienteSimple {
 	            switch (opcion) {
 	                case 1:
 	                    System.out.println("-> Buscando buses por origen y destino...");
-	                    ArrayList<Viaje> viajes = clientImpl()
+	                    
+	                    obtenerViajeOpcion(client);
 	                    break;
 	                case 2:
 	                    System.out.println("-> Registrando pasajero...");

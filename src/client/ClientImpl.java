@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.io.IOException;
 
@@ -42,6 +43,16 @@ public class ClientImpl {
 	
 	void testConnection(String message) throws RemoteException { this.server.testConnection(message);}
 	
-	
+	public ArrayList<Viaje> obtenerViaje(String origen, String destino,LocalDate fecha)
+	{
+		
+		try {
+			return this.server.obtenerViajePorOrigen(origen, destino,fecha);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }
