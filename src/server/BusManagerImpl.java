@@ -178,13 +178,24 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	}
 
 	@Override
-	public boolean crearPasajero(int idPasajero, String nombre, String correo) throws RemoteException {
+	public int crearPasajero(String nombre, String correo) throws RemoteException {
 		try {
-			return pasajeroDAO.insert(new Pasajero(idPasajero, nombre, correo));
+			return pasajeroDAO.insert(new Pasajero(nombre, correo));
 		} catch (SQLException e) {
 			throw new RemoteException("Error al crear pasajero", e);
 		}
 	}
+	
+	public int getPasajero(String nombre,String correo) throws RemoteException
+	{
+		try {
+			return pasajeroDAO.getPasajero(nombre,correo).getIdPasajero();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new RemoteException("Error al buscar pasajero", e);
+		}
+	}
+	
 
 	@Override
 	public boolean eliminarPasajero(int idPasajero) throws RemoteException {

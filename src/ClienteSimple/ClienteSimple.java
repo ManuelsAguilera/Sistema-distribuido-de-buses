@@ -59,8 +59,35 @@ public class ClienteSimple {
 	     } 
 		catch (Exception e) {
 	        System.out.println("Error al consultar los viajes: " + e.getMessage());
-	        e.printStackTrace();
+	        
 	    }
+	}
+	
+	private static void registrarPasajeroOpcion(ClientImpl client)
+	{
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.print("Ingrese nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Ingrese correo: ");
+        String correo = scanner.nextLine();
+        
+        int id = client.registrarPasajero(nombre, correo);
+        		
+        if (id ==-1)
+        {
+        	id = client.buscarPasajero(nombre,correo);
+        	if (id>0)
+        	{
+        		System.out.println("Pasajero ya esta registrado con id: "+id);
+        		return;
+        	}
+        	else
+        		System.out.println("No se pudo registrar, ni se encontro en base de datos");
+        }
+        else 
+        	System.out.println("Pasajero registrado, entreguele la id: "+id);       
+        
 	}
 	
 	
@@ -99,7 +126,7 @@ public class ClienteSimple {
 	                    break;
 	                case 2:
 	                    System.out.println("-> Registrando pasajero...");
-	                    // Lógica para registrar pasajero
+	                    registrarPasajeroOpcion(client);
 	                    break;
 	                case 3:
 	                    System.out.println("-> Seleccionando un viaje...");

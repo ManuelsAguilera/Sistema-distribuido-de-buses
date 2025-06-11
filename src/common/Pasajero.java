@@ -13,6 +13,12 @@ public class Pasajero implements Serializable{
 		this.nombre = nombre;
 		this.correo = correo;
 	}
+	public Pasajero(String nombre, String correo) {
+		super();
+		this.idPasajero = -1;
+		this.nombre = nombre;
+		this.correo = correo;
+	}
 	public int getIdPasajero() {
 		return idPasajero;
 	}

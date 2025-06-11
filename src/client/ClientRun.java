@@ -26,6 +26,7 @@ public class ClientRun {
 		IBusManager server = (IBusManager) registry.lookup("CentralBusManager");
 
 		try {
+
 			view = new ClientView();
 			controler = new ClientControler(view,server);
 
@@ -49,7 +50,7 @@ public class ClientRun {
 			}
 
 			System.out.println("Quitting..");
-
+						
 		} catch (RemoteException | NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
