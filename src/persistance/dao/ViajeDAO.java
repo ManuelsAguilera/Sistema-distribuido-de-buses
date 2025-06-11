@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import common.Viaje;
+import server.DB;
 
 public class ViajeDAO {
 
@@ -170,7 +171,8 @@ public class ViajeDAO {
 	            LocalDate fecha = rs.getDate("fecha").toLocalDate();
 	            LocalTime salida = rs.getTime("hora_salida").toLocalTime();
 	            
-	            //Este podria ser null :/
+	            // Este podria ser null :/
+	            // Concuerdo
 	            Time horaSalidaEstimadaSQL = rs.getTime("hora_salida_estimada");
 	            LocalTime salidaEstimada = (horaSalidaEstimadaSQL != null) ? horaSalidaEstimadaSQL.toLocalTime() : null;
 	            
@@ -181,7 +183,24 @@ public class ViajeDAO {
 	    	}
 	    }
 		
-		
+	/*
+	 public ArrayList<Viaje> getViajePorOrigen(String Origen, String Destino, LocalDate fecha) throws SQLException {
+    String sql = "SELECT DISTINCT ...";
+    try (Connection conn = DB.connect();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, Origen);
+        stmt.setString(2, Destino);
+        stmt.setDate(3, Date.valueOf(fecha));
+
+        var rs = stmt.executeQuery();
+        ArrayList<Viaje> lista = new ArrayList<>();
+        while (rs.next()) {
+            // construir objeto viaje
+        }
+        return lista;
+    }
+}
+	 */	
 	public ArrayList<Viaje> getViajePorOrigen(String Origen, String Destino,LocalDate fecha) throws SQLException
 	{
 		String sql = "SELECT DISTINCT\n"
@@ -200,8 +219,9 @@ public class ViajeDAO {
 				+ "    po.orden < pd.orden AND v.fecha = ?\n"
 				+ "ORDER BY v.fecha;";
 		
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-	        stmt.setString(1, Origen);
+	    try (Connection conn = DB.connect();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    	stmt.setString(1, Origen);
 	        stmt.setString(2,Destino);
 	        stmt.setDate(3, Date.valueOf(fecha));
 	        var rs = stmt.executeQuery();

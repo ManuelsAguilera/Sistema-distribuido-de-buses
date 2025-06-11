@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import common.PuntoIntermedio;
 
@@ -38,6 +39,11 @@ public class PuntoIntermedioDAO {
 	            return null; // No se encontro ningun bus con esa matricula
 	        }
 		}
+	}
+	
+	public ArrayList<PuntoIntermedio> getPuntoIntermedio() {
+		return null;
+		
 	}
 	
 	public boolean inTable(int idPunto) throws SQLException
