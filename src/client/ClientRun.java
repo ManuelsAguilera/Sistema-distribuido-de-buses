@@ -21,7 +21,7 @@ public class ClientRun {
 		Scanner scan = new Scanner(System.in);
 		ClientControler controler;
 		ClientView view;
-		
+		ApiManager api = new ApiManager();
 		Registry registry = LocateRegistry.getRegistry(2002);
 		IBusManager server = (IBusManager) registry.lookup("CentralBusManager");
 
@@ -29,7 +29,6 @@ public class ClientRun {
 
 			view = new ClientView();
 			controler = new ClientControler(view,server);
-
 			System.out.println("Client is up!");
 
 			controler.displayView();

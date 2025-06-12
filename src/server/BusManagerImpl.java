@@ -87,6 +87,7 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	@Override
 	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino) throws RemoteException {
 		try {
+			System.out.println("Obteniendo viaje DAO");
 			return viajeDAO.getViajePorOrigen(origen, destino);
 		} catch (SQLException e) {
 			throw new RemoteException("Error al obtener viaje por origen y destino", e);

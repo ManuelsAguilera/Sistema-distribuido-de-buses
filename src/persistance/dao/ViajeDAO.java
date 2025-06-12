@@ -178,7 +178,7 @@ public class ViajeDAO {
 	            
 	            lista.add(new Viaje(viajeId,rutaId,matricula,fecha,salida,salidaEstimada));
 	        }
-	        
+	        System.out.println("Retornando DAO");
 	        return lista;
 	    	}
 	    }

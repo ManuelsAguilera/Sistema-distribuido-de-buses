@@ -43,7 +43,7 @@ public class ClientControler implements MenuOptionListener {
 	@Override
 	public void onCrearPasajero (String nombre, String correo) {
 		try {
-			server.crearPasajero(8, nombre, correo);
+			server.crearPasajero(nombre, correo);
 		}  catch (RemoteException e) {
 	        e.printStackTrace();
 	    }

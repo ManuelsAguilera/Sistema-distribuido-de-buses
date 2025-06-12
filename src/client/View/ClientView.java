@@ -182,11 +182,11 @@ public class ClientView {
 			window.close();
 			// showMessage("Gestionar pasajeros");
 			displayGestionarPasajero();
+			System.out.println("Opion"+opcion);
 			break;
 		case 7:
 			window.close();
-			showMessage("Obtener info ventas");
-			// displayObtenerVentas();
+			displayObtenerVentas();
 			break;
 		case 8: // Salir
 			try {
@@ -375,6 +375,8 @@ public class ClientView {
 			window.setVisible(true);
 			window.close();
 		}));
+		
+		//panel.addComponent()
 
 		panel.addComponent(new Button("Volver", () -> {
 			try {
@@ -426,34 +428,34 @@ public class ClientView {
 
 		    // Aquí llamas al controlador:
 		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino, fecha);
-
-		    if (viajes.isEmpty()) {
-		        showMessage("No se encontraron viajes para el origen y destino especificados.");
-		    } else {
-		        for (Viaje v : viajes) {
-		            System.out.println("----- Viaje -----");
-		            System.out.println("ID de viaje       : " + v.getidViaje());
-		            System.out.println("ID de ruta        : " + v.getIdRuta());
-		            System.out.println("Matrícula del bus : " + v.getMatricula());
-		            System.out.println("Fecha             : " + v.getFecha());
-		            System.out.println("Hora de salida    : " + v.getSalida());
-		            System.out.println("Salida estimada   : " + v.getSalidaEstimada());
-		            System.out.println("------------------\n");
-		        }
-		    }
+		    
+		    window.close();
+		    displayListaViajes(viajes);
+		    
 
 		    window.close();
-		    showMessage("Pasajero creado.");
+		    
 		    try {
 		        displayMenu();
 		    } catch (IOException e) {
 		        e.printStackTrace();
 		    }
 		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+	        window.close();
+	        try {
+	            displayMenu();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }));
+		
 
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+	
 	
 	public void displayObtenerViajesSinFecha() {
 		BasicWindow window = new BasicWindow("Obtener viajes sin fecha");
@@ -477,33 +479,68 @@ public class ClientView {
 
 		    // Aquí llamas al controlador:
 		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino);
-
 		    if (viajes.isEmpty()) {
-		        showMessage("No se encontraron viajes para el origen y destino especificados.");
+		    	System.out.println("Vacia");
 		    } else {
-		        for (Viaje v : viajes) {
-		            System.out.println("----- Viaje -----");
-		            System.out.println("ID de viaje       : " + v.getidViaje());
-		            System.out.println("ID de ruta        : " + v.getIdRuta());
-		            System.out.println("Matrícula del bus : " + v.getMatricula());
-		            System.out.println("Fecha             : " + v.getFecha());
-		            System.out.println("Hora de salida    : " + v.getSalida());
-		            System.out.println("Salida estimada   : " + v.getSalidaEstimada());
-		            System.out.println("------------------\n");
-		        }
+		    	System.out.println("No vacia");	
+		    	window.setVisible(false);
+			    displayListaViajes(viajes);
 		    }
 
 		    window.close();
-		    showMessage("Viajes mostrados por consola exitosamente");
 		    try {
-		        displayMenu();
+		    	displayMenu();
 		    } catch (IOException e) {
 		        e.printStackTrace();
 		    }
 		}));
+		panel.addComponent(new Button("Volver", () -> {
+	        window.close();
+	        try {
+	            displayMenu();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }));
 
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayListaViajes(ArrayList<Viaje> viajes) {
+	    BasicWindow window = new BasicWindow("Lista de Viajes");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+		
+	    Panel panel = new Panel(new GridLayout(1));
+
+	    if (viajes.isEmpty()) {
+	        panel.addComponent(new Label("No se encontraron viajes."));
+	    } else {
+	        int contador = 1;
+	        for (Viaje v : viajes) {
+	            panel.addComponent(new Label("Viaje #" + contador++));
+	            panel.addComponent(new Label("ID Viaje       : " + v.getidViaje()));
+	            panel.addComponent(new Label("ID Ruta        : " + v.getIdRuta()));
+	            panel.addComponent(new Label("Matrícula Bus  : " + v.getMatricula()));
+	            panel.addComponent(new Label("Fecha          : " + v.getFecha()));
+	            panel.addComponent(new Label("Hora Salida    : " + v.getSalida()));
+	            panel.addComponent(new Label("Salida Estimada: " + v.getSalidaEstimada()));
+	            panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+	        }
+	    }
+
+	    panel.addComponent(new EmptySpace());
+	    panel.addComponent(new Button("Volver", () -> {
+	        window.close();
+	        try {
+	            displayMenu();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }));
+
+	    window.setComponent(panel);
+	    textGUI.addWindowAndWait(window);
 	}
 
 	public void displayObtenerTerminales() {
@@ -572,7 +609,59 @@ public class ClientView {
 	}
 
 	public void displayObtenerVentas() {
+	    clearScreen();
+	    BasicWindow window = new BasicWindow("Informe de Ventas");
+	    window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
 
+	    Panel panel = new Panel(new GridLayout(2));
+
+	    panel.addComponent(new Label("Ingrese fecha inicio (YYYY-MM-DD):"));
+	    TextBox fechaInicioBox = new TextBox();
+	    panel.addComponent(fechaInicioBox);
+
+	    panel.addComponent(new Label("Ingrese fecha fin (YYYY-MM-DD):"));
+	    TextBox fechaFinBox = new TextBox();
+	    panel.addComponent(fechaFinBox);
+
+	    panel.addComponent(new EmptySpace());
+	    panel.addComponent(new Button("Consultar", () -> {
+	        String inicioStr = fechaInicioBox.getText();
+	        String finStr = fechaFinBox.getText();
+
+	        LocalDate fechaInicio;
+	        LocalDate fechaFin;
+	        try {
+	            fechaInicio = LocalDate.parse(inicioStr);
+	            fechaFin = LocalDate.parse(finStr);
+	        } catch (DateTimeParseException e) {
+	            showMessage("Formato de fecha inválido. Use YYYY-MM-DD.");
+	            return;
+	        }
+
+	        // Consultar ventas a través del controlador/menuOptionListener
+	        double totalVentas =  2.0; //menuOptionListener.obtenerVentas(fechaInicio, fechaFin);
+
+	        showMessage("Ventas entre " + fechaInicio + " y " + fechaFin + ": $" + totalVentas);
+
+	        window.close();
+	        try {
+	            displayMenu();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }));
+
+	    panel.addComponent(new Button("Volver", () -> {
+	        window.close();
+	        try {
+	            displayMenu();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }));
+
+	    window.setComponent(panel);
+	    textGUI.addWindowAndWait(window);
 	}
 
 	public void showMessage(String mensaje) {
