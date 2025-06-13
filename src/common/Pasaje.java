@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class Pasaje implements Serializable{
 	
+	private int idPasaje;
 	private int idPasajero;
 	private int idOrigen;
 	private int idDestino;
@@ -71,6 +72,13 @@ public class Pasaje implements Serializable{
 	public void setAsiento(int asiento) {
 		this.asiento = asiento;
 	}
+	public int getIdPasaje() {
+		return idPasaje;
+	}
+	public void setIdPasaje(int idPasaje) {
+		this.idPasaje = idPasaje;
+	}
+	
 	
 
 }
