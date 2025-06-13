@@ -60,6 +60,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import client.MenuOptionListener;
 import common.Bus;
 import common.IBusManager;
+import common.Pasajero;
 import common.Viaje;
 import server.BusManagerImpl;
 
@@ -182,7 +183,6 @@ public class ClientView {
 			window.close();
 			// showMessage("Gestionar pasajeros");
 			displayGestionarPasajero();
-			System.out.println("Opion"+opcion);
 			break;
 		case 7:
 			window.close();
@@ -217,12 +217,16 @@ public class ClientView {
 		}));
 
 		panel.addComponent(new Button("Eliminar pasajero", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarPasajero();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Modificar pasajero", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayModificarPasajero();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -258,7 +262,6 @@ public class ClientView {
 			String nombre = nombreBox.getText();
 			String correo = correoBox.getText();
 
-			// Aquí llamas al controlador:
 			menuOptionListener.onCrearPasajero(nombre, correo);
 
 			window.close();
@@ -269,11 +272,108 @@ public class ClientView {
 				e.printStackTrace();
 			}
 		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayEliminarPasajero() {
+		clearScreen();
+		BasicWindow window = new BasicWindow("Eliminar Pasajero");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("id Pasajero:"));
+		TextBox idPasajeroBox = new TextBox();
+		panel.addComponent(idPasajeroBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String idPasajero = idPasajeroBox.getText();
+			
+			menuOptionListener.eliminarPasajero(Integer.parseInt(idPasajero));
+
+			window.close();
+			showMessage("Pasajero Eliminado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayModificarPasajero() {
+		BasicWindow window = new BasicWindow("Modificar Pasajero");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("id Pasajero:"));
+		TextBox idPasajeroBox = new TextBox();
+		panel.addComponent(idPasajeroBox);
+		
+		panel.addComponent(new Label("Nombre:"));
+		TextBox nombreBox = new TextBox();
+		panel.addComponent(nombreBox);
+
+		panel.addComponent(new Label("Correo:"));
+		TextBox correoBox = new TextBox();
+		panel.addComponent(correoBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			int idPasajero = Integer.parseInt(idPasajeroBox.getText());
+			String nombre = nombreBox.getText();
+			String correo = correoBox.getText();
+			
+			Pasajero pasajeroModificado = new Pasajero(idPasajero, nombre, correo);
+			
+			menuOptionListener.modificarPasajero(idPasajero, pasajeroModificado);
+
+			window.close();
+			showMessage("Pasajero modificado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
 
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
 
+	
 	public void displayGestionarBuses() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de Buses");
@@ -310,7 +410,8 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
-
+	
+	
 	public void displayObtenerRutas() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Obtener Rutas");
@@ -342,7 +443,9 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Crear viaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayCrearViaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -391,6 +494,30 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+	
+	public void displayCrearViaje() {
+		BasicWindow window = new BasicWindow("Creación de viaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+		
+		Panel panel = new Panel(new GridLayout(2));
+		
+		panel.addComponent(new Label("Ingrese nombre:"));
+		TextBox origenBox = new TextBox();
+		panel.addComponent(origenBox);
+
+		panel.addComponent(new Label("Ingrese destino:"));
+		TextBox destinoBox = new TextBox();
+		panel.addComponent(destinoBox);
+		
+		panel.addComponent(new Label("Ingrese fecha (YYYY-MM-DD):"));
+		TextBox fechaBox = new TextBox();
+		panel.addComponent(fechaBox);
+	
+	}
+	
+	public void displayEliminarViaje() {
+		
+	}
 
 	public void displayObtenerViajesConFecha() {
 		BasicWindow window = new BasicWindow("Obtener viajes con fecha");
@@ -415,9 +542,8 @@ public class ClientView {
 		    String destino = destinoBox.getText();
 		    String inputFecha = fechaBox.getText();
 		    LocalDate fecha;
-		    System.out.println("chao:"+inputFecha);
+		    
 		    fecha = LocalDate.parse(inputFecha);
-	        System.out.println("ola:"+fecha);
 		    try {
 		        fecha = LocalDate.parse(inputFecha);
 		        System.out.println(fecha);

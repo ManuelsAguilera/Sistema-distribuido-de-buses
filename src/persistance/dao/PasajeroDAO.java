@@ -44,7 +44,7 @@ public class PasajeroDAO {
 
 	
 	public boolean update(int idPasajero, Pasajero pasajero) throws SQLException {
-	    String sql = "UPDATE pasajeros SET nombre = ?, correo = ? WHERE pasajero_id = ?";
+		String sql = "UPDATE pasajeros SET nombre = ?, correo = ? WHERE pasajero_id = ?";
 
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, pasajero.getNombre());

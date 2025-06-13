@@ -4,6 +4,8 @@ import client.MenuOptionListener;
 import client.View.ClientView;
 import common.Bus;
 import common.IBusManager;
+import common.Pasajero;
+import common.Ruta;
 import common.Viaje;
 
 import java.io.IOException;
@@ -41,12 +43,31 @@ public class ClientControler implements MenuOptionListener {
 	}
 	
 	@Override
-	public void onCrearPasajero (String nombre, String correo) {
+	public void crearViaje(Viaje viaje, Ruta ruta) {
 		try {
-			server.crearPasajero(nombre, correo);
+			server.crearNuevoViaje(viaje, ruta.getIdRuta());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void eliminarViaje(Viaje viaje) {
+		try {
+			server.eliminarViaje(viaje.getidViaje());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public boolean onCrearPasajero (String nombre, String correo) {
+		try {
+			return server.crearPasajero(nombre, correo);
 		}  catch (RemoteException e) {
 	        e.printStackTrace();
 	    }
+		return false;
 	}
 	
 	@Override
@@ -73,6 +94,26 @@ public class ClientControler implements MenuOptionListener {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean eliminarPasajero(int idPasajero) {
+		try {
+			return server.eliminarPasajero(idPasajero);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean modificarPasajero(int idPasajero, Pasajero pasajero) {
+		try {
+			return server.modificarPasajero(pasajero);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 

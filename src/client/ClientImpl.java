@@ -43,7 +43,7 @@ public class ClientImpl {
 		return null;
 	}
 	
-	public int registrarPasajero(String nombre,String correo)
+	public boolean registrarPasajero(String nombre,String correo)
 	{
 				
 		try {
@@ -51,13 +51,14 @@ public class ClientImpl {
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Pasajero ya registrado");
-			return -1;
+			return false;
 		}
 		
 
 	}
+	
 
-	public int buscarPasajero(String nombre, String correo) {
+	public boolean buscarPasajero(String nombre, String correo) {
 		// TODO Auto-generated method stub
 		try {
 			return server.getPasajero(nombre,correo);
@@ -65,7 +66,7 @@ public class ClientImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return -1;
+		return false;
 	}
 	
 }
