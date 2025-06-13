@@ -23,9 +23,9 @@ public class BusDAO {
 	        ResultSet rs = stmt.executeQuery();
 	        
 	        if (rs.next()) {
-	            return true; // Constructor de tu clase Bus
+	            return true; 
 	        } else {
-	            return false; // No se encontró ningún bus con esa matrícula
+	            return false; 
 	        }
 		}
 	}
@@ -41,9 +41,9 @@ public class BusDAO {
 	        if (rs.next()) {
 	            String modelo = rs.getString("modelo");
 	            int capacidad = rs.getInt("capacidad");
-	            return new Bus(matricula, modelo, capacidad); // Constructor de tu clase Bus
+	            return new Bus(matricula, modelo, capacidad); 
 	        } else {
-	            return null; // No se encontró ningún bus con esa matrícula
+	            return null; 
 	        }
 		}
 	}
@@ -73,7 +73,7 @@ public class BusDAO {
 			stmt.setString(1, matricula);
 	        var rs = stmt.executeUpdate(); 
 	        
-	        //Filas actualizadas lol
+	        //Filas actualizadas
 	        return rs > 0;
 		}
         
@@ -91,7 +91,7 @@ public class BusDAO {
 	        
 			var rs = stmt.executeUpdate(); 
 	        
-	        //Filas actualizadas lol
+	        //Filas actualizadas
 	        return rs > 0;
 	    }
         

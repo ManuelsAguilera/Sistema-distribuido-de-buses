@@ -4,7 +4,9 @@ import client.MenuOptionListener;
 import client.View.ClientView;
 import common.Bus;
 import common.IBusManager;
+import common.Pasaje;
 import common.Pasajero;
+import common.PuntoIntermedio;
 import common.Ruta;
 import common.Viaje;
 
@@ -33,14 +35,6 @@ public class ClientControler implements MenuOptionListener {
     
     public void testConnection(String message) throws RemoteException { this.server.testConnection(message);}
 	
-	@Override
-	public void onMenuOptionSelected(int opcion) {
-		switch (opcion) {
-			case 1:
-				onCrearPasajero(null, null);
-		}
-		
-	}
 	
 	@Override
 	public void crearViaje(Viaje viaje, Ruta ruta) {
@@ -61,13 +55,13 @@ public class ClientControler implements MenuOptionListener {
 	}
 	
 	@Override
-	public boolean onCrearPasajero (String nombre, String correo) {
+	public int crearPasajero(Pasajero pasajero) {
 		try {
-			return server.crearPasajero(nombre, correo);
+			return server.crearPasajero(pasajero);
 		}  catch (RemoteException e) {
 	        e.printStackTrace();
 	    }
-		return false;
+		return -1;
 	}
 	
 	@Override
@@ -114,6 +108,89 @@ public class ClientControler implements MenuOptionListener {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	// Buses
+	@Override
+	public boolean crearBus(Bus bus) {
+		try {
+			return server.crearBus(bus);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Bus getBus(String matricula) {
+		try {
+			return server.getBus(matricula);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean eliminarBus(String matricula) {
+		try {
+			return server.eliminarBus(matricula);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean modificarBus(Bus bus) {
+		try {
+			return server.modificarBus(bus);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void modificarViaje(Viaje viaje) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Ruta> obtenerRutasDisp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean crearPasaje(Pasaje pasaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean eliminarPasaje(int idPasaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean modificarPasaje(Pasaje pasaje) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Pasaje consultarPasaje(int idPasaje) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

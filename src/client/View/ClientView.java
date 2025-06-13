@@ -279,8 +279,10 @@ public class ClientView {
 		panel.addComponent(new Button("Guardar", () -> {
 			String nombre = nombreBox.getText();
 			String correo = correoBox.getText();
-
-			menuOptionListener.onCrearPasajero(nombre, correo);
+			
+			Pasajero pasajero = new Pasajero(nombre, correo);
+			
+			menuOptionListener.crearPasajero(pasajero);
 
 			window.close();
 			showMessage("Pasajero creado.");
@@ -410,17 +412,23 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Crear Bus", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayCrearBus();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Eliminar Bus", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarBus();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Modificar Bus", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayModificarBus();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -429,7 +437,6 @@ public class ClientView {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}));
@@ -438,11 +445,141 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 	
-	public void displayCrearBus() {}
+	public void displayCrearBus() {
+		BasicWindow window = new BasicWindow("Crear Bus");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Matricula:"));
+		TextBox matriculaBox = new TextBox();
+		panel.addComponent(matriculaBox);
+		
+		panel.addComponent(new Label("Modelo:"));
+		TextBox modeloBox = new TextBox();
+		panel.addComponent(modeloBox);
+
+		panel.addComponent(new Label("Asientos totales:"));
+		TextBox asientosTotalesBox = new TextBox();
+		panel.addComponent(asientosTotalesBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String matricula = matriculaBox.getText();
+			String modelo = modeloBox.getText();
+			int asientosTotales = Integer.parseInt(asientosTotalesBox.getText());
+			
+			Bus bus = new Bus(matricula, modelo, asientosTotales);
 	
-	public void displayEliminarBus() {}
+			menuOptionListener.crearBus(bus);
+
+			window.close();
+			showMessage("Bus creado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
 	
-	public void displayModificarBus() {}
+	public void displayEliminarBus() {
+		BasicWindow window = new BasicWindow("Eliminar Bus");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Matricula:"));
+		TextBox matriculaBox = new TextBox();
+		panel.addComponent(matriculaBox);
+		
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String matricula = matriculaBox.getText();
+			
+			menuOptionListener.eliminarBus(matricula);
+
+			window.close();
+			showMessage("Bus eliminado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayModificarBus() {
+		BasicWindow window = new BasicWindow("Modificar Bus");
+
+		Panel panel = new Panel(new GridLayout(2));
+		
+		panel.addComponent(new Label("Matricula:"));
+		TextBox matriculaBox = new TextBox();
+		panel.addComponent(matriculaBox);
+		
+		panel.addComponent(new Label("Modelo:"));
+		TextBox modeloBox = new TextBox();
+		panel.addComponent(modeloBox);
+
+		panel.addComponent(new Label("Asientos totales:"));
+		TextBox asientosTotalesBox = new TextBox();
+		panel.addComponent(asientosTotalesBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String matricula = matriculaBox.getText();
+			String modelo = modeloBox.getText();
+			int asientosTotales = Integer.parseInt(asientosTotalesBox.getText());
+			
+			Bus bus = new Bus(matricula, modelo, asientosTotales);
+			
+			menuOptionListener.modificarBus(bus);
+			
+			window.close();
+			showMessage("Bus Modificado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
 	
 	// ============================================= Sección de Rutas ============================================= \\
 	
