@@ -69,7 +69,6 @@ public class ClientControler implements MenuOptionListener {
 	    try {
 			return this.server.obtenerViajePorOrigen(origen, destino, fecha);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -84,7 +83,6 @@ public class ClientControler implements MenuOptionListener {
 		try {
 			return this.server.obtenerViajePorOrigen(origen, destino);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -150,17 +148,23 @@ public class ClientControler implements MenuOptionListener {
 		}
 		return false;
 	}
-
+	
+	// Puntos intermedios
 	@Override
 	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	// Viajes
+	// TODO: cambiar a boolean
 	@Override
 	public void modificarViaje(Viaje viaje) {
-		// TODO Auto-generated method stub
-		
+		try {
+			server.modificarViaje(viaje);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
