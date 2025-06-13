@@ -54,6 +54,17 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 		
 	}
+	
+	
+	/****
+	 * 
+	 * Viajes
+	 * crearNuevoViaje(Viaje,idRuta)
+	 * obtenerViaje(idViaje)
+	 * eliminarViaje(idViaje)
+	 * modificarViaje(Viaje)
+	 * 
+	 */
 	@Override
 	public boolean crearNuevoViaje(Viaje viaje, int idRuta) throws RemoteException {
 		try {
@@ -83,6 +94,23 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 			throw new RemoteException("Error al eliminar el viaje", e);
 		}
 	}
+	
+	@Override
+	public boolean modificarViaje(Viaje viaje) throws RemoteException {
+		try
+		{
+			return viajeDAO.update(viaje.getidViaje(),viaje);
+		} catch(SQLException e)
+		{
+			throw new RemoteException("Error al modificar viaje", e);
+
+		}
+	}
+	
+	
+	
+	///**
+	///Obtener viajes
 
 	@Override
 	public ArrayList<Viaje> obtenerViajePorOrigen(String origen, String destino) throws RemoteException {
@@ -102,6 +130,11 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 			throw new RemoteException("Error al obtener viaje por origen, destino y fecha", e);
 		}
 	}
+	
+	
+	
+	//***************************
+	//Rutas
 
 	@Override
 	public ArrayList<Ruta> obtenerRutasDisp() throws RemoteException {
@@ -120,13 +153,16 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 			throw new RemoteException("Error al consultar punto intermedio", e);
 		}
 	}
-
+	
+	
+	
+	//*********************
+	//Pasajes
+	
 	@Override
-	public boolean crearPasaje(int idViaje, int idPasajero, int idOrigen, String destino, LocalDateTime fechaCompra,
-			float precio, int asiento) throws RemoteException {
+	public boolean crearPasaje(Pasaje pasaje) throws RemoteException {
 		try {
-			Pasaje pasajeNuevo = new Pasaje(idPasajero, idOrigen, asiento, fechaCompra, precio, asiento, asiento);
-			pasajeDAO.insert(pasajeNuevo);
+			pasajeDAO.insert(pasaje);
 			return true;
 		} catch (SQLException e) {
 			throw new RemoteException("Error al crear pasaje", e);
@@ -143,6 +179,17 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	}
 
 	@Override
+	public boolean modificarPasaje(Pasaje pasaje) throws RemoteException
+	{
+		try {
+			return pasajeDAO.update(pasaje.getIdPasaje(),pasaje);
+		} catch (SQLException e) {
+			throw new RemoteException("Error al eliminar pasaje", e);
+		}
+	}
+	
+	
+	@Override
 	public Pasaje consultarPasaje(int idPasaje) throws RemoteException {
 		try {
 			return pasajeDAO.getPasaje(idPasaje);
@@ -151,12 +198,32 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 		}
 	}
 
+	
+	/****************************
+	 * crearBus(Bus)
+	 * eliminarBus(idBus)
+	 * modificarBus(Bus bus)
+	 * getBus(matricula)
+	 ****************************/
+	
+	
 	@Override
-	public boolean crearBus(String matricula, String modelo, int capacidad) throws RemoteException {
+	public boolean crearBus(Bus bus) throws RemoteException {
 		try {
-			return busDAO.insert(new Bus(matricula, modelo, capacidad));
+			return busDAO.insert(bus);
 		} catch (SQLException e) {
 			throw new RemoteException("Error al crear bus", e);
+		}
+	}
+	
+	public Bus getBus(String matricula) throws RemoteException {
+		
+		try {
+			return busDAO.getBus(matricula);
+		}
+		catch (SQLException e)
+		{
+			throw new RemoteException("Error al obtener bus",e);
 		}
 	}
 
@@ -178,25 +245,49 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 		}
 	}
 
+	
+	
+	
+	/***************************
+	 * 
+	 * Pasajeros
+	 * crearPasajero(Pasajero)
+	 * getPasajero(nombre,correo)
+	 * getPasajero(idPasajero)
+	 * eliminarPasajero(idPasajero)
+	 * modificarPasajero(Pasajero) 
+	 * 
+	 */
+	
 	@Override
-	public boolean crearPasajero(String nombre, String correo) throws RemoteException {
+	public int crearPasajero(Pasajero pasajero) throws RemoteException {
 		try {
-			return pasajeroDAO.insert(new Pasajero(nombre, correo));
+			return pasajeroDAO.insert(pasajero);
 		} catch (SQLException e) {
 			throw new RemoteException("Error al crear pasajero", e);
 		}
-		return false;
 	}
 	
-	public boolean getPasajero(String nombre,String correo) throws RemoteException
+
+	public Pasajero getPasajero(String nombre,String correo) throws RemoteException
 	{
 		try {
-			return pasajeroDAO.getPasajero(nombre,correo).getIdPasajero();
+			return pasajeroDAO.getPasajero(nombre,correo);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			throw new RemoteException("Error al buscar pasajero", e);
 		}
-		return false;
+	}
+	
+	
+	@Override
+	public Pasajero getPasajero(int idPasajero) throws RemoteException
+	{
+		try {
+			return pasajeroDAO.getPasajero(idPasajero);
+		} catch (SQLException e) {
+			throw new RemoteException("Error al buscar pasajero", e);
+		}
 	}
 	
 

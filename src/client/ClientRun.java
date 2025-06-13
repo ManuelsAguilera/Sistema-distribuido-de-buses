@@ -51,7 +51,6 @@ public class ClientRun {
 			System.out.println("Quitting..");
 						
 		} catch (RemoteException | NotBoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

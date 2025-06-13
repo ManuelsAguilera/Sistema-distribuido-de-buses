@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 public interface IBusManager extends  Remote  {
 
 	
-	//Aqui irian las funciones que accede el cliente al servidor
-	
 	// DB
 	void testConnection(String message) throws RemoteException;
 	
@@ -24,8 +22,7 @@ public interface IBusManager extends  Remote  {
 	boolean eliminarViaje(int idViaje) throws RemoteException;
 	ArrayList<Viaje> obtenerViajePorOrigen(String Origen,String Destino) throws RemoteException;
 	ArrayList<Viaje> obtenerViajePorOrigen(String Origen, String Destino,LocalDate fecha) throws RemoteException;
-	//boolean modificarViaje(Viaje viaje,String matricula) la idea seria quizas cambiar el bus.
-	
+	boolean modificarViaje(Viaje viaje) throws RemoteException;
 	
 	//Cliente rutas
 	ArrayList<Ruta> obtenerRutasDisp() throws RemoteException;
@@ -37,18 +34,21 @@ public interface IBusManager extends  Remote  {
 
 	
 	// Cliente - pasajes
-	boolean crearPasaje(int idViaje, int idPasajero, int idOrigen, String destino, LocalDateTime fechaCompra, float precio, int asiento) throws RemoteException;
+	boolean crearPasaje(Pasaje pasaje) throws RemoteException;
 	boolean eliminarPasaje(int idPasaje) throws RemoteException;
+	boolean modificarPasaje(Pasaje pasaje) throws RemoteException;
 	Pasaje consultarPasaje(int idPasaje) throws RemoteException;
 	
 	// Cliente - buses
-	boolean crearBus(String matricula, String modelo, int capacidad) throws RemoteException;
+	boolean crearBus(Bus bus) throws RemoteException;
+	Bus getBus(String matricula) throws RemoteException;
 	boolean eliminarBus(String matricula) throws RemoteException;
 	boolean modificarBus(Bus bus) throws RemoteException;
 	
 	// Cliente - pasajero
-	boolean crearPasajero(String nombre, String correo) throws RemoteException;
-	boolean getPasajero(String nombre, String correo) throws RemoteException;
+	int crearPasajero(Pasajero pasajero) throws RemoteException;
+	Pasajero getPasajero(String nombre, String correo) throws RemoteException;
+	Pasajero getPasajero(int idPasajero) throws RemoteException;
 	boolean eliminarPasajero(int idPasajero) throws RemoteException;
 	boolean modificarPasajero(Pasajero pasajero)  throws RemoteException;
 }

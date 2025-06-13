@@ -37,36 +37,31 @@ public class ClientImpl {
 		try {
 			return this.server.obtenerViajePorOrigen(origen, destino,fecha);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public boolean registrarPasajero(String nombre,String correo)
+	public int registrarPasajero(Pasajero pasajero)
 	{
-				
 		try {
-			return this.server.crearPasajero(nombre, correo);
+			return this.server.crearPasajero(pasajero);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Pasajero ya registrado");
-			return false;
 		}
+		return -1;
 		
 
 	}
 	
 
-	public boolean buscarPasajero(String nombre, String correo) {
-		// TODO Auto-generated method stub
+	public Pasajero buscarPasajero(int idPasajero) {
 		try {
-			return server.getPasajero(nombre,correo);
+			return server.getPasajero(idPasajero);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 }

@@ -123,7 +123,7 @@ public class ViajeDAO {
 	}
 	
 	
-	public void update(int idViaje, Viaje viaje) throws SQLException {
+	public boolean update(int idViaje, Viaje viaje) throws SQLException {
 	    String sql = "UPDATE viajes SET ruta_id = ?, matricula = ?, fecha = ?, hora_salida = ?, hora_salida_estimada = ? " +
 	                 "WHERE viaje_id = ?";
 
@@ -135,7 +135,8 @@ public class ViajeDAO {
 	        stmt.setTime(5, Time.valueOf(viaje.getSalidaEstimada()));
 	        stmt.setInt(6, idViaje);
 
-	        stmt.executeUpdate();
+	        int filas =stmt.executeUpdate();
+	        return filas > 0;
 	    }
 	}
 	

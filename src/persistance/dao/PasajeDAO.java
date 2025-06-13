@@ -54,7 +54,7 @@ public class PasajeDAO {
 	    }
 	}
 
-	public void update(int idPasaje, Pasaje pasaje ) throws SQLException {
+	public boolean update(int idPasaje, Pasaje pasaje ) throws SQLException {
 	    String sql = "UPDATE pasajes SET viaje_id = ?, pasajero_id = ?, punto_origen_id = ?, " +
 	                 "punto_destino_id = ?, precio = ?, fecha_compra = ?, asiento = ? " +
 	                 "WHERE pasaje_id = ?";
@@ -69,7 +69,8 @@ public class PasajeDAO {
 	        stmt.setInt(7, pasaje.getAsiento());
 	        stmt.setInt(8, idPasaje);
 
-	        stmt.executeUpdate();
+	        int filas =stmt.executeUpdate();
+	        return filas >0;
 	    }
 	}
 
