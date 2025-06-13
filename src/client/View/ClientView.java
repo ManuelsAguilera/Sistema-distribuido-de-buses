@@ -65,7 +65,8 @@ import common.Viaje;
 import server.BusManagerImpl;
 
 public class ClientView {
-
+	
+	// Atributos
 	private Screen screen;
 	private WindowBasedTextGUI textGUI;
 	private BasicWindow window;
@@ -73,12 +74,14 @@ public class ClientView {
 	private TextColor foreC, backC;
 	private String clientName = "Vicente Rosales";
 
-	private IBusManager server;
-
+	
+	// Controlador del MVC
 	public void setMenuOptionListener(MenuOptionListener listener) {
 		this.menuOptionListener = listener;
 	}
-
+	
+	
+	// Constructor
 	public ClientView() throws IOException, NotBoundException {
 		foreC = ANSI.YELLOW;
 		backC = ANSI.BLACK;
@@ -88,7 +91,14 @@ public class ClientView {
 		window = new BasicWindow("BusApp TERMINAL v1.0");
 		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
 	}
-
+	
+	// ============================================= Sección de Vista principal ============================================= \\
+	
+	// def initUI()
+	
+	// def displayMenu()
+	
+	// def onMenuOptionSelected()
 	public void initUI() throws IOException {
 		screen = new DefaultTerminalFactory().createScreen();
 		foreC = TextColor.ANSI.YELLOW;
@@ -99,8 +109,6 @@ public class ClientView {
 	@SuppressWarnings("deprecation")
 	public void displayMenu() throws IOException {
 		TerminalSize terminalSize = screen.getTerminalSize();
-
-		// Layout de 3 columnas para los paneles
 		Panel mainPanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
 		// Header
@@ -116,7 +124,7 @@ public class ClientView {
 		contentPanel.addComponent(new Label("Métodos").setForegroundColor(TextColor.ANSI.YELLOW));
 		contentPanel.addComponent(new Label("Vista").setForegroundColor(TextColor.ANSI.YELLOW));
 
-		// Botones que representan funcionalidades, puedes agregar más
+		// Nombres de los botones
 		String[] opciones = { "Gestionar buses", "Gestionar pasajes", "Gestionar terminales", "Gestionar viajes",
 				"Gestionar rutas", "Gestionar pasajeros", "Obtener informe de ventas", "Salir" };
 
@@ -200,7 +208,17 @@ public class ClientView {
 		}
 		System.out.println("Opción seleccionada: " + opcion);
 	}
-
+	
+	// ============================================= Sección de Pasajeros ============================================= \\
+	
+	// def displayGestionarPasajero()
+	
+	// def displayCrearPasajero()
+	
+	// def displayEliminarPasajero()
+	
+	// def displayModificarPasajero()
+	
 	public void displayGestionarPasajero() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de Pasajeros");
@@ -373,6 +391,15 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 
+	// ============================================= Sección de buses ============================================= \\
+	
+	// def displayGestionarBuses()
+	
+	// def displayCrearBus()
+	
+	// def displayEliminarBus()
+	
+	// def displayModificarBus()
 	
 	public void displayGestionarBuses() {
 		clearScreen();
@@ -411,6 +438,15 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 	
+	public void displayCrearBus() {}
+	
+	public void displayEliminarBus() {}
+	
+	public void displayModificarBus() {}
+	
+	// ============================================= Sección de Rutas ============================================= \\
+	
+	// def displayObtenerRutas()
 	
 	public void displayObtenerRutas() {
 		clearScreen();
@@ -433,7 +469,23 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
-
+	
+	// ============================================= Sección de Viajes ============================================= \\
+	
+	// def displayGestionarViajes()
+	
+	// def displayCrearViaje()
+	
+	// def displayEliminarViaje()
+	
+	// def displayModificarViaje()
+	
+	// def displayObtenerViajesConFecha()
+	
+	// def displayObtenerViajesSinFecha()
+	
+	// def displayListaViajes()
+	
 	public void displayGestionarViajes() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de viajes");
@@ -459,7 +511,7 @@ public class ClientView {
 			window.close();
 		}));
 
-		panel.addComponent(new Button("Obtener viaje", () -> {
+		panel.addComponent(new Button("Modificar viaje", () -> {
 			// menuOptionListener.onMenuOptionSelected(33);
 			window.close();
 		}));
@@ -486,7 +538,6 @@ public class ClientView {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}));
@@ -518,7 +569,11 @@ public class ClientView {
 	public void displayEliminarViaje() {
 		
 	}
-
+	
+	public void displayModificarViaje() {
+		
+	}
+	
 	public void displayObtenerViajesConFecha() {
 		BasicWindow window = new BasicWindow("Obtener viajes con fecha");
 
@@ -552,8 +607,14 @@ public class ClientView {
 		        return;
 		    }
 
-		    // Aquí llamas al controlador:
 		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino, fecha);
+		    if (viajes.isEmpty()) {
+		    	System.out.println("Vacia");
+		    
+		    } else {
+		    	window.setVisible(false);
+			    displayListaViajes(viajes);
+		    }
 		    
 		    window.close();
 		    displayListaViajes(viajes);
@@ -602,13 +663,12 @@ public class ClientView {
 		    String origen = origenBox.getText();
 		    String destino = destinoBox.getText();
 		    
-
-		    // Aquí llamas al controlador:
 		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino);
+		    
 		    if (viajes.isEmpty()) {
 		    	System.out.println("Vacia");
+		    
 		    } else {
-		    	System.out.println("No vacia");	
 		    	window.setVisible(false);
 			    displayListaViajes(viajes);
 		    }
@@ -620,6 +680,7 @@ public class ClientView {
 		        e.printStackTrace();
 		    }
 		}));
+		
 		panel.addComponent(new Button("Volver", () -> {
 	        window.close();
 	        try {
@@ -668,7 +729,11 @@ public class ClientView {
 	    window.setComponent(panel);
 	    textGUI.addWindowAndWait(window);
 	}
-
+	
+	// ============================================= Sección de Terminales ============================================= \\
+	
+	// def displayObtenerTerminales()
+	
 	public void displayObtenerTerminales() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de terminales");
@@ -695,7 +760,17 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
-
+	
+	// ============================================= Sección de Pasajes ============================================= \\
+	
+	// def displayGestionarPasajes()
+	
+	// def displayCrearPasajes()
+	
+	// def displayEliminarPasajes()
+	
+	// def displayConsultarPasajes()
+	
 	public void displayGestionarPasajes() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de pasajes");
@@ -733,7 +808,17 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
-
+	
+	public void displayCrearPasaje() {}
+	
+	public void displayEliminarPasaje() {}
+	
+	public void dusplayConsultarPasaje() {}
+	
+	// ============================================= Sección de Ventas ============================================= \\
+	
+	// def displayObtenerVentas()
+	
 	public void displayObtenerVentas() {
 	    clearScreen();
 	    BasicWindow window = new BasicWindow("Informe de Ventas");
@@ -763,8 +848,8 @@ public class ClientView {
 	            showMessage("Formato de fecha inválido. Use YYYY-MM-DD.");
 	            return;
 	        }
-
-	        // Consultar ventas a través del controlador/menuOptionListener
+	        
+	        // TODO: Falta agregar metodoObtenerVentas en interfaz
 	        double totalVentas =  2.0; //menuOptionListener.obtenerVentas(fechaInicio, fechaFin);
 
 	        showMessage("Ventas entre " + fechaInicio + " y " + fechaFin + ": $" + totalVentas);
@@ -789,7 +874,17 @@ public class ClientView {
 	    window.setComponent(panel);
 	    textGUI.addWindowAndWait(window);
 	}
-
+	
+	// ============================================= Sección de varios ============================================= \\
+	// def showMessage()
+	
+	// def close()
+	
+	// def clearScreen()
+	
+	// def cursorWait(int col, int row, int millis)
+	
+	// def typeln(String msg, int col, int row)
 	public void showMessage(String mensaje) {
 		MessageDialog.showMessageDialog(textGUI, "Información", mensaje);
 	}
