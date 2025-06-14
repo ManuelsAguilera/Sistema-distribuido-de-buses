@@ -1295,6 +1295,7 @@ public class ClientView {
 		TextBox asientoBox = new TextBox();
 		panel.addComponent(asientoBox);
 		
+		panel.addComponent(new EmptySpace());
 		panel.addComponent(new Button("Guardar", () -> {
 			int idViaje = Integer.parseInt(idViajeBox.getText());
 			int idPasajero = Integer.parseInt(idPasajeroBox.getText());
@@ -1330,10 +1331,6 @@ public class ClientView {
 			}
 		}));
 		
-		// Separación contra a el llenado de campos
-		panel.addComponent(new EmptySpace());
-		panel.addComponent(new EmptySpace());
-		
 		panel.addComponent(new Button("Volver", () -> {
 			window.close();
 			try {
@@ -1357,7 +1354,8 @@ public class ClientView {
 		TextBox idPasajeBox = new TextBox();
 		panel.addComponent(idPasajeBox);
 
-				
+
+		panel.addComponent(new EmptySpace());		
 		panel.addComponent(new Button("Guardar", () -> {
 			int idPasaje = Integer.parseInt(idPasajeBox.getText());
 			
@@ -1374,10 +1372,6 @@ public class ClientView {
 				e.printStackTrace();
 			}
 		}));
-		
-		// Separación contra a el llenado de campos
-		panel.addComponent(new EmptySpace());
-		panel.addComponent(new EmptySpace());
 		
 		panel.addComponent(new Button("Volver", () -> {
 			window.close();
@@ -1402,7 +1396,7 @@ public class ClientView {
 		TextBox idPasajeBox = new TextBox();
 		panel.addComponent(idPasajeBox);
 
-				
+		panel.addComponent(new EmptySpace());
 		panel.addComponent(new Button("Guardar", () -> {
 			int idPasaje = Integer.parseInt(idPasajeBox.getText());
 			
@@ -1423,10 +1417,6 @@ public class ClientView {
 				e.printStackTrace();
 			}
 		}));
-		
-		// Separación contra a el llenado de campos
-		panel.addComponent(new EmptySpace());
-		panel.addComponent(new EmptySpace());
 		
 		panel.addComponent(new Button("Volver", () -> {
 			window.close();
