@@ -169,7 +169,11 @@ public class ClientControler implements MenuOptionListener {
 
 	@Override
 	public ArrayList<Ruta> obtenerRutasDisp() {
-		// TODO Auto-generated method stub
+		try {
+			return server.obtenerRutasDisp();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

@@ -64,6 +64,7 @@ import common.Bus;
 import common.IBusManager;
 import common.Pasaje;
 import common.Pasajero;
+import common.Ruta;
 import common.Viaje;
 import server.BusManagerImpl;
 
@@ -584,10 +585,11 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 
-	// ============================================= Sección de Rutas
-	// ============================================= \\
+	// ============================================= Sección de Rutas ============================================= \\
 
 	// def displayObtenerRutas()
+	
+	// def displayListaDeRutas(ArrayList<Rutas>)
 
 	public void displayObtenerRutas() {
 		clearScreen();
@@ -596,7 +598,14 @@ public class ClientView {
 
 		Panel panel = new Panel();
 		panel.setLayoutManager(new GridLayout(1));
-
+		
+		panel.addComponent(new Button("Obtener lista de rutas", () -> {
+			window.setVisible(false);
+			displayListaRutas();
+			window.setVisible(false);
+			window.close();
+		}));
+		
 		panel.addComponent(new Button("Volver", () -> {
 			try {
 				window.close();
@@ -609,9 +618,46 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+	
+	public void displayListaRutas() {
+		BasicWindow window = new BasicWindow("Lista de Rutas");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+		
+		Panel panel = new Panel(new GridLayout(1));
+		
+		ArrayList<Ruta> rutas = menuOptionListener.obtenerRutasDisp();
+		
+		if (rutas.isEmpty()) {
+			panel.addComponent(new Label("No se encontraron rutas."));
+		} else {
+			int contador = 1;
+			for (Ruta r : rutas) {
+				panel.addComponent(new Label("Ruta #" + contador++));
+				panel.addComponent(new Label("ID Ruta        : " + r.getIdRuta()));
+				panel.addComponent(new Label("Origen         : " + r.getNombreOrigen()));
+				panel.addComponent(new Label("Destino        : " + r.getNombreDestino()));
+				panel.addComponent(new Label("Duracion       : " + r.getDuracionEstimada()));
+				panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+			}
+		}
 
-	// ============================================= Sección de Viajes
-	// ============================================= \\
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+
+	}
+
+	// ============================================= Sección de Viajes ============================================= \\
 
 	// def displayGestionarViajes()
 
