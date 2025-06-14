@@ -1136,8 +1136,8 @@ public class ClientView {
 		TextBox idTerminalBox = new TextBox();
 		panel.addComponent(idTerminalBox);
 
-				
-		panel.addComponent(new Button("Guardar", () -> {
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Consultar", () -> {
 			int idTerminal = Integer.parseInt(idTerminalBox.getText());
 			
 			PuntoIntermedio terminal = menuOptionListener.consultarPuntoIntermedio(idTerminal);
@@ -1157,9 +1157,6 @@ public class ClientView {
 				e.printStackTrace();
 			}
 		}));
-		
-		// Separación contra a el llenado de campos
-		panel.addComponent(new EmptySpace());
 		
 		panel.addComponent(new Button("Volver", () -> {
 			window.close();
@@ -1397,7 +1394,7 @@ public class ClientView {
 		panel.addComponent(idPasajeBox);
 
 		panel.addComponent(new EmptySpace());
-		panel.addComponent(new Button("Guardar", () -> {
+		panel.addComponent(new Button("Consultar", () -> {
 			int idPasaje = Integer.parseInt(idPasajeBox.getText());
 			
 			Pasaje pasaje = menuOptionListener.consultarPasaje(idPasaje);
