@@ -78,7 +78,7 @@ public class PasajeroDAO {
 	{
 		String sql = "SELECT * FROM pasajeros WHERE nombre = ? AND correo= ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 	        stmt.setString(1, nombre);
 	        stmt.setString(2, correo);
 	        ResultSet rs = stmt.executeQuery();
@@ -99,9 +99,40 @@ public class PasajeroDAO {
 	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasajero);
 	        int filasAfectadas = stmt.executeUpdate();
-	        return filasAfectadas > 0;
+
+	        if (filasAfectadas == 0) {
+	            throw new SQLException("No se eliminó ningún pasajero.");
+	        }
+
+	        return true;
 	    }
 	}
+	
+	/*
+	 public int  insert(Pasajero pasajero) throws SQLException {
+	    String sql = "INSERT INTO pasajeros (nombre, correo) VALUES (?, ?)";
+
+	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	        stmt.setString(1, pasajero.getNombre());
+	        stmt.setString(2, pasajero.getCorreo());
+	        int filasAfectadas = stmt.executeUpdate();
+	        
+	        if (filasAfectadas == 0) {
+	            throw new SQLException("No se insertó ningún pasajero.");
+	        }
+
+	        try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+	            if (generatedKeys.next()) {
+	                return generatedKeys.getInt(1);
+	            } else {
+	                throw new SQLException("No se pudo obtener el ID generado.");
+	            }
+	        }
+	    }
+		
+	}
+
+	 */
 	
 	public boolean inTable(int idPasajero) throws SQLException
 	{
