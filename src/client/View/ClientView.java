@@ -9,6 +9,7 @@ package client.View;
 // Fin
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
@@ -61,6 +62,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import client.MenuOptionListener;
 import common.Bus;
 import common.IBusManager;
+import common.Pasaje;
 import common.Pasajero;
 import common.Viaje;
 import server.BusManagerImpl;
@@ -1026,6 +1028,7 @@ public class ClientView {
 		}
 
 		panel.addComponent(new EmptySpace());
+		
 		panel.addComponent(new Button("Volver", () -> {
 			window.close();
 			try {
@@ -1039,12 +1042,13 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 
-	// ============================================= Sección de Terminales
-	// ============================================= \\
+	// ============================================= Sección de Terminales ============================================= \\
 
+	// def displayTerminales
+	
 	// def displayObtenerTerminales()
-
-	public void displayObtenerTerminales() {
+	
+	public void displayTerminales() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de terminales");
 		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
@@ -1053,8 +1057,11 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Obtener terminal", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayObtenerTerminales();
+			window.setVisible(true);
 			window.close();
+			
 		}));
 
 		panel.addComponent(new Button("Volver", () -> {
@@ -1070,9 +1077,12 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+	
+	public void displayObtenerTerminales() {
+		
+	}
 
-	// ============================================= Sección de Pasajes
-	// ============================================= \\
+	// ============================================= Sección de Pasajes ============================================= \\
 
 	// def displayGestionarPasajes()
 
@@ -1091,17 +1101,23 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Crear pasaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayCrearPasaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Eliminar pasaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarPasaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Consultar pasaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayConsultarPasaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -1121,16 +1137,220 @@ public class ClientView {
 	}
 
 	public void displayCrearPasaje() {
+		BasicWindow window = new BasicWindow("Crear pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idViaje:"));
+		TextBox idViajeBox = new TextBox();
+		panel.addComponent(idViajeBox);
+
+		panel.addComponent(new Label("idPasajero:"));
+		TextBox idPasajeroBox = new TextBox();
+		panel.addComponent(idPasajeroBox);
+
+		panel.addComponent(new Label("idOrigen:"));
+		TextBox idOrigenBox = new TextBox();
+		panel.addComponent(idOrigenBox);
+		
+		panel.addComponent(new Label("idDestino:"));
+		TextBox idDestinoBox = new TextBox();
+		panel.addComponent(idDestinoBox);
+		
+		panel.addComponent(new Label("Fecha de compra (YYYY-MM-DD + HH-MM-SS):"));
+		TextBox fechaCompraBox = new TextBox();
+		panel.addComponent(fechaCompraBox);
+		
+		panel.addComponent(new Label("Precio:"));
+		TextBox precioPasajeBox = new TextBox();
+		panel.addComponent(precioPasajeBox);
+		
+		panel.addComponent(new Label("Asiento:"));
+		TextBox asientoBox = new TextBox();
+		panel.addComponent(asientoBox);
+		
+		panel.addComponent(new Button("Guardar", () -> {
+			int idViaje = Integer.parseInt(idViajeBox.getText());
+			int idPasajero = Integer.parseInt(idPasajeroBox.getText());
+			int idOrigen = Integer.parseInt(idOrigenBox.getText());
+			int idDestino = Integer.parseInt(idDestinoBox.getText());
+			String fechaInput  = fechaCompraBox.getText();
+			float precio = Float.parseFloat(precioPasajeBox.getText());
+			int asiento = Integer.parseInt(asientoBox.getText());
+			
+			// Validar formato fecha-hora
+			LocalDateTime fechaCompra;
+			try {
+				fechaCompra = LocalDateTime.parse(fechaInput);
+				System.out.println(fechaCompra);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato inválido. Use (YYYY-MM-DD / HH-MM-SS).");
+				return;
+			}
+			
+			Pasaje pasaje = new Pasaje(idPasajero, idOrigen, idDestino, fechaCompra, precio, asiento, idViaje);
+			
+			if (menuOptionListener.crearPasaje(pasaje)) {
+				showMessage("Error en la creacion del pasaje, reintente el proceso");
+			} else {
+				showMessage("Pasaje creado exitosamente!");
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		// Separación contra a el llenado de campos
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
 	}
 
 	public void displayEliminarPasaje() {
+		BasicWindow window = new BasicWindow("Eliminar pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idPasaje:"));
+		TextBox idPasajeBox = new TextBox();
+		panel.addComponent(idPasajeBox);
+
+				
+		panel.addComponent(new Button("Guardar", () -> {
+			int idPasaje = Integer.parseInt(idPasajeBox.getText());
+			
+			if (menuOptionListener.eliminarPasaje(idPasaje)) {
+				showMessage("Error en la eliminación del pasaje, reintente el proceso");
+			} else {
+				showMessage("Pasaje elimido exitosamente!");
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		// Separación contra a el llenado de campos
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
 	}
 
-	public void dusplayConsultarPasaje() {
-	}
+	public void displayConsultarPasaje() {
+		BasicWindow window = new BasicWindow("Consultar pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
 
-	// ============================================= Sección de Ventas
-	// ============================================= \\
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idPasaje:"));
+		TextBox idPasajeBox = new TextBox();
+		panel.addComponent(idPasajeBox);
+
+				
+		panel.addComponent(new Button("Guardar", () -> {
+			int idPasaje = Integer.parseInt(idPasajeBox.getText());
+			
+			Pasaje pasaje = menuOptionListener.consultarPasaje(idPasaje);
+			
+			if (pasaje == null) {
+				showMessage("Error en la consulta del pasaje, reintente el proceso");
+			} else {
+				window.setVisible(false);
+				displayInfoPasaje(pasaje);
+				window.setVisible(true);
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		// Separación contra a el llenado de campos
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayInfoPasaje(Pasaje p) {
+		BasicWindow window = new BasicWindow("Información del pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(1));
+
+		if (p == null) {
+			panel.addComponent(new Label("No se encontro el pasaje."));
+		} else {
+			panel.addComponent(new Label("Pasaje #" + p.getIdPasaje()));
+			panel.addComponent(new Label("ID Pasajero     : " + p.getIdPasajero()));
+			panel.addComponent(new Label("ID Viaje        : " + p.getIdViaje()));
+			panel.addComponent(new Label("ID Origen       : " + p.getIdOrigen()));
+			panel.addComponent(new Label("ID Destino      : " + p.getIdDestino()));
+			panel.addComponent(new Label("Fecha compra    : " + p.getFechaCompra()));
+			panel.addComponent(new Label("Precio          : " + p.getPrecio()));
+			panel.addComponent(new Label("Asiento         : " + p.getAsiento()));
+			panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+		}
+
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	// ============================================= Sección de Ventas ============================================= \\
 
 	// def displayObtenerVentas()
 
@@ -1190,8 +1410,7 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 
-	// ============================================= Sección de varios
-	// ============================================= \\
+	// ============================================= Sección de varios ============================================= \\
 	// def showMessage()
 
 	// def close()

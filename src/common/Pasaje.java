@@ -12,7 +12,7 @@ public class Pasaje implements Serializable{
 	private LocalDateTime fechaCompra;
 	private float precio;
 	private int asiento;
-	
+	private int idViaje;
 	
 	
 	public Pasaje(int idPasajero, int idOrigen, int idDestino, LocalDateTime fechaCompra, float precio, int asiento,
@@ -27,9 +27,6 @@ public class Pasaje implements Serializable{
 		this.idViaje = idViaje;
 	}
 	
-	
-	
-	private int idViaje;
 	public int getIdViaje() {
 		return idViaje;
 	}

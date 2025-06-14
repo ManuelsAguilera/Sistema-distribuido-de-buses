@@ -175,25 +175,41 @@ public class ClientControler implements MenuOptionListener {
 
 	@Override
 	public boolean crearPasaje(Pasaje pasaje) {
-		// TODO Auto-generated method stub
+		try {
+			return server.crearPasaje(pasaje);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean eliminarPasaje(int idPasaje) {
-		// TODO Auto-generated method stub
+		try {
+			return server.eliminarPasaje(idPasaje);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean modificarPasaje(Pasaje pasaje) {
-		// TODO Auto-generated method stub
+		try {
+			return server.modificarPasaje(pasaje);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public Pasaje consultarPasaje(int idPasaje) {
-		// TODO Auto-generated method stub
+		try {
+			return server.consultarPasaje(idPasaje);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
