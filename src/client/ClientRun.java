@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import bit.datacron.linkedIn.tms.map.Location;
 import client.Controler.ClientControler;
 import client.View.ClientView;
 import common.IBusManager;

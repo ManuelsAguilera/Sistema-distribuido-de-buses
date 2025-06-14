@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bus_user
+      POSTGRES_PASSWORD: passwd
+      POSTGRES_DB: busDB
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./respaldo.sql:/docker-entrypoint-initdb.d/respaldo.sql:ro
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
