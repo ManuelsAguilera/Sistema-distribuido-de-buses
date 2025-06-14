@@ -152,7 +152,11 @@ public class ClientControler implements MenuOptionListener {
 	// Puntos intermedios
 	@Override
 	public PuntoIntermedio consultarPuntoIntermedio(int idPunto) {
-		// TODO Auto-generated method stub
+		try {
+			return server.consultarPuntoIntermedio(idPunto);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

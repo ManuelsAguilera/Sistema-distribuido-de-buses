@@ -64,6 +64,7 @@ import common.Bus;
 import common.IBusManager;
 import common.Pasaje;
 import common.Pasajero;
+import common.PuntoIntermedio;
 import common.Ruta;
 import common.Viaje;
 import server.BusManagerImpl;
@@ -178,7 +179,7 @@ public class ClientView {
 		case 3:
 			window.close();
 			// showMessage("Gestionar terminales");
-			displayObtenerTerminales();
+			displayConsultarTerminal();
 			break;
 		case 4:
 			window.close();
@@ -1092,7 +1093,9 @@ public class ClientView {
 
 	// def displayTerminales
 	
-	// def displayObtenerTerminales()
+	// def displayConsultaTerminal()
+	
+	// def displayInfoTerminal(PuntoIntermedio terminal)
 	
 	public void displayTerminales() {
 		clearScreen();
@@ -1104,7 +1107,7 @@ public class ClientView {
 
 		panel.addComponent(new Button("Obtener terminal", () -> {
 			window.setVisible(false);
-			displayObtenerTerminales();
+			displayConsultarTerminal();
 			window.setVisible(true);
 			window.close();
 			
@@ -1115,7 +1118,6 @@ public class ClientView {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}));
@@ -1124,8 +1126,85 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 	
-	public void displayObtenerTerminales() {
+	public void displayConsultarTerminal() {
+		BasicWindow window = new BasicWindow("Consultar terminal");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idTerminal:"));
+		TextBox idTerminalBox = new TextBox();
+		panel.addComponent(idTerminalBox);
+
+				
+		panel.addComponent(new Button("Guardar", () -> {
+			int idTerminal = Integer.parseInt(idTerminalBox.getText());
+			
+			PuntoIntermedio terminal = menuOptionListener.consultarPuntoIntermedio(idTerminal);
+			
+			if (terminal == null) {
+				showMessage("Error en la consulta del pasaje, reintente el proceso");
+			} else {
+				window.setVisible(false);
+				displayInfoTerminal(terminal);
+				window.setVisible(true);
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
 		
+		// Separación contra a el llenado de campos
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayInfoTerminal(PuntoIntermedio t) {
+		BasicWindow window = new BasicWindow("Información del terminal");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(1));
+
+		if (t == null) {
+			panel.addComponent(new Label("No se encontro el terminal."));
+		} else {
+			panel.addComponent(new Label("ID Terminal     : " + t.getIdPunto()));
+			panel.addComponent(new Label("ID Nombre        : " + t.getNombre()));
+			panel.addComponent(new Label("ID Ruta    : " + t.getIdRuta()));
+			panel.addComponent(new Label("Latitud        : " + t.getLat()));
+			panel.addComponent(new Label("Longitud      : " + t.getLon()));
+			panel.addComponent(new Label("Orden          : " + t.getOrden()));
+			panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+		}
+
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
 	}
 
 	// ============================================= Sección de Pasajes ============================================= \\
