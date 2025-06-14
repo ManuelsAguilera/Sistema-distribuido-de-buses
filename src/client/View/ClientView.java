@@ -9,12 +9,14 @@ package client.View;
 // Fin
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,11 +62,16 @@ import com.googlecode.lanterna.terminal.Terminal;
 import client.MenuOptionListener;
 import common.Bus;
 import common.IBusManager;
+import common.Pasaje;
+import common.Pasajero;
+import common.PuntoIntermedio;
+import common.Ruta;
 import common.Viaje;
 import server.BusManagerImpl;
 
 public class ClientView {
 
+	// Atributos
 	private Screen screen;
 	private WindowBasedTextGUI textGUI;
 	private BasicWindow window;
@@ -72,12 +79,12 @@ public class ClientView {
 	private TextColor foreC, backC;
 	private String clientName = "Vicente Rosales";
 
-	private IBusManager server;
-
+	// Controlador del MVC
 	public void setMenuOptionListener(MenuOptionListener listener) {
 		this.menuOptionListener = listener;
 	}
 
+	// Constructor
 	public ClientView() throws IOException, NotBoundException {
 		foreC = ANSI.YELLOW;
 		backC = ANSI.BLACK;
@@ -88,6 +95,14 @@ public class ClientView {
 		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
 	}
 
+	// ============================================= Sección de Vista principal
+	// ============================================= \\
+
+	// def initUI()
+
+	// def displayMenu()
+
+	// def onMenuOptionSelected()
 	public void initUI() throws IOException {
 		screen = new DefaultTerminalFactory().createScreen();
 		foreC = TextColor.ANSI.YELLOW;
@@ -98,8 +113,6 @@ public class ClientView {
 	@SuppressWarnings("deprecation")
 	public void displayMenu() throws IOException {
 		TerminalSize terminalSize = screen.getTerminalSize();
-
-		// Layout de 3 columnas para los paneles
 		Panel mainPanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
 		// Header
@@ -115,7 +128,7 @@ public class ClientView {
 		contentPanel.addComponent(new Label("Métodos").setForegroundColor(TextColor.ANSI.YELLOW));
 		contentPanel.addComponent(new Label("Vista").setForegroundColor(TextColor.ANSI.YELLOW));
 
-		// Botones que representan funcionalidades, puedes agregar más
+		// Nombres de los botones
 		String[] opciones = { "Gestionar buses", "Gestionar pasajes", "Gestionar terminales", "Gestionar viajes",
 				"Gestionar rutas", "Gestionar pasajeros", "Obtener informe de ventas", "Salir" };
 
@@ -166,7 +179,7 @@ public class ClientView {
 		case 3:
 			window.close();
 			// showMessage("Gestionar terminales");
-			displayObtenerTerminales();
+			displayConsultarTerminal();
 			break;
 		case 4:
 			window.close();
@@ -185,8 +198,7 @@ public class ClientView {
 			break;
 		case 7:
 			window.close();
-			showMessage("Obtener info ventas");
-			// displayObtenerVentas();
+			displayObtenerVentas();
 			break;
 		case 8: // Salir
 			try {
@@ -200,6 +212,17 @@ public class ClientView {
 		}
 		System.out.println("Opción seleccionada: " + opcion);
 	}
+
+	// ============================================= Sección de Pasajeros
+	// ============================================= \\
+
+	// def displayGestionarPasajero()
+
+	// def displayCrearPasajero()
+
+	// def displayEliminarPasajero()
+
+	// def displayModificarPasajero()
 
 	public void displayGestionarPasajero() {
 		clearScreen();
@@ -217,12 +240,16 @@ public class ClientView {
 		}));
 
 		panel.addComponent(new Button("Eliminar pasajero", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarPasajero();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Modificar pasajero", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayModificarPasajero();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -258,8 +285,9 @@ public class ClientView {
 			String nombre = nombreBox.getText();
 			String correo = correoBox.getText();
 
-			// Aquí llamas al controlador:
-			menuOptionListener.onCrearPasajero(nombre, correo);
+			Pasajero pasajero = new Pasajero(nombre, correo);
+
+			menuOptionListener.crearPasajero(pasajero);
 
 			window.close();
 			showMessage("Pasajero creado.");
@@ -270,9 +298,116 @@ public class ClientView {
 			}
 		}));
 
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+
+	public void displayEliminarPasajero() {
+		clearScreen();
+		BasicWindow window = new BasicWindow("Eliminar Pasajero");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("id Pasajero:"));
+		TextBox idPasajeroBox = new TextBox();
+		panel.addComponent(idPasajeroBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String idPasajero = idPasajeroBox.getText();
+
+			menuOptionListener.eliminarPasajero(Integer.parseInt(idPasajero));
+
+			window.close();
+			showMessage("Pasajero Eliminado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	public void displayModificarPasajero() {
+		BasicWindow window = new BasicWindow("Modificar Pasajero");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("id Pasajero:"));
+		TextBox idPasajeroBox = new TextBox();
+		panel.addComponent(idPasajeroBox);
+
+		panel.addComponent(new Label("Nombre:"));
+		TextBox nombreBox = new TextBox();
+		panel.addComponent(nombreBox);
+
+		panel.addComponent(new Label("Correo:"));
+		TextBox correoBox = new TextBox();
+		panel.addComponent(correoBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			int idPasajero = Integer.parseInt(idPasajeroBox.getText());
+			String nombre = nombreBox.getText();
+			String correo = correoBox.getText();
+
+			Pasajero pasajeroModificado = new Pasajero(idPasajero, nombre, correo);
+
+			menuOptionListener.modificarPasajero(idPasajero, pasajeroModificado);
+
+			window.close();
+			showMessage("Pasajero modificado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	// ============================================= Sección de buses
+	// ============================================= \\
+
+	// def displayGestionarBuses()
+
+	// def displayCrearBus()
+
+	// def displayEliminarBus()
+
+	// def displayModificarBus()
 
 	public void displayGestionarBuses() {
 		clearScreen();
@@ -283,17 +418,23 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Crear Bus", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayCrearBus();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Eliminar Bus", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarBus();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Modificar Bus", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayModificarBus();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -302,7 +443,6 @@ public class ClientView {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}));
@@ -310,6 +450,147 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+
+	public void displayCrearBus() {
+		BasicWindow window = new BasicWindow("Crear Bus");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Matricula:"));
+		TextBox matriculaBox = new TextBox();
+		panel.addComponent(matriculaBox);
+
+		panel.addComponent(new Label("Modelo:"));
+		TextBox modeloBox = new TextBox();
+		panel.addComponent(modeloBox);
+
+		panel.addComponent(new Label("Asientos totales:"));
+		TextBox asientosTotalesBox = new TextBox();
+		panel.addComponent(asientosTotalesBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String matricula = matriculaBox.getText();
+			String modelo = modeloBox.getText();
+			int asientosTotales = Integer.parseInt(asientosTotalesBox.getText());
+
+			Bus bus = new Bus(matricula, modelo, asientosTotales);
+
+			menuOptionListener.crearBus(bus);
+
+			window.close();
+			showMessage("Bus creado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	public void displayEliminarBus() {
+		BasicWindow window = new BasicWindow("Eliminar Bus");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Matricula:"));
+		TextBox matriculaBox = new TextBox();
+		panel.addComponent(matriculaBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String matricula = matriculaBox.getText();
+
+			menuOptionListener.eliminarBus(matricula);
+
+			window.close();
+			showMessage("Bus eliminado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	public void displayModificarBus() {
+		BasicWindow window = new BasicWindow("Modificar Bus");
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Matricula:"));
+		TextBox matriculaBox = new TextBox();
+		panel.addComponent(matriculaBox);
+
+		panel.addComponent(new Label("Modelo:"));
+		TextBox modeloBox = new TextBox();
+		panel.addComponent(modeloBox);
+
+		panel.addComponent(new Label("Asientos totales:"));
+		TextBox asientosTotalesBox = new TextBox();
+		panel.addComponent(asientosTotalesBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String matricula = matriculaBox.getText();
+			String modelo = modeloBox.getText();
+			int asientosTotales = Integer.parseInt(asientosTotalesBox.getText());
+
+			Bus bus = new Bus(matricula, modelo, asientosTotales);
+
+			menuOptionListener.modificarBus(bus);
+
+			window.close();
+			showMessage("Bus Modificado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	// ============================================= Sección de Rutas ============================================= \\
+
+	// def displayObtenerRutas()
+	
+	// def displayListaDeRutas(ArrayList<Rutas>)
 
 	public void displayObtenerRutas() {
 		clearScreen();
@@ -318,13 +599,19 @@ public class ClientView {
 
 		Panel panel = new Panel();
 		panel.setLayoutManager(new GridLayout(1));
-
+		
+		panel.addComponent(new Button("Obtener lista de rutas", () -> {
+			window.setVisible(false);
+			displayListaRutas();
+			window.setVisible(false);
+			window.close();
+		}));
+		
 		panel.addComponent(new Button("Volver", () -> {
 			try {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}));
@@ -332,6 +619,60 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+	
+	public void displayListaRutas() {
+		BasicWindow window = new BasicWindow("Lista de Rutas");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+		
+		Panel panel = new Panel(new GridLayout(1));
+		
+		ArrayList<Ruta> rutas = menuOptionListener.obtenerRutasDisp();
+		
+		if (rutas.isEmpty()) {
+			panel.addComponent(new Label("No se encontraron rutas."));
+		} else {
+			int contador = 1;
+			for (Ruta r : rutas) {
+				panel.addComponent(new Label("Ruta #" + contador++));
+				panel.addComponent(new Label("ID Ruta        : " + r.getIdRuta()));
+				panel.addComponent(new Label("Origen         : " + r.getNombreOrigen()));
+				panel.addComponent(new Label("Destino        : " + r.getNombreDestino()));
+				panel.addComponent(new Label("Duracion       : " + r.getDuracionEstimada()));
+				panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+			}
+		}
+
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+
+	}
+
+	// ============================================= Sección de Viajes ============================================= \\
+
+	// def displayGestionarViajes()
+
+	// def displayCrearViaje()
+
+	// def displayEliminarViaje()
+
+	// def displayModificarViaje()
+
+	// def displayObtenerViajesConFecha()
+
+	// def displayObtenerViajesSinFecha()
+
+	// def displayListaViajes()
 
 	public void displayGestionarViajes() {
 		clearScreen();
@@ -342,22 +683,23 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Crear viaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayCrearViaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Eliminar viaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarViaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
-		panel.addComponent(new Button("Obtener viaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
-			window.close();
-		}));
-
-		panel.addComponent(new Button("Obtener viaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+		panel.addComponent(new Button("Modificar viaje", () -> {
+			window.setVisible(false);
+			displayModificarViaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -381,7 +723,211 @@ public class ClientView {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	public void displayCrearViaje() {
+		BasicWindow window = new BasicWindow("Creación de viaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("origen:"));
+		TextBox origenBox = new TextBox();
+		panel.addComponent(origenBox);
+
+		panel.addComponent(new Label("destino:"));
+		TextBox destinoBox = new TextBox();
+		panel.addComponent(destinoBox);
+
+		panel.addComponent(new Label("Ingrese fecha (YYYY-MM-DD):"));
+		TextBox fechaBox = new TextBox();
+		panel.addComponent(fechaBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String origen = origenBox.getText();
+			String destino = destinoBox.getText();
+			String fechaInput = fechaBox.getText();
+			LocalDate fecha;
+
+			fecha = LocalDate.parse(fechaInput);
+			try {
+				fecha = LocalDate.parse(fechaInput);
+				System.out.println(fecha);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato inválido. Use (YYYY-MM-DD).");
+				return;
+			}
+
+			/*
+			 * private int idViaje; private int idRuta; private String matricula; private
+			 * LocalDate fecha; private LocalTime salida; private LocalTime salidaEstimada;
+			 * 
+			 */
+
+			// TODO: falta implementar metodo sin id para crear Viaje y ruta
+			// Viaje viajeNuevo = new Viaje();
+			// Ruta ruta = new Ruta();
+
+			menuOptionListener.crearViaje(null, null);
+
+			window.close();
+			showMessage("Viaje creado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+
+	}
+
+	public void displayEliminarViaje() {
+		BasicWindow window = new BasicWindow("Eliminar de viaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("idViaje:"));
+		TextBox idViajeBox = new TextBox();
+		panel.addComponent(idViajeBox);
+
+		panel.addComponent(new Label("idRuta:"));
+		TextBox idRutaBox = new TextBox();
+		panel.addComponent(idRutaBox);
+
+		panel.addComponent(new Label("Ingrese fecha (YYYY-MM-DD):"));
+		TextBox fechaBox = new TextBox();
+		panel.addComponent(fechaBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String idViaje = idViajeBox.getText();
+			String idRuta = idRutaBox.getText();
+			String fechaInput = fechaBox.getText();
+			LocalDate fecha;
+
+			fecha = LocalDate.parse(fechaInput);
+			try {
+				fecha = LocalDate.parse(fechaInput);
+				System.out.println(fecha);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato inválido. Use (YYYY-MM-DD).");
+				return;
+			}
+
+			/*
+			 * private int idViaje; private int idRuta; private String matricula; private
+			 * LocalDate fecha; private LocalTime salida; private LocalTime salidaEstimada;
+			 * 
+			 */
+
+			// TODO: falta implementar metodo sin id para crear Viaje y ruta
+			// Viaje viajeNuevo = new Viaje();
+			// Ruta ruta = new Ruta();
+
+			menuOptionListener.eliminarViaje(null);
+
+			window.close();
+			showMessage("Viaje creado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	public void displayModificarViaje() {
+		BasicWindow window = new BasicWindow("Modificación de viaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("origen:"));
+		TextBox origenBox = new TextBox();
+		panel.addComponent(origenBox);
+
+		panel.addComponent(new Label("destino:"));
+		TextBox destinoBox = new TextBox();
+		panel.addComponent(destinoBox);
+
+		panel.addComponent(new Label("Ingrese fecha (YYYY-MM-DD):"));
+		TextBox fechaBox = new TextBox();
+		panel.addComponent(fechaBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			String origen = origenBox.getText();
+			String destino = destinoBox.getText();
+			String fechaInput = fechaBox.getText();
+			LocalDate fecha;
+
+			fecha = LocalDate.parse(fechaInput);
+			try {
+				fecha = LocalDate.parse(fechaInput);
+				System.out.println(fecha);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato inválido. Use (YYYY-MM-DD).");
+				return;
+			}
+
+			/*
+			 * private int idViaje; private int idRuta; private String matricula; private
+			 * LocalDate fecha; private LocalTime salida; private LocalTime salidaEstimada;
+			 * 
+			 */
+
+			// TODO: falta implementar metodo sin id para crear Viaje y ruta
+			// Viaje viajeNuevo = new Viaje();
+			// Ruta ruta = new Ruta();
+
+			menuOptionListener.modificarBus(null);
+
+			window.close();
+			showMessage("Viaje modificado!");
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			try {
+				window.close();
+				displayMenu();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}));
@@ -402,59 +948,61 @@ public class ClientView {
 		panel.addComponent(new Label("Ingrese destino:"));
 		TextBox destinoBox = new TextBox();
 		panel.addComponent(destinoBox);
-		
+
 		panel.addComponent(new Label("Ingrese fecha (YYYY-MM-DD):"));
 		TextBox fechaBox = new TextBox();
 		panel.addComponent(fechaBox);
 
 		panel.addComponent(new EmptySpace());
 		panel.addComponent(new Button("Guardar", () -> {
-		    String origen = origenBox.getText();
-		    String destino = destinoBox.getText();
-		    String inputFecha = fechaBox.getText();
-		    LocalDate fecha;
-		    System.out.println("chao:"+inputFecha);
-		    fecha = LocalDate.parse(inputFecha);
-	        System.out.println("ola:"+fecha);
-		    try {
-		        fecha = LocalDate.parse(inputFecha);
-		        System.out.println(fecha);
-		    } catch (DateTimeParseException e) {
-		        showMessage("Formato inválido. Use (YYYY-MM-DD).");
-		        return;
-		    }
+			String origen = origenBox.getText();
+			String destino = destinoBox.getText();
+			String inputFecha = fechaBox.getText();
+			LocalDate fecha;
 
-		    // Aquí llamas al controlador:
-		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino, fecha);
+			fecha = LocalDate.parse(inputFecha);
+			try {
+				fecha = LocalDate.parse(inputFecha);
+				System.out.println(fecha);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato inválido. Use (YYYY-MM-DD).");
+				return;
+			}
 
-		    if (viajes.isEmpty()) {
-		        showMessage("No se encontraron viajes para el origen y destino especificados.");
-		    } else {
-		        for (Viaje v : viajes) {
-		            System.out.println("----- Viaje -----");
-		            System.out.println("ID de viaje       : " + v.getidViaje());
-		            System.out.println("ID de ruta        : " + v.getIdRuta());
-		            System.out.println("Matrícula del bus : " + v.getMatricula());
-		            System.out.println("Fecha             : " + v.getFecha());
-		            System.out.println("Hora de salida    : " + v.getSalida());
-		            System.out.println("Salida estimada   : " + v.getSalidaEstimada());
-		            System.out.println("------------------\n");
-		        }
-		    }
+			ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino, fecha);
+			if (viajes.isEmpty()) {
+				System.out.println("Vacia");
 
-		    window.close();
-		    showMessage("Pasajero creado.");
-		    try {
-		        displayMenu();
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
+			} else {
+				window.setVisible(false);
+				displayListaViajes(viajes);
+			}
+
+			window.close();
+			displayListaViajes(viajes);
+
+			window.close();
+
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}));
 
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
-	
+
 	public void displayObtenerViajesSinFecha() {
 		BasicWindow window = new BasicWindow("Obtener viajes sin fecha");
 
@@ -467,46 +1015,89 @@ public class ClientView {
 		panel.addComponent(new Label("Ingrese destino:"));
 		TextBox destinoBox = new TextBox();
 		panel.addComponent(destinoBox);
-		
-		
+
 		panel.addComponent(new EmptySpace());
 		panel.addComponent(new Button("Guardar", () -> {
-		    String origen = origenBox.getText();
-		    String destino = destinoBox.getText();
-		    
+			String origen = origenBox.getText();
+			String destino = destinoBox.getText();
 
-		    // Aquí llamas al controlador:
-		    ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino);
+			ArrayList<Viaje> viajes = menuOptionListener.obtenerViaje(origen, destino);
 
-		    if (viajes.isEmpty()) {
-		        showMessage("No se encontraron viajes para el origen y destino especificados.");
-		    } else {
-		        for (Viaje v : viajes) {
-		            System.out.println("----- Viaje -----");
-		            System.out.println("ID de viaje       : " + v.getidViaje());
-		            System.out.println("ID de ruta        : " + v.getIdRuta());
-		            System.out.println("Matrícula del bus : " + v.getMatricula());
-		            System.out.println("Fecha             : " + v.getFecha());
-		            System.out.println("Hora de salida    : " + v.getSalida());
-		            System.out.println("Salida estimada   : " + v.getSalidaEstimada());
-		            System.out.println("------------------\n");
-		        }
-		    }
+			if (viajes.isEmpty()) {
+				System.out.println("Vacia");
 
-		    window.close();
-		    showMessage("Viajes mostrados por consola exitosamente");
-		    try {
-		        displayMenu();
-		    } catch (IOException e) {
-		        e.printStackTrace();
-		    }
+			} else {
+				window.setVisible(false);
+				displayListaViajes(viajes);
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}));
 
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
 
-	public void displayObtenerTerminales() {
+	public void displayListaViajes(ArrayList<Viaje> viajes) {
+		BasicWindow window = new BasicWindow("Lista de Viajes");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(1));
+
+		if (viajes.isEmpty()) {
+			panel.addComponent(new Label("No se encontraron viajes."));
+		} else {
+			int contador = 1;
+			for (Viaje v : viajes) {
+				panel.addComponent(new Label("Viaje #" + contador++));
+				panel.addComponent(new Label("ID Viaje       : " + v.getidViaje()));
+				panel.addComponent(new Label("ID Ruta        : " + v.getIdRuta()));
+				panel.addComponent(new Label("Matrícula Bus  : " + v.getMatricula()));
+				panel.addComponent(new Label("Fecha          : " + v.getFecha()));
+				panel.addComponent(new Label("Hora Salida    : " + v.getSalida()));
+				panel.addComponent(new Label("Salida Estimada: " + v.getSalidaEstimada()));
+				panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+			}
+		}
+
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	// ============================================= Sección de Terminales ============================================= \\
+
+	// def displayTerminales
+	
+	// def displayConsultaTerminal()
+	
+	// def displayInfoTerminal(PuntoIntermedio terminal)
+	
+	public void displayTerminales() {
 		clearScreen();
 		BasicWindow window = new BasicWindow("Gestion de terminales");
 		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
@@ -515,8 +1106,11 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Obtener terminal", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayConsultarTerminal();
+			window.setVisible(true);
 			window.close();
+			
 		}));
 
 		panel.addComponent(new Button("Volver", () -> {
@@ -524,7 +1118,6 @@ public class ClientView {
 				window.close();
 				displayMenu();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}));
@@ -532,6 +1125,94 @@ public class ClientView {
 		window.setComponent(panel);
 		textGUI.addWindowAndWait(window);
 	}
+	
+	public void displayConsultarTerminal() {
+		BasicWindow window = new BasicWindow("Consultar terminal");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idTerminal:"));
+		TextBox idTerminalBox = new TextBox();
+		panel.addComponent(idTerminalBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Consultar", () -> {
+			int idTerminal = Integer.parseInt(idTerminalBox.getText());
+			
+			PuntoIntermedio terminal = menuOptionListener.consultarPuntoIntermedio(idTerminal);
+			
+			if (terminal == null) {
+				showMessage("Error en la consulta del pasaje, reintente el proceso");
+			} else {
+				window.setVisible(false);
+				displayInfoTerminal(terminal);
+				window.setVisible(true);
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayInfoTerminal(PuntoIntermedio t) {
+		BasicWindow window = new BasicWindow("Información del terminal");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(1));
+
+		if (t == null) {
+			panel.addComponent(new Label("No se encontro el terminal."));
+		} else {
+			panel.addComponent(new Label("ID Terminal     : " + t.getIdPunto()));
+			panel.addComponent(new Label("ID Nombre        : " + t.getNombre()));
+			panel.addComponent(new Label("ID Ruta    : " + t.getIdRuta()));
+			panel.addComponent(new Label("Latitud        : " + t.getLat()));
+			panel.addComponent(new Label("Longitud      : " + t.getLon()));
+			panel.addComponent(new Label("Orden          : " + t.getOrden()));
+			panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+		}
+
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	// ============================================= Sección de Pasajes ============================================= \\
+
+	// def displayGestionarPasajes()
+
+	// def displayCrearPasajes()
+
+	// def displayEliminarPasajes()
+
+	// def displayConsultarPasajes()
 
 	public void displayGestionarPasajes() {
 		clearScreen();
@@ -542,17 +1223,23 @@ public class ClientView {
 		panel.setLayoutManager(new GridLayout(1));
 
 		panel.addComponent(new Button("Crear pasaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(31);
+			window.setVisible(false);
+			displayCrearPasaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Eliminar pasaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(32);
+			window.setVisible(false);
+			displayEliminarPasaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
 		panel.addComponent(new Button("Consultar pasaje", () -> {
-			// menuOptionListener.onMenuOptionSelected(33);
+			window.setVisible(false);
+			displayConsultarPasaje();
+			window.setVisible(true);
 			window.close();
 		}));
 
@@ -571,10 +1258,280 @@ public class ClientView {
 		textGUI.addWindowAndWait(window);
 	}
 
-	public void displayObtenerVentas() {
+	public void displayCrearPasaje() {
+		BasicWindow window = new BasicWindow("Crear pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
 
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idViaje:"));
+		TextBox idViajeBox = new TextBox();
+		panel.addComponent(idViajeBox);
+
+		panel.addComponent(new Label("idPasajero:"));
+		TextBox idPasajeroBox = new TextBox();
+		panel.addComponent(idPasajeroBox);
+
+		panel.addComponent(new Label("idOrigen:"));
+		TextBox idOrigenBox = new TextBox();
+		panel.addComponent(idOrigenBox);
+		
+		panel.addComponent(new Label("idDestino:"));
+		TextBox idDestinoBox = new TextBox();
+		panel.addComponent(idDestinoBox);
+		
+		panel.addComponent(new Label("Fecha de compra (YYYY-MM-DD + HH-MM-SS):"));
+		TextBox fechaCompraBox = new TextBox();
+		panel.addComponent(fechaCompraBox);
+		
+		panel.addComponent(new Label("Precio:"));
+		TextBox precioPasajeBox = new TextBox();
+		panel.addComponent(precioPasajeBox);
+		
+		panel.addComponent(new Label("Asiento:"));
+		TextBox asientoBox = new TextBox();
+		panel.addComponent(asientoBox);
+		
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Guardar", () -> {
+			int idViaje = Integer.parseInt(idViajeBox.getText());
+			int idPasajero = Integer.parseInt(idPasajeroBox.getText());
+			int idOrigen = Integer.parseInt(idOrigenBox.getText());
+			int idDestino = Integer.parseInt(idDestinoBox.getText());
+			String fechaInput  = fechaCompraBox.getText();
+			float precio = Float.parseFloat(precioPasajeBox.getText());
+			int asiento = Integer.parseInt(asientoBox.getText());
+			
+			// Validar formato fecha-hora
+			LocalDateTime fechaCompra;
+			try {
+				fechaCompra = LocalDateTime.parse(fechaInput);
+				System.out.println(fechaCompra);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato inválido. Use (YYYY-MM-DD / HH-MM-SS).");
+				return;
+			}
+			
+			Pasaje pasaje = new Pasaje(idPasajero, idOrigen, idDestino, fechaCompra, precio, asiento, idViaje);
+			
+			if (menuOptionListener.crearPasaje(pasaje)) {
+				showMessage("Error en la creacion del pasaje, reintente el proceso");
+			} else {
+				showMessage("Pasaje creado exitosamente!");
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
 	}
 
+	public void displayEliminarPasaje() {
+		BasicWindow window = new BasicWindow("Eliminar pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idPasaje:"));
+		TextBox idPasajeBox = new TextBox();
+		panel.addComponent(idPasajeBox);
+
+
+		panel.addComponent(new EmptySpace());		
+		panel.addComponent(new Button("Guardar", () -> {
+			int idPasaje = Integer.parseInt(idPasajeBox.getText());
+			
+			if (menuOptionListener.eliminarPasaje(idPasaje)) {
+				showMessage("Error en la eliminación del pasaje, reintente el proceso");
+			} else {
+				showMessage("Pasaje elimido exitosamente!");
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	public void displayConsultarPasaje() {
+		BasicWindow window = new BasicWindow("Consultar pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese idPasaje:"));
+		TextBox idPasajeBox = new TextBox();
+		panel.addComponent(idPasajeBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Consultar", () -> {
+			int idPasaje = Integer.parseInt(idPasajeBox.getText());
+			
+			Pasaje pasaje = menuOptionListener.consultarPasaje(idPasaje);
+			
+			if (pasaje == null) {
+				showMessage("Error en la consulta del pasaje, reintente el proceso");
+			} else {
+				window.setVisible(false);
+				displayInfoPasaje(pasaje);
+				window.setVisible(true);
+			}
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	
+	public void displayInfoPasaje(Pasaje p) {
+		BasicWindow window = new BasicWindow("Información del pasaje");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(1));
+
+		if (p == null) {
+			panel.addComponent(new Label("No se encontro el pasaje."));
+		} else {
+			panel.addComponent(new Label("Pasaje #" + p.getIdPasaje()));
+			panel.addComponent(new Label("ID Pasajero     : " + p.getIdPasajero()));
+			panel.addComponent(new Label("ID Viaje        : " + p.getIdViaje()));
+			panel.addComponent(new Label("ID Origen       : " + p.getIdOrigen()));
+			panel.addComponent(new Label("ID Destino      : " + p.getIdDestino()));
+			panel.addComponent(new Label("Fecha compra    : " + p.getFechaCompra()));
+			panel.addComponent(new Label("Precio          : " + p.getPrecio()));
+			panel.addComponent(new Label("Asiento         : " + p.getAsiento()));
+			panel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
+		}
+
+		panel.addComponent(new EmptySpace());
+		
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+	// ============================================= Sección de Ventas ============================================= \\
+
+	// def displayObtenerVentas()
+
+	public void displayObtenerVentas() {
+		clearScreen();
+		BasicWindow window = new BasicWindow("Informe de Ventas");
+		window.setHints(Set.of(Window.Hint.CENTERED, Window.Hint.FIT_TERMINAL_WINDOW));
+
+		Panel panel = new Panel(new GridLayout(2));
+
+		panel.addComponent(new Label("Ingrese fecha inicio (YYYY-MM-DD):"));
+		TextBox fechaInicioBox = new TextBox();
+		panel.addComponent(fechaInicioBox);
+
+		panel.addComponent(new Label("Ingrese fecha fin (YYYY-MM-DD):"));
+		TextBox fechaFinBox = new TextBox();
+		panel.addComponent(fechaFinBox);
+
+		panel.addComponent(new EmptySpace());
+		panel.addComponent(new Button("Consultar", () -> {
+			String inicioStr = fechaInicioBox.getText();
+			String finStr = fechaFinBox.getText();
+
+			LocalDate fechaInicio;
+			LocalDate fechaFin;
+			try {
+				fechaInicio = LocalDate.parse(inicioStr);
+				fechaFin = LocalDate.parse(finStr);
+			} catch (DateTimeParseException e) {
+				showMessage("Formato de fecha inválido. Use YYYY-MM-DD.");
+				return;
+			}
+
+			// TODO: Falta agregar metodoObtenerVentas en interfaz
+			double totalVentas = 2.0; // menuOptionListener.obtenerVentas(fechaInicio, fechaFin);
+
+			showMessage("Ventas entre " + fechaInicio + " y " + fechaFin + ": $" + totalVentas);
+
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		panel.addComponent(new Button("Volver", () -> {
+			window.close();
+			try {
+				displayMenu();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
+
+		window.setComponent(panel);
+		textGUI.addWindowAndWait(window);
+	}
+
+	// ============================================= Sección de varios ============================================= \\
+	// def showMessage()
+
+	// def close()
+
+	// def clearScreen()
+
+	// def cursorWait(int col, int row, int millis)
+
+	// def typeln(String msg, int col, int row)
 	public void showMessage(String mensaje) {
 		MessageDialog.showMessageDialog(textGUI, "Información", mensaje);
 	}
