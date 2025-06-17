@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import common.Pasaje;
+import server.DB;
 
 
 public class PasajeDAO {
@@ -24,7 +25,8 @@ public class PasajeDAO {
 	public boolean inTable(int idPasaje) throws SQLException {
 		String sql = "SELECT * FROM pasajes WHERE pasaje_id = ?";
 		
-		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasaje);
 	        ResultSet rs = stmt.executeQuery();
 
@@ -41,7 +43,8 @@ public class PasajeDAO {
 	    String sql = "INSERT INTO pasajes (viaje_id, pasajero_id, punto_origen_id, punto_destino_id, precio, fecha_compra, asiento) " +
 	                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, pasaje.getIdViaje());
 	        stmt.setInt(2, pasaje.getIdPasajero());
 	        stmt.setInt(3, pasaje.getIdOrigen());
@@ -59,7 +62,8 @@ public class PasajeDAO {
 	                 "punto_destino_id = ?, precio = ?, fecha_compra = ?, asiento = ? " +
 	                 "WHERE pasaje_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, pasaje.getIdViaje());
 	        stmt.setInt(2, pasaje.getIdPasajero());
 	        stmt.setInt(3, pasaje.getIdOrigen());
@@ -78,7 +82,8 @@ public class PasajeDAO {
 	public Boolean delete(int idPasaje) throws SQLException {
 	    String sql = "DELETE FROM pasajes WHERE pasaje_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasaje);
 	        int filas = stmt.executeUpdate();
 	        return filas > 0;
@@ -92,7 +97,8 @@ public class PasajeDAO {
 	public Pasaje getPasaje(int idPasaje) throws SQLException {
 	    String sql = "SELECT * FROM pasajes WHERE pasaje_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasaje);
 	        ResultSet rs = stmt.executeQuery();
 
@@ -117,7 +123,8 @@ public class PasajeDAO {
 	{
 		String sql = "SELECT SUM(precio) FROM pasajes ";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        
 	        var rs = stmt.executeQuery(); 
 	        if (rs.next())

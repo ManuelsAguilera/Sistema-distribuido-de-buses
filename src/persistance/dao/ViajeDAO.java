@@ -50,7 +50,8 @@ public class ViajeDAO {
 				+ "ORDER BY v.fecha;";
 
 		
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idViaje);
 	        var rs = stmt.executeQuery();
 	        
@@ -62,7 +63,8 @@ public class ViajeDAO {
 	public Viaje getViaje(int idViaje) throws SQLException {
 	    String sql = "SELECT * FROM viajes WHERE viaje_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idViaje);
 	        var rs = stmt.executeQuery();
 
@@ -83,7 +85,8 @@ public class ViajeDAO {
 	public boolean inTable(int idViaje) throws SQLException {
 	    String sql = "SELECT * FROM viajes WHERE viaje_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idViaje);
 	        var rs = stmt.executeQuery();
 
@@ -99,7 +102,8 @@ public class ViajeDAO {
 	    String sql = "INSERT INTO viajes (ruta_id, matricula, fecha, hora_salida, hora_salida_estimada) " +
 	                 "VALUES (?, ?, ?, ?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, viaje.getIdRuta());
 	        stmt.setString(2, viaje.getMatricula());
 	        stmt.setDate(3, Date.valueOf(viaje.getFecha()));               
@@ -127,7 +131,8 @@ public class ViajeDAO {
 	    String sql = "UPDATE viajes SET ruta_id = ?, matricula = ?, fecha = ?, hora_salida = ?, hora_salida_estimada = ? " +
 	                 "WHERE viaje_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, viaje.getIdRuta());
 	        stmt.setString(2, viaje.getMatricula());
 	        stmt.setDate(3, Date.valueOf(viaje.getFecha()));
@@ -158,7 +163,8 @@ public class ViajeDAO {
 				+ "    po.orden < pd.orden\n"
 				+ "ORDER BY v.fecha;";
 		
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, Origen);
 	        stmt.setString(2,Destino);
 	        var rs = stmt.executeQuery();

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import common.PuntoIntermedio;
+import server.DB;
 
 public class PuntoIntermedioDAO {
 
@@ -24,7 +25,8 @@ public class PuntoIntermedioDAO {
 	{
 		String sql = "SELECT * FROM puntosintermedios WHERE puntosintermedios.punto_id = ?";
 		
-		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPunto);
 	        ResultSet rs = stmt.executeQuery();
 	        
@@ -50,7 +52,8 @@ public class PuntoIntermedioDAO {
 	{
 		String sql = "SELECT * FROM puntosintermedios WHERE puntosintermedios.punto_id = ?";
 		
-		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPunto);
 	        ResultSet rs = stmt.executeQuery();
 	        
@@ -68,7 +71,8 @@ public class PuntoIntermedioDAO {
 	    String sql = "INSERT INTO puntosintermedios (punto_id, ruta_id, nombre_punto, lat, long, orden, hora_salida, hora_llegada) \n" +
 	                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, punto.getIdPunto());
 	        stmt.setInt(2, punto.getIdRuta());
 	        stmt.setString(3, punto.getNombre());
@@ -87,7 +91,8 @@ public class PuntoIntermedioDAO {
 	    String sql = "UPDATE puntosintermedios SET ruta_id = ?, nombre_punto = ?, lat = ?, long = ?, orden = ?\n" +
 	                 "WHERE punto_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, punto.getIdRuta());
 	        stmt.setString(2, punto.getNombre());
 	        stmt.setFloat(3, punto.getLat());
@@ -104,7 +109,8 @@ public class PuntoIntermedioDAO {
 	public boolean delete(int idPunto) throws SQLException {
 	    String sql = "DELETE FROM puntosintermedios WHERE punto_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPunto);
 	        int filasAfectadas = stmt.executeUpdate();
 	        return filasAfectadas > 0;

@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import common.Ruta;
+import server.DB;
 
 public class RutaDAO {
 
@@ -22,7 +23,8 @@ public class RutaDAO {
 	{
 		String sql = "SELECT * from rutas WHERE ruta.ruta_id = ?";
 		
-		try (PreparedStatement stmt = conn.prepareStatement(sql))
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql))
 		{
 			stmt.setInt(1,idRuta);
 			var rs = stmt.executeQuery();
@@ -45,7 +47,8 @@ public class RutaDAO {
 	{
 		String sql = "SELECT * from rutas WHERE ruta.ruta_id = ?";
 		
-		try (PreparedStatement stmt = conn.prepareStatement(sql))
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql))
 		{
 			stmt.setInt(1,idRuta);
 			var rs = stmt.executeQuery();
@@ -64,7 +67,8 @@ public class RutaDAO {
 	{
 		String sql = "SELECT * from rutas ";
 				
-		try (PreparedStatement stmt = conn.prepareStatement(sql))
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql))
 		{
 			var rs = stmt.executeQuery();
 			
@@ -87,7 +91,8 @@ public class RutaDAO {
 	public void insert(Ruta ruta) throws SQLException {
 	    String sql = "INSERT INTO rutas (origen, destino, duracion_estimada) VALUES (?, ?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, ruta.getNombreDestino());
 	        stmt.setString(2, ruta.getNombreOrigen());
 	        stmt.setTime(3, Time.valueOf(ruta.getDuracionEstimada())); 
@@ -99,7 +104,8 @@ public class RutaDAO {
 	public void update(int idRuta, Ruta ruta) throws SQLException {
 	    String sql = "UPDATE rutas SET origen = ?, destino = ?, duracion_estimada = ? WHERE ruta_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, ruta.getNombreOrigen());
 	        stmt.setString(2, ruta.getNombreDestino());
 	        stmt.setTime(3, Time.valueOf(ruta.getDuracionEstimada()));
@@ -114,7 +120,8 @@ public class RutaDAO {
 	public boolean delete(int idRuta) throws SQLException {
 	    String sql = "DELETE FROM rutas WHERE ruta_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idRuta);
 	        int filas = stmt.executeUpdate();
 	        return filas > 0;

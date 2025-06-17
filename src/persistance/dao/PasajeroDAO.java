@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import common.Pasajero;
+import server.DB;
 
 public class PasajeroDAO {
 	
@@ -22,7 +23,8 @@ public class PasajeroDAO {
 	public int  insert(Pasajero pasajero) throws SQLException {
 	    String sql = "INSERT INTO pasajeros (nombre, correo) VALUES (?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 	        stmt.setString(1, pasajero.getNombre());
 	        stmt.setString(2, pasajero.getCorreo());
 	        int filasAfectadas = stmt.executeUpdate();
@@ -46,7 +48,8 @@ public class PasajeroDAO {
 	public boolean update(int idPasajero, Pasajero pasajero) throws SQLException {
 		String sql = "UPDATE pasajeros SET nombre = ?, correo = ? WHERE pasajero_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setString(1, pasajero.getNombre());
 	        stmt.setString(2, pasajero.getCorreo());
 	        stmt.setInt(3, idPasajero);
@@ -59,7 +62,8 @@ public class PasajeroDAO {
 	{
 		String sql = "SELECT * FROM pasajeros WHERE pasajero_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasajero);
 	        ResultSet rs = stmt.executeQuery();
 
@@ -78,7 +82,8 @@ public class PasajeroDAO {
 	{
 		String sql = "SELECT * FROM pasajeros WHERE nombre = ? AND correo= ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 	        stmt.setString(1, nombre);
 	        stmt.setString(2, correo);
 	        ResultSet rs = stmt.executeQuery();
@@ -96,7 +101,8 @@ public class PasajeroDAO {
 	public boolean delete(int idPasajero) throws SQLException {
 	    String sql = "DELETE FROM pasajeros WHERE pasajero_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasajero);
 	        int filasAfectadas = stmt.executeUpdate();
 
@@ -138,7 +144,8 @@ public class PasajeroDAO {
 	{
 		String sql = "SELECT * FROM pasajeros WHERE pasajero_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idPasajero);
 	        ResultSet rs = stmt.executeQuery();
 

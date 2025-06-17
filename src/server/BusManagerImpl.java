@@ -9,8 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-
+import java.util.concurrent.locks.ReentrantLock;
 import java.sql.Connection;
+import java.util.concurrent.locks.Lock;
 
 import persistance.dao.*;
 
@@ -27,9 +28,12 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	private PuntoIntermedioDAO puntoIntermedioDAO;
 	private PuntoViajeDao puntoViajeDAO;
 	
+	private final Object mutex = new Object();
+	private final Lock lock = new ReentrantLock();
+	
 	public BusManagerImpl(Connection conn) throws RemoteException, SQLException {
 	    super();
-	    
+	    conn.setAutoCommit(false);
 	    this.viajeDAO = new ViajeDAO(conn);
 	    this.busDAO = new BusDAO(conn);
 	    this.rutaDAO = new RutaDAO(conn);
@@ -68,13 +72,16 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	 */
 	@Override
 	public boolean crearNuevoViaje(Viaje viaje, int idRuta) throws RemoteException {
-		try {
-			Viaje viajeNuevo = viajeDAO.getViaje(viaje.getidViaje());
-			puntoViajeDAO.fillPointsFromViaje(idRuta);
-			viajeDAO.insert(viajeNuevo);
-			return true;
-		} catch (SQLException e) {
-			throw new RemoteException("Error al crear nuevo viaje", e);
+		synchronized (this.mutex) {
+			try {
+				
+				Viaje viajeNuevo = viajeDAO.getViaje(viaje.getidViaje());
+				puntoViajeDAO.fillPointsFromViaje(idRuta);
+				viajeDAO.insert(viajeNuevo);
+				return true;
+			} catch (SQLException e) {
+				throw new RemoteException("Error al crear nuevo viaje", e);
+			}
 		}
 	}
 
@@ -139,11 +146,15 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 	@Override
 	public ArrayList<Ruta> obtenerRutasDisp() throws RemoteException {
+		lock.lock();
 		try {
 			return rutaDAO.getAllRutas();
 		} catch (SQLException e) {
 			throw new RemoteException("Error al obtener rutas disponibles", e);
+		} finally {
+			lock.unlock();
 		}
+		
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import common.PuntoViaje;
+import server.DB;
 
 public class PuntoViajeDao {
 
@@ -23,7 +24,8 @@ public class PuntoViajeDao {
 	    String sql = "INSERT INTO puntosintermedios_viaje (viaje_id, punto_id, hora_llegada, hora_salida, hora_llegada_estimada) \n" +
 	                 "VALUES (?, ?, ?, ?, ?)";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, puntoViaje.getIdViaje());
 	        stmt.setInt(2, puntoViaje.getIdPunto());
 	        stmt.setTimestamp(3, puntoViaje.getHoraLlegada() != null ? Timestamp.valueOf(puntoViaje.getHoraLlegada()) : null);
@@ -46,7 +48,8 @@ public class PuntoViajeDao {
 				+ "JOIN puntosintermedios pi ON pi.ruta_id = v.ruta_id\n"
 				+ "WHERE v.viaje_id = ?";
 			
-		try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DB.connect();
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
 				stmt.setInt(1, idViaje);
 				stmt.executeUpdate();
 			} 
@@ -56,7 +59,8 @@ public class PuntoViajeDao {
 	    String sql = "UPDATE puntosintermedios_viaje SET hora_llegada = ?, hora_salida = ?, hora_llegada_estimada = ? \n" +
 	                 "WHERE viaje_id = ? AND punto_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setTimestamp(1, puntoViaje.getHoraLlegada() != null ? Timestamp.valueOf(puntoViaje.getHoraLlegada()) : null);
 	        stmt.setTimestamp(2, puntoViaje.getHoraSalida() != null ? Timestamp.valueOf(puntoViaje.getHoraSalida()) : null);
 	        stmt.setTime(3, puntoViaje.getHoraLlegadaEstimada() != null ? Time.valueOf(puntoViaje.getHoraLlegadaEstimada().toLocalTime()) : null);
@@ -69,7 +73,8 @@ public class PuntoViajeDao {
 	public void delete(int idViaje, int idPunto) throws SQLException {
 	    String sql = "DELETE FROM puntosintermedios_viaje WHERE viaje_id = ? AND punto_id = ?";
 
-	    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = DB.connect();
+	    		PreparedStatement stmt = conn.prepareStatement(sql)) {
 	        stmt.setInt(1, idViaje);
 	        stmt.setInt(2, idPunto);
 
