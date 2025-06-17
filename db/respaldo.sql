@@ -9,18 +9,28 @@ SET default_transaction_read_only = off;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 
-CREATE ROLE bus_admin WITH
-  LOGIN
-  PASSWORD 'passwd'
-  NOSUPERUSER
-  INHERIT
-  NOCREATEROLE
-  CREATEDB
-  NOREPLICATION
-  BYPASSRLS;
+DO
+$$
+BEGIN
+   IF NOT EXISTS (
+      SELECT FROM pg_catalog.pg_roles
+      WHERE rolname = 'bus_admin'
+   ) THEN
+      CREATE ROLE bus_admin WITH
+         LOGIN
+         PASSWORD 'passwd'
+         NOSUPERUSER
+         INHERIT
+         NOCREATEROLE
+         CREATEDB
+         NOREPLICATION
+         BYPASSRLS;
+   END IF;
+END
+$$;
 
 
---
+----
 -- Databases
 --
 
@@ -58,7 +68,7 @@ SET row_security = off;
 --
 
 --
--- Database "busDB" dump
+-- Database "busdb" dump
 --
 
 --
@@ -84,15 +94,15 @@ SET row_security = off;
 
 --
 -- TOC entry 3405 (class 1262 OID 16389)
--- Name: busDB; Type: DATABASE; Schema: -; Owner: bus_user
+-- Name: busdb; Type: DATABASE; Schema: -; Owner: bus_admin
 --
 
-CREATE DATABASE busDB WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C' LC_CTYPE = 'C';
+CREATE DATABASE busdb WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C' LC_CTYPE = 'C';
 
 
-ALTER DATABASE busDB OWNER TO bus_user;
+ALTER DATABASE busdb OWNER TO bus_admin;
 
-\connect busDB
+\connect busdb
 
 SET statement_timeout = 0;
 --SET lock_timeout = 0;
@@ -112,7 +122,7 @@ SET default_table_access_method = heap;
 
 --
 -- TOC entry 217 (class 1259 OID 57344)
--- Name: buses; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: buses; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.buses (
@@ -122,11 +132,11 @@ CREATE TABLE public.buses (
 );
 
 
-ALTER TABLE public.buses OWNER TO bus_user;
+ALTER TABLE public.buses OWNER TO bus_admin;
 
 --
 -- TOC entry 221 (class 1259 OID 57391)
--- Name: pasajeros; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: pasajeros; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.pasajeros (
@@ -136,11 +146,11 @@ CREATE TABLE public.pasajeros (
 );
 
 
-ALTER TABLE public.pasajeros OWNER TO bus_user;
+ALTER TABLE public.pasajeros OWNER TO bus_admin;
 
 --
 -- TOC entry 223 (class 1259 OID 73728)
--- Name: pasajeros_pasajero_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_user
+-- Name: pasajeros_pasajero_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE public.pasajeros ALTER COLUMN pasajero_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -155,7 +165,7 @@ ALTER TABLE public.pasajeros ALTER COLUMN pasajero_id ADD GENERATED ALWAYS AS ID
 
 --
 -- TOC entry 222 (class 1259 OID 57398)
--- Name: pasajes; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: pasajes; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.pasajes (
@@ -170,11 +180,11 @@ CREATE TABLE public.pasajes (
 );
 
 
-ALTER TABLE public.pasajes OWNER TO bus_user;
+ALTER TABLE public.pasajes OWNER TO bus_admin;
 
 --
 -- TOC entry 224 (class 1259 OID 73729)
--- Name: pasajes_pasaje_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_user
+-- Name: pasajes_pasaje_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE public.pasajes ALTER COLUMN pasaje_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -189,7 +199,7 @@ ALTER TABLE public.pasajes ALTER COLUMN pasaje_id ADD GENERATED ALWAYS AS IDENTI
 
 --
 -- TOC entry 219 (class 1259 OID 57356)
--- Name: puntosintermedios; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: puntosintermedios; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.puntosintermedios (
@@ -202,11 +212,11 @@ CREATE TABLE public.puntosintermedios (
 );
 
 
-ALTER TABLE public.puntosintermedios OWNER TO bus_user;
+ALTER TABLE public.puntosintermedios OWNER TO bus_admin;
 
 --
 -- TOC entry 225 (class 1259 OID 73730)
--- Name: puntosintermedios_punto_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_user
+-- Name: puntosintermedios_punto_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE public.puntosintermedios ALTER COLUMN punto_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -221,7 +231,7 @@ ALTER TABLE public.puntosintermedios ALTER COLUMN punto_id ADD GENERATED ALWAYS 
 
 --
 -- TOC entry 228 (class 1259 OID 106496)
--- Name: puntosintermedios_viaje; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: puntosintermedios_viaje; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.puntosintermedios_viaje (
@@ -233,11 +243,11 @@ CREATE TABLE public.puntosintermedios_viaje (
 );
 
 
-ALTER TABLE public.puntosintermedios_viaje OWNER TO bus_user;
+ALTER TABLE public.puntosintermedios_viaje OWNER TO bus_admin;
 
 --
 -- TOC entry 218 (class 1259 OID 57351)
--- Name: rutas; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: rutas; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.rutas (
@@ -248,11 +258,11 @@ CREATE TABLE public.rutas (
 );
 
 
-ALTER TABLE public.rutas OWNER TO bus_user;
+ALTER TABLE public.rutas OWNER TO bus_admin;
 
 --
 -- TOC entry 226 (class 1259 OID 73731)
--- Name: rutas_ruta_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_user
+-- Name: rutas_ruta_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE public.rutas ALTER COLUMN ruta_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -267,7 +277,7 @@ ALTER TABLE public.rutas ALTER COLUMN ruta_id ADD GENERATED ALWAYS AS IDENTITY (
 
 --
 -- TOC entry 220 (class 1259 OID 57366)
--- Name: viajes; Type: TABLE; Schema: public; Owner: bus_user
+-- Name: viajes; Type: TABLE; Schema: public; Owner: bus_admin
 --
 
 CREATE TABLE public.viajes (
@@ -280,11 +290,11 @@ CREATE TABLE public.viajes (
 );
 
 
-ALTER TABLE public.viajes OWNER TO bus_user;
+ALTER TABLE public.viajes OWNER TO bus_admin;
 
 --
 -- TOC entry 227 (class 1259 OID 73732)
--- Name: viajes_viaje_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_user
+-- Name: viajes_viaje_id_seq; Type: SEQUENCE; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE public.viajes ALTER COLUMN viaje_id ADD GENERATED ALWAYS AS IDENTITY (
@@ -300,7 +310,7 @@ ALTER TABLE public.viajes ALTER COLUMN viaje_id ADD GENERATED ALWAYS AS IDENTITY
 --
 -- TOC entry 3388 (class 0 OID 57344)
 -- Dependencies: 217
--- Data for Name: buses; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: buses; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.buses (matricula, modelo, capacidad) FROM stdin;
@@ -313,7 +323,7 @@ BB2	Bus largo	15
 --
 -- TOC entry 3392 (class 0 OID 57391)
 -- Dependencies: 221
--- Data for Name: pasajeros; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: pasajeros; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.pasajeros (pasajero_id, nombre, correo) FROM stdin;
@@ -330,7 +340,7 @@ COPY public.pasajeros (pasajero_id, nombre, correo) FROM stdin;
 --
 -- TOC entry 3393 (class 0 OID 57398)
 -- Dependencies: 222
--- Data for Name: pasajes; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: pasajes; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.pasajes (pasaje_id, viaje_id, pasajero_id, punto_origen_id, punto_destino_id, precio, fecha_compra, asiento) FROM stdin;
@@ -344,7 +354,7 @@ COPY public.pasajes (pasaje_id, viaje_id, pasajero_id, punto_origen_id, punto_de
 --
 -- TOC entry 3390 (class 0 OID 57356)
 -- Dependencies: 219
--- Data for Name: puntosintermedios; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: puntosintermedios; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.puntosintermedios (punto_id, ruta_id, nombre_punto, orden, lat, long) FROM stdin;
@@ -369,7 +379,7 @@ COPY public.puntosintermedios (punto_id, ruta_id, nombre_punto, orden, lat, long
 --
 -- TOC entry 3399 (class 0 OID 106496)
 -- Dependencies: 228
--- Data for Name: puntosintermedios_viaje; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: puntosintermedios_viaje; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.puntosintermedios_viaje (viaje_id, punto_id, hora_llegada, hora_salida, hora_llegada_estimada) FROM stdin;
@@ -390,7 +400,7 @@ COPY public.puntosintermedios_viaje (viaje_id, punto_id, hora_llegada, hora_sali
 --
 -- TOC entry 3389 (class 0 OID 57351)
 -- Dependencies: 218
--- Data for Name: rutas; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: rutas; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.rutas (ruta_id, origen, destino, duracion_estimada) FROM stdin;
@@ -403,7 +413,7 @@ COPY public.rutas (ruta_id, origen, destino, duracion_estimada) FROM stdin;
 --
 -- TOC entry 3391 (class 0 OID 57366)
 -- Dependencies: 220
--- Data for Name: viajes; Type: TABLE DATA; Schema: public; Owner: bus_user
+-- Data for Name: viajes; Type: TABLE DATA; Schema: public; Owner: bus_admin
 --
 
 COPY public.viajes (viaje_id, ruta_id, matricula, fecha, hora_salida, hora_salida_estimada) FROM stdin;
@@ -416,7 +426,7 @@ COPY public.viajes (viaje_id, ruta_id, matricula, fecha, hora_salida, hora_salid
 --
 -- TOC entry 3407 (class 0 OID 0)
 -- Dependencies: 223
--- Name: pasajeros_pasajero_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_user
+-- Name: pasajeros_pasajero_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_admin
 --
 
 SELECT pg_catalog.setval('public.pasajeros_pasajero_id_seq', 17, true);
@@ -425,7 +435,7 @@ SELECT pg_catalog.setval('public.pasajeros_pasajero_id_seq', 17, true);
 --
 -- TOC entry 3408 (class 0 OID 0)
 -- Dependencies: 224
--- Name: pasajes_pasaje_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_user
+-- Name: pasajes_pasaje_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_admin
 --
 
 SELECT pg_catalog.setval('public.pasajes_pasaje_id_seq', 3, true);
@@ -434,7 +444,7 @@ SELECT pg_catalog.setval('public.pasajes_pasaje_id_seq', 3, true);
 --
 -- TOC entry 3409 (class 0 OID 0)
 -- Dependencies: 225
--- Name: puntosintermedios_punto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_user
+-- Name: puntosintermedios_punto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_admin
 --
 
 SELECT pg_catalog.setval('public.puntosintermedios_punto_id_seq', 15, true);
@@ -443,7 +453,7 @@ SELECT pg_catalog.setval('public.puntosintermedios_punto_id_seq', 15, true);
 --
 -- TOC entry 3410 (class 0 OID 0)
 -- Dependencies: 226
--- Name: rutas_ruta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_user
+-- Name: rutas_ruta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_admin
 --
 
 SELECT pg_catalog.setval('public.rutas_ruta_id_seq', 4, false);
@@ -452,7 +462,7 @@ SELECT pg_catalog.setval('public.rutas_ruta_id_seq', 4, false);
 --
 -- TOC entry 3411 (class 0 OID 0)
 -- Dependencies: 227
--- Name: viajes_viaje_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_user
+-- Name: viajes_viaje_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bus_admin
 --
 
 SELECT pg_catalog.setval('public.viajes_viaje_id_seq', 3, true);
@@ -460,7 +470,7 @@ SELECT pg_catalog.setval('public.viajes_viaje_id_seq', 3, true);
 
 --
 -- TOC entry 3217 (class 2606 OID 57350)
--- Name: buses buses_matricula_key; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: buses buses_matricula_key; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.buses
@@ -469,7 +479,7 @@ ALTER TABLE ONLY public.buses
 
 --
 -- TOC entry 3227 (class 2606 OID 114689)
--- Name: pasajeros pasajeros_documento_identidad_key; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajeros pasajeros_documento_identidad_key; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajeros
@@ -478,7 +488,7 @@ ALTER TABLE ONLY public.pasajeros
 
 --
 -- TOC entry 3229 (class 2606 OID 57395)
--- Name: pasajeros pasajeros_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajeros pasajeros_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajeros
@@ -487,7 +497,7 @@ ALTER TABLE ONLY public.pasajeros
 
 --
 -- TOC entry 3231 (class 2606 OID 57403)
--- Name: pasajes pasajes_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajes pasajes_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajes
@@ -496,7 +506,7 @@ ALTER TABLE ONLY public.pasajes
 
 --
 -- TOC entry 3219 (class 2606 OID 65537)
--- Name: buses pk_buses; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: buses pk_buses; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.buses
@@ -505,7 +515,7 @@ ALTER TABLE ONLY public.buses
 
 --
 -- TOC entry 3223 (class 2606 OID 57360)
--- Name: puntosintermedios puntosintermedios_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: puntosintermedios puntosintermedios_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.puntosintermedios
@@ -514,7 +524,7 @@ ALTER TABLE ONLY public.puntosintermedios
 
 --
 -- TOC entry 3233 (class 2606 OID 106500)
--- Name: puntosintermedios_viaje puntosintermedios_viaje_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: puntosintermedios_viaje puntosintermedios_viaje_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.puntosintermedios_viaje
@@ -523,7 +533,7 @@ ALTER TABLE ONLY public.puntosintermedios_viaje
 
 --
 -- TOC entry 3221 (class 2606 OID 57355)
--- Name: rutas rutas_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: rutas rutas_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.rutas
@@ -532,7 +542,7 @@ ALTER TABLE ONLY public.rutas
 
 --
 -- TOC entry 3225 (class 2606 OID 57370)
--- Name: viajes viajes_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: viajes viajes_pkey; Type: CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.viajes
@@ -541,7 +551,7 @@ ALTER TABLE ONLY public.viajes
 
 --
 -- TOC entry 3241 (class 2606 OID 106506)
--- Name: puntosintermedios_viaje fk_punto; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: puntosintermedios_viaje fk_punto; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.puntosintermedios_viaje
@@ -550,7 +560,7 @@ ALTER TABLE ONLY public.puntosintermedios_viaje
 
 --
 -- TOC entry 3242 (class 2606 OID 106501)
--- Name: puntosintermedios_viaje fk_viaje; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: puntosintermedios_viaje fk_viaje; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.puntosintermedios_viaje
@@ -559,7 +569,7 @@ ALTER TABLE ONLY public.puntosintermedios_viaje
 
 --
 -- TOC entry 3237 (class 2606 OID 57409)
--- Name: pasajes pasajes_pasajero_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajes pasajes_pasajero_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajes
@@ -568,7 +578,7 @@ ALTER TABLE ONLY public.pasajes
 
 --
 -- TOC entry 3238 (class 2606 OID 57424)
--- Name: pasajes pasajes_punto_destino_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajes pasajes_punto_destino_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajes
@@ -577,7 +587,7 @@ ALTER TABLE ONLY public.pasajes
 
 --
 -- TOC entry 3239 (class 2606 OID 57419)
--- Name: pasajes pasajes_punto_origen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajes pasajes_punto_origen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajes
@@ -586,7 +596,7 @@ ALTER TABLE ONLY public.pasajes
 
 --
 -- TOC entry 3240 (class 2606 OID 57404)
--- Name: pasajes pasajes_viaje_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: pasajes pasajes_viaje_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.pasajes
@@ -595,7 +605,7 @@ ALTER TABLE ONLY public.pasajes
 
 --
 -- TOC entry 3234 (class 2606 OID 57361)
--- Name: puntosintermedios puntosintermedios_ruta_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: puntosintermedios puntosintermedios_ruta_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.puntosintermedios
@@ -604,7 +614,7 @@ ALTER TABLE ONLY public.puntosintermedios
 
 --
 -- TOC entry 3235 (class 2606 OID 65556)
--- Name: viajes viajes_matricula_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: viajes viajes_matricula_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.viajes
@@ -613,7 +623,7 @@ ALTER TABLE ONLY public.viajes
 
 --
 -- TOC entry 3236 (class 2606 OID 57371)
--- Name: viajes viajes_ruta_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_user
+-- Name: viajes viajes_ruta_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: bus_admin
 --
 
 ALTER TABLE ONLY public.viajes
@@ -623,7 +633,7 @@ ALTER TABLE ONLY public.viajes
 --
 -- TOC entry 3406 (class 0 OID 0)
 -- Dependencies: 3405
--- Name: DATABASE busDB; Type: ACL; Schema: -; Owner: bus_user
+-- Name: DATABASE busdb; Type: ACL; Schema: -; Owner: bus_admin
 --
 -- Completed on 2025-06-14 17:26:50
 
