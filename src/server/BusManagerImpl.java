@@ -27,8 +27,9 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 	private PuntoIntermedioDAO puntoIntermedioDAO;
 	private PuntoViajeDao puntoViajeDAO;
 	
-	public BusManagerImpl(Connection conn) throws RemoteException {
+	public BusManagerImpl(Connection conn) throws RemoteException, SQLException {
 	    super();
+	    
 	    this.viajeDAO = new ViajeDAO(conn);
 	    this.busDAO = new BusDAO(conn);
 	    this.rutaDAO = new RutaDAO(conn);
