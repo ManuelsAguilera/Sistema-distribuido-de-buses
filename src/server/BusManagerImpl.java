@@ -309,5 +309,10 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 		}
 	}
 
+	@Override
+	public int ping() throws RemoteException {
+		return 0;
+	}
+
 	
 }

@@ -51,4 +51,8 @@ public interface IBusManager extends  Remote  {
 	Pasajero getPasajero(int idPasajero) throws RemoteException;
 	boolean eliminarPasajero(int idPasajero) throws RemoteException;
 	boolean modificarPasajero(Pasajero pasajero)  throws RemoteException;
+	
+	// Servidor-ping
+	public int ping() throws RemoteException;
+	
 }

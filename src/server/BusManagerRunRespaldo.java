@@ -7,17 +7,18 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
 
-public class BusManagerRun {
+public class BusManagerRunRespaldo {
 	public static void main(String[] args) 
 	{
 		try {
 			
-			BusManagerImpl serverPrincipal = new BusManagerImpl(DB.connect());
-			Registry registry = LocateRegistry.createRegistry(2002);
-			registry.bind("CentralBusManager", serverPrincipal);
+			BusManagerImpl serverRespaldo = new BusManagerImpl(DB.connect());
+			Registry registry = LocateRegistry.createRegistry(2001);
+			registry.bind("CentralBusManagerRespaldo", serverRespaldo);
+			
 			
 			// Estado del servidor
-			System.out.println("Main Server up!");
+			System.out.println("Backup Server up!");
 		}
 		catch (RemoteException RemoteE)
 		{

@@ -11,6 +11,7 @@ import common.Ruta;
 import common.Viaje;
 
 import java.io.IOException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -22,15 +23,17 @@ import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 
 public class ClientControler implements MenuOptionListener {
     private ClientView view;
-    private IBusManager server; // Modelo
+    private IBusManager server;
+    private Thread heartbeatThread;
+    private Thread watcherThread;
+
     
 
     public ClientControler(ClientView view, IBusManager server) throws Exception {
         this.view = view;
         this.view.setMenuOptionListener(this);
         this.server = server;
-        Registry registry = LocateRegistry.getRegistry(2002);
-		server =(IBusManager) registry.lookup("CentralBusManager");
+        iniciarHeartbeat();
     }
     
     public void testConnection(String message) throws RemoteException { this.server.testConnection(message);}
@@ -220,6 +223,56 @@ public class ClientControler implements MenuOptionListener {
 		}
 		return null;
 	}
+	
+	public IBusManager getServerActual() {
+        return server;
+    }
+
+    private void iniciarHeartbeat() {
+        StartHeartbeat heartbeat = new StartHeartbeat(this, server);
+        heartbeatThread = new Thread(heartbeat);
+        heartbeatThread.start();
+    }
+
+    public synchronized void cambiarAServerRespaldo() {
+        try {
+        	if (heartbeatThread != null) {
+                heartbeatThread.interrupt();
+            }
+
+        	
+        	Registry registry = LocateRegistry.getRegistry("localhost", 2001);
+            IBusManager respaldo = (IBusManager) registry.lookup("CentralBusManagerRespaldo");
+            this.server = respaldo;
+            
+            iniciarHeartbeat();
+            
+            StartPrincipalWatcher watcher = new StartPrincipalWatcher(this);
+            watcherThread = new Thread(watcher);
+            watcherThread.start();
+            
+            System.out.println("[Controler] Conectado al servidor de respaldo.");
+        } catch (Exception e) {
+            System.err.println("[Controler] Error al conectar al servidor de respaldo");
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized void cambiarAServerPrincipal(IBusManager principal) {
+        try {
+            this.server = principal;
+
+            System.out.println("[Controler] Reconectado al servidor principal.");
+
+            // Detener watcher y lanzar nuevo heartbeat
+            if (watcherThread != null) watcherThread.interrupt();
+            iniciarHeartbeat();
+
+        } catch (Exception e) {
+            System.err.println("[Controler] Error reconectando al servidor principal: " + e.getMessage());
+        }
+    }
+
 
 
 }
