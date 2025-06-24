@@ -17,6 +17,7 @@ import java.rmi.registry.Registry;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1294,38 +1295,37 @@ public class ClientView {
 		
 		panel.addComponent(new EmptySpace());
 		panel.addComponent(new Button("Guardar", () -> {
-			int idViaje = Integer.parseInt(idViajeBox.getText());
-			int idPasajero = Integer.parseInt(idPasajeroBox.getText());
-			int idOrigen = Integer.parseInt(idOrigenBox.getText());
-			int idDestino = Integer.parseInt(idDestinoBox.getText());
-			String fechaInput  = fechaCompraBox.getText();
-			float precio = Float.parseFloat(precioPasajeBox.getText());
-			int asiento = Integer.parseInt(asientoBox.getText());
-			
-			// Validar formato fecha-hora
-			LocalDateTime fechaCompra;
-			try {
-				fechaCompra = LocalDateTime.parse(fechaInput);
-				System.out.println(fechaCompra);
-			} catch (DateTimeParseException e) {
-				showMessage("Formato inválido. Use (YYYY-MM-DD / HH-MM-SS).");
-				return;
-			}
-			
-			Pasaje pasaje = new Pasaje(idPasajero, idOrigen, idDestino, fechaCompra, precio, asiento, idViaje);
-			
-			if (menuOptionListener.crearPasaje(pasaje)) {
-				showMessage("Error en la creacion del pasaje, reintente el proceso");
-			} else {
-				showMessage("Pasaje creado exitosamente!");
-			}
+		    int idViaje = Integer.parseInt(idViajeBox.getText());
+		    int idPasajero = Integer.parseInt(idPasajeroBox.getText());
+		    int idOrigen = Integer.parseInt(idOrigenBox.getText());
+		    int idDestino = Integer.parseInt(idDestinoBox.getText());
+		    String fechaInput  = fechaCompraBox.getText();
+		    float precio = Float.parseFloat(precioPasajeBox.getText());
+		    int asiento = Integer.parseInt(asientoBox.getText());
 
-			window.close();
-			try {
-				displayMenu();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		    LocalDateTime fechaCompra;
+		    try {
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		        fechaCompra = LocalDateTime.parse(fechaInput, formatter);
+		    } catch (DateTimeParseException e) {
+		        showMessage("Formato inválido. Use YYYY-MM-DD HH:mm:ss.");
+		        return;
+		    }
+		    
+		    Pasaje pasaje = new Pasaje(idPasajero, idOrigen, idDestino, fechaCompra, precio, asiento, idViaje);
+
+		    if (menuOptionListener.crearPasaje(pasaje)) {
+		        showMessage("Pasaje creado exitosamente!");
+		    } else {
+		        showMessage("Error en la creación del pasaje, reintente el proceso");
+		    }
+
+		    window.close();
+		    try {
+		        displayMenu();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
 		}));
 		
 		panel.addComponent(new Button("Volver", () -> {

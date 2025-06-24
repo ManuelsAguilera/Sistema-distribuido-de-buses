@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import client.Controler.ClientControler;
 import client.View.ClientView;
+import common.Bus;
 import common.IBusManager;
 import server.ApiManager;
 
@@ -23,7 +24,11 @@ public class ClientRun {
 		ApiManager api = new ApiManager();
 		Registry registry = LocateRegistry.getRegistry(2002);
 		IBusManager server = (IBusManager) registry.lookup("CentralBusManager");
+		
+		
 
+		
+        
 		try {
 
 			view = new ClientView();

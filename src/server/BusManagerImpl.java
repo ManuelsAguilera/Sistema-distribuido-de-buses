@@ -146,13 +146,12 @@ public class BusManagerImpl extends UnicastRemoteObject  implements IBusManager 
 
 	@Override
 	public ArrayList<Ruta> obtenerRutasDisp() throws RemoteException {
-		lock.lock();
+		
 		try {
 			return rutaDAO.getAllRutas();
 		} catch (SQLException e) {
 			throw new RemoteException("Error al obtener rutas disponibles", e);
-		} finally {
-			lock.unlock();
+			
 		}
 		
 	}

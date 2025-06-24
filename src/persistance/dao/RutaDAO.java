@@ -63,28 +63,32 @@ public class RutaDAO {
 	}
 	
 	
-	public ArrayList<Ruta> getAllRutas() throws SQLException
-	{
-		String sql = "SELECT * from rutas ";
-				
-		try (Connection conn = DB.connect();
-				PreparedStatement stmt = conn.prepareStatement(sql))
-		{
-			var rs = stmt.executeQuery();
-			
-			ArrayList<Ruta> lista = new ArrayList<Ruta>();
-			
-			while (rs.next())
-			{
-				int idRuta = rs.getInt("ruta_id");
-				String origen = rs.getString("origen");
-				String destino = rs.getString("destino");
-				LocalTime duracionEstimada = rs.getTime("duracion_estimada").toLocalTime();
-				lista.add(new Ruta(origen, destino,idRuta, duracionEstimada));
-			}
-			
-			return lista;
-		}
+	public ArrayList<Ruta> getAllRutas() throws SQLException {
+	    String sql = "SELECT * from rutas;";
+	    System.out.println("ola1");
+	            
+	    try (Connection conn = DB.connect();
+	            PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        var rs = stmt.executeQuery();
+	        
+	        ArrayList<Ruta> lista = new ArrayList<Ruta>();
+	        
+	        while (rs.next()) {
+	            int idRuta = rs.getInt("ruta_id");
+	            String origen = rs.getString("origen");
+	            String destino = rs.getString("destino");
+	            java.sql.Time sqlTime = rs.getTime("duracion_estimada");
+	            LocalTime duracionEstimada = null;
+	            if (sqlTime != null) {
+	                duracionEstimada = sqlTime.toLocalTime();
+	            }
+	            lista.add(new Ruta(origen, destino, idRuta, duracionEstimada));
+	        }
+	        System.out.println("ola2");
+	        
+	        System.out.println(lista);
+	        return lista;
+	    }
 	}
 	
 	
